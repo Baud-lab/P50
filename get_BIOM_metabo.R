@@ -38,7 +38,7 @@ biomt = biomt[-c(1,2),]
 MZs = paste('MZ',biomt[,1],sep='')
 biomt = biomt[,-1]
 dim(biomt)
-#[1] 11388  1258
+#[1] 7412 1254
 
 biomt = lapply(biomt, FUN = as.numeric)
 biomt = as.matrix(as.data.frame(biomt, stringsAsFactors = F))
