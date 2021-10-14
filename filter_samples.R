@@ -51,6 +51,7 @@ keep = which(metadata$genotyped)
 biomt = biomt[,keep]
 metadata = metadata[keep,]
 dim(biomt)
+#7412 1143
 
 #step 2: choose nb reads threshold; first update m and s as previously calculated including blanks, bad rats etc.
 motch = match(colnames(biomt), names(lib_sizes))
