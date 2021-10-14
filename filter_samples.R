@@ -66,6 +66,6 @@ th_high = m + 2*s
 keep = which(lib_sizes >= th_low & lib_sizes <= th_high)  
 biomt = biomt[,keep]
 dim(biomt)
-
+#7412 1088
 save(biomt, file = paste(prefix,'_sample_filtered_biomt.RData',sep=''))
 
