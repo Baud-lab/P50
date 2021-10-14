@@ -32,7 +32,7 @@ check[!grepl('blank',check, ignore.case = T)]
 #below exclude those two + all blanks
 biomt = biomt[,!is.na(motch)]
 dim(biomt)
-
+#7412 1150
 #now remove bad rats (as determined by Apurva, ie swapped samples, or inconsistent...) and unknown rats (those that used to have a row in the metabo table but no real metadata) - genotyped or not
 motch = match(colnames(biomt),metadata[which(metadata$bad_rat == FALSE & metadata$unknown_rat == FALSE),'sample_name_metabo'])
 biomt = biomt[,!is.na(motch)]
