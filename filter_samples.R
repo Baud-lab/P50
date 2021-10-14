@@ -37,6 +37,7 @@ dim(biomt)
 motch = match(colnames(biomt),metadata[which(metadata$bad_rat == FALSE & metadata$unknown_rat == FALSE),'sample_name_metabo'])
 biomt = biomt[,!is.na(motch)]
 dim(biomt)
+#7412 1146
 #put cols of biomt and rows or metadata in same order
 motch = match(colnames(biomt),metadata$sample_name_metabo)
 any(is.na(motch))
