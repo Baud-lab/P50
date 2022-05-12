@@ -1,1 +1,1 @@
-git rm --cache .log
+git rm --cache *.log
