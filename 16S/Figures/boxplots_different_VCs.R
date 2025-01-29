@@ -9,8 +9,9 @@
 
 library(dplyr)
 library(reshape2)
-library(ggplot2)
-library(cowplot)
+library(ggsci) # for the colours of pal_npg
+#library(ggplot2)
+#library(cowplot)
 
 #load heritability data - should start from augmented_DGE_VC_wALL.RData instead, keeping only ASV and taxa level phenotypes (no community phenotype)
 root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
@@ -66,16 +67,102 @@ colnames(mods3) <- c("phenotype",'study', "component", "est")
 plotdat <- mods3
 
 # reorder levels so they plot in the wanted order
-plotdat$component <- factor(plotdat$component,levels = c('Additive genetic','Maternal','Cage'))
-plotdat$study <- factor(plotdat$study,levels = c('TN_behavior','MI','TN_breeder','NY'))
+comp_order = c('Additive genetic','Maternal','Cage')
+#study_order = c('TN_behavior','MI','TN_breeder','NY')
+study_order = c('TN_breeder','TN_behavior','MI','NY') # order as in panel A of the same figure
+
+plotdat$component <- factor(plotdat$component,levels = comp_order)
+plotdat$study <- factor(plotdat$study,levels =study_order)
 
 #plot
-pal <- c('#225ea8','#016450','#a1dab4') #use same colors throughout the manuscript; here same as Grieneisen et al
-ats = c(1:3,5:7,9:11, 13:15) #where to put boxplots
-pdf(paste('/nfs/users/abaud/abaud/P50_HSrats/plots/VCs_merged.pdf',sep=''), width = 10)
-boxplot(plotdat$est ~ plotdat$component + plotdat$study, col = rep(pal, 3), xaxt = "n" , outline = FALSE, border = NULL,range = 0.00000000001, at = ats, ylim = c(0,25), names = rep('', length(ats)), las = 1, ylab = 'Proportion variance explained', xlab = '')
-axis(side = 1, at = c(2,6,10,14), labels = c('TN_behavior','MI','TN_breeder','NY'),tick = FALSE)
-legend(x = 'top',  legend = c('Additive genetic','Maternal','Cage'), fill = pal, border = NULL)
+pal = #c("#396C93", "#E64B35FF","#F39B7FFF") # darkblue[2] from panel A and npg reds
+  #c("#4DBBD5FF","#E64B35FF","#F39B7FFF") # npg lightblue and reds  
+  c("#3C5488FF","#00A087FF","#91D1C2FF") # npg darkblue and greens  
+  #c("#3C5488FF","#E64B35FF","#F39B7FFF") # npg darkblue and reds  # my favorite
+#c("#8491B4FF", "#E64B35FF","#F39B7FFF") # npg blue[2] and reds  
+
+
+ats = c(1:3, 5:7, 9:11, 13:15) #where to put boxplots
+
+#pdf(paste('/nfs/users/abaud/abaud/P50_HSrats/plots/VCs_merged.pdf',sep=''), width = 10)
+#pdf(paste('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/VCs_merged.pdf',sep=''), width = 10, h=6)
+
+library(vioplot)
+# Option boxplot with violinplot - which has a meaning in showing all values
+# - can be adapted removing whiskers etc...
+formula = as.formula(plotdat$est ~ plotdat$component + plotdat$study)
+
+#pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/VCs_merged_viopl_white.pdf', width = 7, h=6)
+#vio_col = "white"
+#box_col  = c(rep(pal, length(study_order)))
+
+pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/VCs_merged_viopl_col.pdf', width = 7, h=6)
+vio_col = rep(pal, length(study_order))
+box_col = "white"
+
+par(mar=c(5.1,5.1,2.1,2.1))
+vioplot(formula, col = vio_col,#col = rep(pal, 3),
+        at = ats, names = rep('', length(ats)), 
+        las = 1, xlab = '', xaxt = "n", ylab='',
+        cex.axis = 1.25,  
+        border = "black", 
+        drawRect=F,
+        wex=1,
+        areaEqual = F
+        #ylim = c(0,25)
+); boxplot(formula, col = box_col, #col="white",
+        boxwex = 0.3,
+        xaxt = "n", yaxt="n", box="n", 
+        outline = F, 
+        #border = NULL,
+        #range = 0.00000000001, 
+        at = ats, #ylim = c(0,25), 
+        names = rep('', length(ats)), 
+        las = 1,  
+        add=T,
+        whisklty=3,
+        frame=F)
+axis(side = 1, at = c(2,6,10,14), labels = study_order,tick = FALSE, cex.axis=1.25)
+title(ylab = "Proportion variance explained", cex.lab = 1.4,
+      line = 3.5)
+legend(x = 'topleft',  legend = comp_order, fill = pal, border = NULL, cex = 1.25)
 dev.off()
+
+
+# Option boxplot only
+pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/VCs_merged_bplot.pdf', width = 7, h=6)
+par(mar=c(5.1,5.1,2.1,2.1))
+box_col  = c(rep(pal, length(study_order)))
+boxplot(formula, col = box_col, #col="white",
+        #boxwex = 0.3,
+        xaxt = "n" , 
+        outline = F, 
+        #border = NULL, # don't see any difference
+        range = 0.00000000001, 
+        at = ats, ylim = c(0,25), 
+        names = rep('', length(ats)), 
+        las = 1, ylab = 'Proportion variance explained', xlab = '', cex.lab = 1.4,
+        cex.axis=1.25) #, 
+        #add=T,
+        #whisklty=3)
+axis(side = 1, at = c(2,6,10,14), labels = study_order,tick = FALSE, cex.axis = 1.25)
+legend(x = 'topleft',  legend = comp_order, fill = pal, border = NULL, cex = 1.25)
+
+dev.off()
+
+
+
+
+
+####### Amelie #######
+## pal <- c('#225ea8','#016450','#a1dab4') #use same colors throughout the manuscript; here same as Grieneisen et al
+## ats = c(1:3,5:7,9:11, 13:15) #where to put boxplots
+## #pdf(paste('/nfs/users/abaud/abaud/P50_HSrats/plots/VCs_merged.pdf',sep=''), width = 10)
+## boxplot(plotdat$est ~ plotdat$component + plotdat$study, col = rep(pal, 3), 
+##         xaxt = "n" , outline = FALSE, border = NULL,range = 0.00000000001, 
+##         at = ats, ylim = c(0,25), names = rep('', length(ats)), las = 1, ylab = 'Proportion variance explained', xlab = '')
+## axis(side = 1, at = c(2,6,10,14), labels = study_order,tick = FALSE)
+## legend(x = 'top',  legend = comp_order, fill = pal, border = NULL)
+## #dev.off()
 
 
