@@ -42,19 +42,19 @@ for (study in studies) {
 	means[,study] = apply(rel_abundances[w,], FUN = mean, MAR = 2) #### means is actually sometimes medians now
 }
 
-threshold = 0.04
+threshold = 0.1
 
 #for condition 1
-#my_any = function(row) {
-#	any(row >= threshold)
-#}
-#any_above_threshold = apply(means, FUN = my_any, MAR = 1)
+my_any = function(row) {
+	any(row >= threshold)
+}
+any_above_threshold = apply(means, FUN = my_any, MAR = 1)
 
 #for condition 2
-overall_means = apply(means, MAR = 1, FUN = mean)
+#overall_means = apply(means, MAR = 1, FUN = mean)
 
-#condition = any_above_threshold
-condition = (overall_means >= threshold)
+condition = any_above_threshold
+#condition = (overall_means >= threshold)
 
 sums = apply(means[!condition,], MAR = 2, FUN = sum)
 
@@ -71,7 +71,7 @@ col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_co
 if (n > length(col_vector)) rep = TRUE else rep = FALSE
 cols = sample(col_vector, n, replace = rep)
 
-pdf('/users/abaud/abaud/P50_HSrats/plots/average_genera_barplots.pdf', width = 8)
+pdf('/users/abaud/abaud/P50_HSrats/plots/average_genera_barplots__f.pdf', width = 8)
 barplot(means, col= cols, las = 1, border = NA, ylab = 'Mean relative abundance across all samples in the cohort')
 plot(1,1, col = 'white')
 legend(x = 'topleft', legend = rownames(means)[seq(length(cols),1, by = -1)], fill = cols[seq(length(cols),1, by = -1)], border = 'white', bty = 'n', cex = 0.6)
