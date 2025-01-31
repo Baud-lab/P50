@@ -17,11 +17,11 @@ library(ggsci) # for the colours of pal_npg
 root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
 #for ASVs
 deblur_counts_uncollapsed_dir ='deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-load(paste(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata'))
 asv_VCs = VCs
 #for taxa
 deblur_counts_dir ='deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-load(paste(root_dir,deblur_counts_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,deblur_counts_dir,'all_estNste.Rdata'))
 tax_levels_VCs = VCs
 #merge
 all(colnames(tax_levels_VCs) == colnames(asv_VCs))
@@ -32,8 +32,8 @@ all_VCs$study = NA
 for (i in 1:dim(all_VCs)[1]) {
   if(grepl('_MI$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = 'MI'
   if(grepl('_NY$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = 'NY'
-  if(grepl('_TN_behavior$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = 'TN_behavior'
-  if(grepl('_TN_breeder$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = 'TN_breeder'
+  if(grepl('_TN_behavior$', all_VCs[i,'trait1'])) all_VCs[i,'study'] ="TN1" #'TN_behavior'
+  if(grepl('_TN_breeder$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = "TN2" #'TN_breeder'
 }
 
 options(warn = 2)
@@ -69,7 +69,8 @@ plotdat <- mods3
 # reorder levels so they plot in the wanted order
 comp_order = c('Additive genetic','Maternal','Cage')
 #study_order = c('TN_behavior','MI','TN_breeder','NY')
-study_order = c('TN_breeder','TN_behavior','MI','NY') # order as in panel A of the same figure
+#study_order = c('TN_breeder','TN_behavior','MI','NY') # order as in panel A of the same figure
+study_order = c('NY','MI','TN1','TN2') # order in order of cohort sample size
 
 plotdat$component <- factor(plotdat$component,levels = comp_order)
 plotdat$study <- factor(plotdat$study,levels =study_order)
@@ -125,7 +126,7 @@ vioplot(formula, col = vio_col,#col = rep(pal, 3),
 axis(side = 1, at = c(2,6,10,14), labels = study_order,tick = FALSE, cex.axis=1.25)
 title(ylab = "Proportion variance explained", cex.lab = 1.4,
       line = 3.5)
-legend(x = 'topleft',  legend = comp_order, fill = pal, border = NULL, cex = 1.25)
+legend(x = 'topleft',  legend = comp_order, fill = pal, cex = 1.2, bg="white", bty="n", inset = c(-0.01,-0.01))
 dev.off()
 
 

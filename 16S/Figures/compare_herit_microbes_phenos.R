@@ -43,12 +43,12 @@ prepare_hist = function(subdf, var = "prop_Ad1", br){
 br = seq(0, 0.65, by = 0.05)
 
 # creating dataframe to plot
-toplot = rbind("Microbiome TN_breeder" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'TN_breeder',], br=br),
-               "Microbiome TN_behavior" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'TN_behavior',], br=br), 
-               "Microbiome MI" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'MI',], br=br),
-               "Microbiome NY" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'NY',], br=br),
-               "Behavioural phenotypes" = prepare_hist(all_VCs_phenos[all_VCs_phenos$behavioural_pheno,], br=br),
-               "Non behavioural phenotypes" = prepare_hist(all_VCs_phenos[ ! all_VCs_phenos$behavioural_pheno,], br=br))
+toplot = rbind("NY" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'NY',], br=br),
+               "MI" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'MI',], br=br),
+               "TN1" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'TN_behavior',], br=br), 
+               "TN2" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'TN_breeder',], br=br),
+               "Behaviour" = prepare_hist(all_VCs_phenos[all_VCs_phenos$behavioural_pheno,], br=br),
+               "Physiology" = prepare_hist(all_VCs_phenos[ ! all_VCs_phenos$behavioural_pheno,], br=br))
 colnames(toplot) = br[-1]
 
 n = 4 # numbers of microbiome studies
@@ -71,10 +71,12 @@ barplot(toplot[,1:11],
         ylim = ylimi, 
         cex.names = 1.25, cex.axis = 1.25, cex.lab=1.4,
         ylab = 'Proportion of heritable traits', xlab = 'Heritability')
+#box(bty="7")
 # legend
 legend (x = 'topright', 
         legend = rownames(toplot), 
-        fill = cols, border = NA, cex=1.3)
+        fill = cols, border = NA, cex =1.2, bty="o", inset=c(0.04,0)) 
+# inset so that box of legend aligns to last bin - with margins par(mar = c(5.1, 5.1, 2.1, 2.1))  and width = 8
 dev.off()
 
 

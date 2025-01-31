@@ -8,15 +8,27 @@ load('/users/abaud/abaud/P50_HSrats/output/VD/bivariate/all_VCs_corr_Ad1d2_zero_
 #studies = c('MI','NY','TN_behavior','TN_breeder')
 #studies = c('TN_breeder','TN_behavior','MI','NY') #c('MI','NY','TN_behavior','TN_breeder')
 
-# this could be done with apply
-for (i in 1:dim(all_VCs)[1]) {
-  all_VCs[i,'study_pair'] = paste(sort(c(all_VCs[i,'study1'],all_VCs[i,'study2'])),collapse='\n')
-}
+dict = c('NY'= 'NY',
+         'MI'= 'MI',
+         'TN_behavior'= 'TN1',
+         'TN_breeder'= 'TN2')
 
-# ordering so that align to the other plots in the figure
+all_VCs[,"study1"] = sapply(all_VCs[,"study1"], function(x) unname(dict[x]))
+all_VCs[,"study2"] = sapply(all_VCs[,"study2"], function(x) unname(dict[x]))
+
+#for (i in 1:dim(all_VCs)[1]) {
+#  all_VCs[i,'study_pair_for'] = paste(sort(c(all_VCs[i,'study1'],all_VCs[i,'study2'])),collapse='\n')
+#}
+
+# Done with apply
+all_VCs[,'study_pair'] = apply(all_VCs, 1, function(x) paste(sort(x[c("study1","study2")]),collapse="\n"))
+#all(all_VCs[,'study_pair'] == all_VCs[,'study_pair_for'])
+
+
+# ordering so that decreasing mean of sample sizes
 all_VCs[,'study_pair'] = factor(all_VCs$study_pair, 
-                                levels = c("MI\nTN_breeder","MI\nTN_behavior","MI\nNY","NY\nTN_breeder","NY\nTN_behavior","TN_behavior\nTN_breeder"))
-
+                                #levels = c("MI\nTN_breeder","MI\nTN_behavior","MI\nNY","NY\nTN_breeder","NY\nTN_behavior","TN_behavior\nTN_breeder"))
+                                levels = c("MI\nNY", "NY\nTN1", "MI\nTN1", "NY\nTN2", "MI\nTN2","TN1\nTN2"))
 
 #calculcate median gen corr for each pair of cohorts to order the boxplot in increasing order
 #medians = sort(sapply(split(all_VCs$corr_Ad1d2, all_VCs$study_pair), median), decreasing = T)
@@ -68,6 +80,47 @@ dev.off()
 
 
 #beeswarm(formula, add=T)
+
+
+
+
+###### Plotting with colour depending on p-values
+## Creating fake p-values in while waiting for true ones
+all_VCs$logP = runif(nrow(all_VCs), 0, 5)
+a = -log10(0.05)
+sig = which(all_VCs$logP < a)
+#nonsig = which(all_VCs$logP > a | all_VCs$logP == a)
+
+## NB: it works as long as correlations with similar magnitude are similarly sig/non-sig;
+#      otherwise there's a bit of overlap of dots, which might be annoying
+#### 
+boxplot(all_VCs$corr_Ad1d2 ~ all_VCs$study_pair, 
+        col = box_col, #col="white",
+        boxwex = 0.5,
+        xaxt = "n", #yaxt="n", box="n",
+        xlab="", ylab="", cex.axis = 1.25,
+        outline = F, 
+        las = 1,  
+        whisklty=3) #,
+axis(1, at = 1:6, labels = levels(all_VCs$study_pair), cex.axis = 1.2, padj=0.5)
+title(xlab = 'Cohort pairs', cex.lab = 1.4, line=3.8)
+title(ylab = "Same-taxon genetic correlations", cex.lab = 1.4, line=3.5)
+
+bee_col = "#396C93"
+beeswarm(all_VCs$corr_Ad1d2[-sig] ~ all_VCs$study_pair[-sig],
+         add=T, 
+         col=bee_col, bg=alpha(bee_col, 0.5), 
+         pch= 21, 
+         cex=1.2,
+         method = "swarm") # "center", "hex", "square"
+
+bee_col_sig = "#E64B35FF"
+beeswarm(all_VCs$corr_Ad1d2[sig] ~ all_VCs$study_pair[sig], 
+         add=T, 
+         col=bee_col_sig, bg=alpha(bee_col_sig, 0.5), 
+         pch=21, 
+         cex=1.2,
+         method="swarm")
 
 
 
