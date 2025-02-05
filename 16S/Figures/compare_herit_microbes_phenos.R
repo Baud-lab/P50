@@ -54,6 +54,7 @@ colnames(toplot) = br[-1]
 n = 4 # numbers of microbiome studies
 #show_col(colorRampPalette(c("#003A6B","#ACD0E6"))(n)) # To see colours
 cols = c(colorRampPalette(c("#003A6B","#ACD0E6"))(n), "grey40", "grey75") 
+#cols = c("#003A6B", "#ACD0E6", "#710F99","#BFB2FF") 
 #show_col(cols) # need library(scales) for this
 
 pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/barplots_herits_studies_pheno_HT.pdf", width = 8, h = 6)
@@ -79,6 +80,28 @@ legend (x = 'topright',
 # inset so that box of legend aligns to last bin - with margins par(mar = c(5.1, 5.1, 2.1, 2.1))  and width = 8
 dev.off()
 
+pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/barplots_herits_studies_pheno_purp.pdf", width = 8, h = 6)
+# Set plot margin
+par(mar = c(5.1, 5.1, 2.1, 2.1)) # default: c(5.1, 4.1, 4.1, 2.1)
+# Set ylim 
+ylimi = c(0,1)
+
+cols = c("#003A6B", "#ACD0E6", "#925E9F","#D1C4E9", "grey40", "grey75") 
+
+# plot
+barplot(toplot[,1:11],
+        beside = T, names = colnames(toplot[,1:11]), 
+        col = cols, las = 1, 
+        ylim = ylimi, 
+        cex.names = 1.25, cex.axis = 1.25, cex.lab=1.4,
+        ylab = 'Proportion of heritable traits', xlab = 'Heritability')
+#box(bty="7")
+# legend
+# legend (x = 'topright', 
+#         legend = rownames(toplot), 
+#         fill = cols, border = NA, cex =1.2, bty="o", inset=c(0.04,0)) 
+# inset so that box of legend aligns to last bin - with margins par(mar = c(5.1, 5.1, 2.1, 2.1))  and width = 8
+dev.off()
 
 
 ### Amelie: for loop:
