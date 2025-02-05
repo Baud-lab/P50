@@ -34,6 +34,21 @@ res$study1 = res_sigs[motch,'study1']
 res <- res[order(res$logP, decreasing = T),]
 
 
+### Annotating snps in ld
+pvalues_dir='/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
+target_loci = c('1:196217481','4:70834123','10:101974959')
+all_ld = NULL
+for (target_locus in target_loci) {
+  splot = strsplit(target_locus,':')[[1]]
+  target_chr = splot[1]
+  target_pos = splot[2]
+  load(paste0(pvalues_dir,'LD_',target_chr, '_', target_pos,'.RData'))
+  ld$top = target_locus
+  all_ld = rbind(all_ld, ld)
+}
+all_ld = all_ld[all_ld$R2 >= 0.80,]
+
+
 
 ##### Functions to plot manhattan
 draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=1.25, cex.lab=1.4) {
@@ -69,7 +84,8 @@ draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=
   plot(dat[,c('cumpos','logP')], ylab="", col=dat[,'colour'], 
        xlab="", main='', cex=dat[,'cex'],
        pch=dat[,"pch"], axes=FALSE, 
-       xaxs="i", xlim=c(min(dat$cumpos) - xmar, max(dat$cumpos) + xmar)
+       xaxs="i", xlim=c(min(dat$cumpos) - xmar, max(dat$cumpos) + xmar),
+       ylim=c(min(dat$logP), 25)#max(dat$logP)+5)
        #yaxs="i", # so that the box looks nicely on the bottom
        #ylim = r, 
        #c(min(dat$logP)-min(dat$logP)/20,# so that the box looks nicely on the bottom
@@ -97,7 +113,7 @@ draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=
 }
 
 ###### Function to plot legend 
-draw_legend = function(dat, y.ins=-0.2, x.ins=0, y.step=0.05, txt.wd = 500000000) {
+draw_legend = function(dat, x.space=25, y.space=23){#y.ins=-0.2, x.ins=0, y.step=0.05, txt.wd = 500000000) {
   #dat = dot
   #otherwise QTL point gets overpainted so is not visible
   dat = dat[dat$col != 'darkgrey',] #needed otherwise match below goes to first occurence, which is darkgrey
@@ -131,39 +147,94 @@ draw_legend = function(dat, y.ins=-0.2, x.ins=0, y.step=0.05, txt.wd = 500000000
   #plot(0,1,col='white', type="n", xaxt="n", yaxt="n")
   #plot.new()
   #draw_manhattan_plot(dot, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
-  y.ins = y.ins
+
+  # Defining plotting param - so that similar in all
+  ycord = grconvertY(1, "npc") # at the top
+  y.step = (abs(grconvertY(0, "npc")) + abs(grconvertY(1, "npc"))) / y.space #23 # step of 0.01 
+  
+  xcord = grconvertX(0, "npc") # change here to put more to the right/left, increase = to right
+  x.step = (abs(grconvertX(0, "npc")) + abs(grconvertX(1, "npc"))) / x.space #25 # step of 0.01 
+  cex.lab=1.4
+  x.inter = 0.8
+  
+  # Legend for shapes 
+  # From Manhattan above
+  sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18)
+  dict_coh = c(NY="NY", MI="MI", TN_behavior = "TN1", TN_breeder= "TN2") #dict_coh[names(sig.pch)]
+  dict_pch = c("15"="22", "16"="21", "17"="24", "18"="23") #dict_pch[as.character(sig.pch)]
+  
+  legend(x=xcord,
+         y=ycord,
+         legend=dict_coh[names(sig.pch)],
+         pch=as.numeric(dict_pch[as.character(sig.pch)]),
+         #fill=NULL,
+         col="black",
+         bty="n",
+         cex = cex.lab, #x.intersp = x.inter, 
+         border=NULL
+  )
+  xcord = xcord + x.step*3 # change *N to distance more the first and second legend
+  
   for (chr in unique(sigs[,"chr"])[order((unique(sigs[,"chr"])))]){
+    lgdf =  sigs[sigs$chr == chr,]
+    
+    dupl = duplicated(lgdf[, "legend name"], fromLast = T)
     #text(c(0, y.ins), )
-    legend(x = "bottomleft", paste0("chr ", chr,":"),
-           #x.intersp = 0.5, text.width=0.3,
-           cex = 1.4, #text.font =2,
-           inset = c(x.ins, y.ins), horiz = T, bty="n", xpd = T)
-    legend(x = "bottomleft", legend = sigs[sigs$chr == chr, "legend name"], 
-           x.intersp = 0.5, text.width=txt.wd,
-           #title=chr,
-           fill = sigs[sigs$chr == chr,"col"], border = F,
-           #pch = 15, 
-           cex = 1.4, 
-           #y.intersp = 1.2, 
-           inset = c(x.ins+0.05, y.ins), horiz = T, bty="n", xpd = T)
-    y.ins = -(abs(y.ins)+y.step)
+    #legend(x = "bottomleft", paste0("chr ", chr,":"),
+    #       #x.intersp = 0.5, text.width=0.3,
+    #       cex = 1.4, #text.font =2,
+    #       inset = c(x.ins, y.ins), horiz = T, bty="n", xpd = T)
+    
+    if(any(dupl)){
+      lgdf[dupl,"legend name"] = "" # removing names to duplicated lines
+      xcord.p = xcord
+      for(x in 1:nrow(lgdf)){
+        cat(lgdf[x, "legend name"]," ", lgdf[x,"col"], "\n")
+        legend(x=xcord.p, 
+               y=ycord,
+               legend = lgdf[x, "legend name"], 
+               x.intersp = x.inter, #text.width=txt.wd,
+               #title=chr,
+               fill = lgdf[x,"col"], 
+               border = F,
+               #pch = 15, 
+               cex = cex.lab, 
+               #y.intersp = 1.2, 
+               #inset = c(x.insp, y.ins), 
+               horiz=T, 
+               bty="n", xpd = T)
+        #print()
+        xcord.p = xcord.p + x.step #txt.wd
+      }
+    # Get normalized plot coordinates
+      #x = grconvertX(c(0.3, 0.7), "npc"),  # Use normalized plot coordinates
+      #y = grconvertY(0.1, "npc"),           # Position at 10% from bottom
+    }else{
+      legend(x=xcord,
+             y=ycord,
+             legend = lgdf[, "legend name"], 
+             x.intersp = x.inter, #text.width=txt.wd,
+             #title=chr,
+             fill = lgdf[,"col"], border = F,
+             #pch = 15, 
+             cex = cex.lab, 
+             #y.intersp = 1.2, 
+             #inset = c(x.ins+0.05, y.ins), 
+             horiz=T,
+             #ncol =length(lgdf[, "legend name"]), 
+             bty="n", xpd = T)
+      
+    }
+    ycord = (abs(ycord))-y.step
   }
+  
+
 }
 
 ###### Setting colors
 cat("Setting colours\n")
 colres = unique(res$col)
 
-# as is, _v3
-# coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#FABFD2FF",
-#             "#8CD17DFF", "#FFB2B2FF", "#51A3CCFF", "#FFAA0EFF", "#835B82FF", "#DF65B0FF",
-#             "#B07AA1FF", "#993D00FF", "#CC5500FF", "#FFD200FF", "#85B22CFF", "#F28E2BFF", 
-#             "#D7B5A6FF", "#FFD8B2FF", "#E5B17EFF", "#FFBE7DFF", "#FFE474FF", "#B6992DFF",
-#             "#E5FFB2FF", "#9D7660FF", "#BFB2FFFF", "#B2E5FFFF", "#8491B4FF", "#B2AD8FFF",
-#             "#6E8E84FF", "#91D1C2FF", "#DC0000FF", "#0F6B99FF", "#CE1256FF", "#260F99FF", 
-#             "#D4A6C8FF", "#8A60B0FF", "#C994C7FF", "#499894FF", "#6551CCFF", "#B26F2CFF",
-#             "#800080FF", "#C3E57EFF", "#E7298AFF", "#D37295FF", "#7E6148FF", "#E57E7EFF",   
-#             "#662700FF", "#A0CBE8FF", "#CC5151FF")  #"#67001FFF") "#B22C2CFF",
 
 # as is, _v4
 coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#FABFD2FF",
@@ -199,29 +270,16 @@ res$col = unname(coolors[res$col])
 ## ))
 
 
-### Annotating snps in ld
-pvalues_dir='/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-target_loci = c('1:196217481','4:70834123','10:101974959')
-all_ld = NULL
-for (target_locus in target_loci) {
-  splot = strsplit(target_locus,':')[[1]]
-  target_chr = splot[1]
-  target_pos = splot[2]
-  load(paste0(pvalues_dir,'LD_',target_chr, '_', target_pos,'.RData'))
-  ld$top = target_locus
-  all_ld = rbind(all_ld, ld)
-}
-all_ld = all_ld[all_ld$R2 >= 0.80,]
 
 
 ##### Plotting porcupine
 ##   pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2_test.pdf", h=7, w=23.5)
-##   par(mar=c(9.1,5.1,1.1,0.5))
+##   par(mar=c(5.1,5.1,2.1,0.5))
 ##   draw_manhattan_plot(dot, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
-##   draw_legend(dot, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
+##   draw_legend(dot, x.space = 60) #, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
 ##   dev.off()
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2_HT.pdf", h=7.1, w=23.5)
-par(mar=c(9.1,5.1,2.1,0.5))
+pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2_HT.pdf", h=8, w=23.5)
+par(mar=c(5.1,5.1,2.1,0.5))
 #draw_manhattan_plot(dat, def.cex=0.6, )
 cat("Plotting\n")
 #layout(matrix(c(1,2), 2, 1, byrow = TRUE), 
@@ -230,24 +288,34 @@ cat("Plotting\n")
 # layout.show(n = 2)
 
 draw_manhattan_plot(res, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
-draw_legend(res, y.ins=-0.27, y.step =0.06, txt.wd = 280000000)
+draw_legend(res, x.space = 65) #, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
 dev.off()
 q()
 
 
+# as is, _v3
+# coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#FABFD2FF",
+#             "#8CD17DFF", "#FFB2B2FF", "#51A3CCFF", "#FFAA0EFF", "#835B82FF", "#DF65B0FF",
+#             "#B07AA1FF", "#993D00FF", "#CC5500FF", "#FFD200FF", "#85B22CFF", "#F28E2BFF", 
+#             "#D7B5A6FF", "#FFD8B2FF", "#E5B17EFF", "#FFBE7DFF", "#FFE474FF", "#B6992DFF",
+#             "#E5FFB2FF", "#9D7660FF", "#BFB2FFFF", "#B2E5FFFF", "#8491B4FF", "#B2AD8FFF",
+#             "#6E8E84FF", "#91D1C2FF", "#DC0000FF", "#0F6B99FF", "#CE1256FF", "#260F99FF", 
+#             "#D4A6C8FF", "#8A60B0FF", "#C994C7FF", "#499894FF", "#6551CCFF", "#B26F2CFF",
+#             "#800080FF", "#C3E57EFF", "#E7298AFF", "#D37295FF", "#7E6148FF", "#E57E7EFF",   
+#             "#662700FF", "#A0CBE8FF", "#CC5151FF")  #"#67001FFF") "#B22C2CFF",
 
 
-
-#all_ld = all_ld[all_ld$R2 < 0.95 & all_ld$CHR_A == 1,]
-
-# !!!! needs to be run in same iteration as real plot otherwise colours don't match
-#pdf(paste('/users/abaud/abaud/P50_HSrats/plots/porcupine_uncollapsed_legend.pdf',sep=''), width = 15)
-draw_legend(res)
-#dev.off()
-
-
-cor.test(res[[1]][['betas']],res[[2]][['betas']])
-cor.test(res[[1]][['logP']],res[[2]][['logP']])
+##### Old stuff - delete?
+#### #all_ld = all_ld[all_ld$R2 < 0.95 & all_ld$CHR_A == 1,]
+#### 
+#### # !!!! needs to be run in same iteration as real plot otherwise colours don't match
+#### #pdf(paste('/users/abaud/abaud/P50_HSrats/plots/porcupine_uncollapsed_legend.pdf',sep=''), width = 15)
+#### draw_legend(res)
+#### #dev.off()
+#### 
+#### 
+#### cor.test(res[[1]][['betas']],res[[2]][['betas']])
+#### cor.test(res[[1]][['logP']],res[[2]][['logP']])
 
 
 
