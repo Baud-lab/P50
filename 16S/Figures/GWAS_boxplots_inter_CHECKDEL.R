@@ -43,16 +43,17 @@ genos2[is.na(genos2)] = "Missing"
 save_genos2 = genos2
 
 processing_dir = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/'
-load(paste(processing_dir,'full_biomt_clr_counts.RData',sep=''))
+load(file.path(processing_dir,'full_biomt_clr_counts.RData')) # Too big... start getting > 3.5 GB; the file is 27M...
 
 
 
-pdf('/users/abaud/abaud/P50_HSrats/plots/all_chr10_boxplots_clr_inter.pdf', width = 10, height = 10)
+#pdf('/users/abaud/abaud/P50_HSrats/plots/all_chr10_boxplots_clr_inter.pdf', width = 10, height = 10)
 par(mfrow = c(2,2))
 
-for (asv in c('ASV_5163','ASV_5095','ASV_2821','ASV_17008')) {
-    #counts = t(full_biomt)[,asv, drop = F] #all rats together, original data
-    counts = t(clr_counts)[,asv, drop = F] #all rats together
+#for (asv in c('ASV_5163','ASV_5095','ASV_2821','ASV_17008')) {
+for (asv in c('ASV_5095')) { #,'ASV_5163','ASV_2821','ASV_17008')) {
+    counts = t(full_biomt)[,asv, drop = F] #all rats together, original data
+    #counts = t(clr_counts)[,asv, drop = F] #all rats together
     #load(paste(processing_dir,'study_spe_uncollapsed_taxa.RData',sep='')) #before QN
     #counts = t(filtered_clr_counts_NY)[,'ASV_5163', drop = F]
     #load(paste(processing_dir,'NONresids_qned_counts_uncollapsed.RData',sep='')) #before accounting for covs
@@ -81,36 +82,36 @@ for (asv in c('ASV_5163','ASV_5095','ASV_2821','ASV_17008')) {
         if (asv == 'ASV_5095' | asv == 'ASV_5163') moin = paste('Paraprevotella',asv,study,sep=' ')
         if (asv == 'ASV_2821') moin = paste('A. muciniphila',asv,study,sep=' ')
         if (asv == 'ASV_17008') moin = paste('Muribaculaceae',asv,study,sep=' ')
-        boxplot(counts[,1] ~ genos*genos2, varwidth = T, notch = F, outline = F, ylab = 'CLR transformed counts', xlab = 'Genotype', main = moin, las = 1, cex.axis = 1.5, cex.lab = 1.5, cex.main = 1.5)
-#        boxplot(counts[,1] ~ metadata$sex + genos, varwidth = F, notch = T, outline = T, ylab = 'Raw counts', xlab = 'Sex:Genotype', main = paste(asv,study,sep='_'))
+#        boxplot(counts[,1] ~ genos*genos2, varwidth = T, notch = F, outline = F, ylab = 'CLR transformed counts', xlab = 'Genotype', main = moin, las = 1, cex.axis = 1.5, cex.lab = 1.5, cex.main = 1.5)
+        boxplot(counts[,1] ~ metadata$sex + genos, varwidth = F, notch = T, outline = T, ylab = 'Raw counts', xlab = 'Sex:Genotype', main = paste(asv,study,sep='_'))
     }
 }
-dev.off()
+#dev.off()
 
-anova(lm(counts[,1] ~ metadata$sex * genos))
-#with full_biomt
-Analysis of Variance Table
-
-Response: counts[, 1]
-                     Df  Sum Sq Mean Sq F value    Pr(>F)    
-metadata$sex          1   17472   17472  3.1806    0.0748 .  
-genos                 1  232901  232901 42.3978 1.144e-10 ***
-metadata$sex:genos    1     323     323  0.0588    0.8084    
-Residuals          1069 5872262    5493                      
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-#with clr_counts: both sex and genos effects more pronounced
-Analysis of Variance Table
-
-Response: counts[, 1]
-                     Df Sum Sq Mean Sq F value    Pr(>F)    
-metadata$sex          1   1261  1261.3 25.4315 5.381e-07 ***
-genos                 1   4814  4813.9 97.0629 < 2.2e-16 ***
-metadata$sex:genos    1     67    66.8  1.3466    0.2461    
-Residuals          1069  53017    49.6                      
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+###  anova(lm(counts[,1] ~ metadata$sex * genos))
+###  #with full_biomt
+###  Analysis of Variance Table
+###  
+###  Response: counts[, 1]
+###                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+###  metadata$sex          1   17472   17472  3.1806    0.0748 .  
+###  genos                 1  232901  232901 42.3978 1.144e-10 ***
+###  metadata$sex:genos    1     323     323  0.0588    0.8084    
+###  Residuals          1069 5872262    5493                      
+###  ---
+###  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+###  
+###  #with clr_counts: both sex and genos effects more pronounced
+###  Analysis of Variance Table
+###  
+###  Response: counts[, 1]
+###                       Df Sum Sq Mean Sq F value    Pr(>F)    
+###  metadata$sex          1   1261  1261.3 25.4315 5.381e-07 ***
+###  genos                 1   4814  4813.9 97.0629 < 2.2e-16 ***
+###  metadata$sex:genos    1     67    66.8  1.3466    0.2461    
+###  Residuals          1069  53017    49.6                      
+###  ---
+###  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
 

@@ -37,8 +37,8 @@ pdf('/users/abaud/abaud/P50_HSrats/plots/all_chr10_boxplots_clr.pdf', width = 14
 par(mfrow = c(2,3))
 
 for (asv in c('ASV_5163','ASV_5095','ASV_2821','ASV_17008')) {
-    #counts = t(full_biomt)[,asv, drop = F] #all rats together, original data
-    counts = t(clr_counts)[,asv, drop = F] #all rats together
+    counts = t(full_biomt)[,asv, drop = F] #all rats together, original data
+    #counts = t(clr_counts)[,asv, drop = F] #all rats together
     #load(paste(processing_dir,'study_spe_uncollapsed_taxa.RData',sep='')) #before QN
     #counts = t(filtered_clr_counts_NY)[,'ASV_5163', drop = F]
     #load(paste(processing_dir,'NONresids_qned_counts_uncollapsed.RData',sep='')) #before accounting for covs
@@ -76,8 +76,8 @@ for (asv in c('ASV_5163','ASV_5095','ASV_2821','ASV_17008')) {
         if (asv == 'ASV_5095' | asv == 'ASV_5163') moin = paste('Paraprevotella',asv,study,sep=' ')
         if (asv == 'ASV_2821') moin = paste('A. muciniphila',asv,study,sep=' ')
         if (asv == 'ASV_17008') moin = paste('Muribaculaceae',asv,study,sep=' ')
-        boxplot(counts[,1] ~ genos, varwidth = T, notch = F, outline = F, ylab = 'CLR transformed counts', xlab = 'Genotype', main = moin, las = 1, cex.axis = 1.5, cex.lab = 1.5, cex.main = 1.5)
-#        boxplot(counts[,1] ~ metadata$sex + genos, varwidth = F, notch = T, outline = T, ylab = 'Raw counts', xlab = 'Sex:Genotype', main = paste(asv,study,sep='_'))
+        #boxplot(counts[,1] ~ genos, varwidth = T, notch = F, outline = F, ylab = 'CLR transformed counts', xlab = 'Genotype', main = moin, las = 1, cex.axis = 1.5, cex.lab = 1.5, cex.main = 1.5)
+        boxplot(counts[,1] ~ metadata$sex + genos, varwidth = F, notch = T, outline = T, ylab = 'Raw counts', xlab = 'Sex:Genotype', main = paste(asv,study,sep='_'))
     }
 }
 dev.off()
