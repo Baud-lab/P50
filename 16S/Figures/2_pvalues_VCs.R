@@ -1,35 +1,44 @@
 root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
 
 deblur_counts_uncollapsed_dir ='deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_IGE_IEE_cageEffect_maternalEffect/'
-load(paste(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata'))
 asv_VCs = VCs
 
 deblur_counts_dir ='deblur_counts/P50_Rn7_pruned_DGE_IGE_IEE_cageEffect_maternalEffect/'
-load(paste(root_dir,deblur_counts_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,deblur_counts_dir,'all_estNste.Rdata'))
 tax_levels_VCs = VCs
 
 community_traits_dir ='community_traits3/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-load(paste(root_dir,community_traits_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,community_traits_dir,'all_estNste.Rdata'))
 community_VCs = VCs
+# Adding SGE cols, otherwise missing - added by Helene
+## misscols = as.data.frame(matrix(NA, nrow = nrow(community_VCs), ncol = sum(!colnames(tax_levels_VCs) %in% colnames(community_VCs)))); 
+## colnames(misscols) = colnames(tax_levels_VCs)[!colnames(tax_levels_VCs) %in% colnames(community_VCs)]
+## community_VCs = cbind(community_VCs, misscols)[colnames(tax_levels_VCs)]
 
+all(colnames(tax_levels_VCs) == colnames(community_VCs)) # TRUE
 all(colnames(tax_levels_VCs) == colnames(asv_VCs))
-all(colnames(tax_levels_VCs) == colnames(community_VCs))
 
 all_VCs_full = rbind(tax_levels_VCs, asv_VCs, community_VCs)
 #all_VCs_full = all_VCs_full[!grepl('_all', all_VCs_full$trait1),]
 rm(list = c('tax_levels_VCs','asv_VCs','community_VCs'))
 
+### Loading null files?
 deblur_counts_uncollapsed_dir ='deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_IEE_cageEffect_maternalEffect/'
-load(paste(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata'))
 asv_VCs = VCs
 
 deblur_counts_dir ='deblur_counts/P50_Rn7_pruned_DGE_IEE_cageEffect_maternalEffect/'
-load(paste(root_dir,deblur_counts_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,deblur_counts_dir,'all_estNste.Rdata'))
 tax_levels_VCs = VCs
 
 community_traits_dir ='community_traits3/P50_Rn7_pruned_cageEffect_maternalEffect/'
-load(paste(root_dir,community_traits_dir,'all_estNste.Rdata',sep=''))
+load(file.path(root_dir,community_traits_dir,'all_estNste.Rdata'))
 community_VCs = VCs
+# Adding DGE and SGE cols, otherwise missing - added by Helene
+## misscols = as.data.frame(matrix(NA, nrow = nrow(community_VCs), ncol = sum(!colnames(tax_levels_VCs) %in% colnames(community_VCs)))); 
+## colnames(misscols) = colnames(tax_levels_VCs)[!colnames(tax_levels_VCs) %in% colnames(community_VCs)]
+## community_VCs = cbind(community_VCs, misscols)[colnames(tax_levels_VCs)]
 
 all(colnames(tax_levels_VCs) == colnames(asv_VCs))
 all(colnames(tax_levels_VCs) == colnames(community_VCs))
@@ -39,13 +48,14 @@ all_VCs_null = rbind(tax_levels_VCs, asv_VCs, community_VCs)
 
 inter=intersect(all_VCs_null$trait1,all_VCs_full$trait1)
 length(inter)
-#[1] 2322
+#[1] 2322 # Helene has [1] 2847?
 all_VCs_full=all_VCs_full[match(inter,all_VCs_full$trait1),]
 all_VCs_null=all_VCs_null[match(inter,all_VCs_null$trait1),]
  #both TRUE
 
-source('/users/abaud/abaud/P50_HSrats/code/variance_decomposition/felipes_deblur/annotate_VCs_pvalues_function.R')
-all_VCs_full = annotate(all_VCs_full)
+#source('/users/abaud/abaud/P50_HSrats/code/variance_decomposition/felipes_deblur/annotate_VCs_pvalues_function.R')
+source('/users/abaud/htonnele/git/lab/P50/16S/Figures/annotate_VCs_pvalues_function.R')
+all_VCs_full = annotate(all_VCs_full) # steps that takes longer
 
 ## calculate T^2 using n = 2, which is conservative since in NY for example rats were 3 per cage. 
 all_VCs_full$total_heritability = all_VCs_full$prop_Ad1 + 2*(2-1)*all_VCs_full$corr_Ad1s1*sqrt(all_VCs_full$prop_Ad1*all_VCs_full$prop_As1) + (2-1)^2*all_VCs_full$prop_As1 
@@ -70,7 +80,7 @@ for (study in c('all','MI','NY','TN_breeder','TN_behavior')) {
 }
 
 all_VCs_full = all_VCs_full[order(all_VCs_full$pvalue_DGE),]
-save(all_VCs_full, file =  paste(root_dir,'augmented_IGE_VC.RData',sep=''))
+#save(all_VCs_full, file =  file.path(root_dir,'augmented_IGE_VC.RData'))
 
 all_VCs_full = all_VCs_full[!is.na(all_VCs_full$full_taxon),]
 for (study in c('all','NY','MI','TN_behavior','TN_breeder')) {
@@ -83,9 +93,10 @@ for (study in c('all','NY','MI','TN_behavior','TN_breeder')) {
 	print(paste('FDR sig taxa',sum(subset$cw_qvalue_DGE < 0.1),'out of',dim(subset)[1]))
 	#print(subset[subset$cw_qvalue_DGE < 0.1,])
 }
+#all_VCs_full_HT = all_VCs_full
 
 root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(paste(root_dir,'augmented_IGE_VC.RData',sep=''))
+load(file.path(root_dir,'augmented_IGE_VC.RData'))
 
 all_VCs_full = all_VCs_full[all_VCs_full$study1 == 'all',]
 all_VCs_full = all_VCs_full[order(all_VCs_full$pvalue_DGE, decreasing = T),] #leave to TRUE: it's for QQ plot colours
@@ -99,7 +110,7 @@ pchs[all_VCs_full$cw_qvalue_DGE < 0.1] = 16
 
 library(gap)
 mox = max(-log10(all_VCs_full$pvalue_DGE), na.rm = T)
-pdf('/users/abaud/abaud/P50_HSrats/plots/QQplot_pvalues_IGE_Helenes.pdf',bg='white')
+#pdf('/users/abaud/abaud/P50_HSrats/plots/QQplot_pvalues_IGE_Helenes.pdf',bg='white')
 #par(mfrow = c(2,2), mar = c(2,2,3,1))
 #qqunif(all_VCs_full[grepl('_all',all_VCs_full$trait1),'pvalue_DGE'],ci=T,col = 'black',las=1, main ='All', ylim = c(0,mox))
 # clear inflation there
@@ -112,14 +123,14 @@ pdf('/users/abaud/abaud/P50_HSrats/plots/QQplot_pvalues_IGE_Helenes.pdf',bg='whi
 #g_TN_breeder = grepl('_TN_breeder',all_VCs_full$trait1)
 #qqunif(all_VCs_full[g_TN_breeder,'pvalue_DGE'],ci=T,las=1, main ='TN breeders: 555 rats', ylim = c(0,mox), col = cols[g_TN_breeder], pch = pchs[g_TN_breeder])
 qqunif(all_VCs_full[,'pvalue_DGE'],ci=T,las=1, main ='All cohorts mega-analysis: 3,767 rats', ylim = c(0,mox), col = cols, pch = pchs)
-dev.off()
+#dev.off()
 
 all_VCs_full = all_VCs_full[all_VCs_full$cw_qvalue_DGE < 0.1,]
 all_VCs_full = all_VCs_full[order(all_VCs_full$pvalue_DGE, decreasing = F),]
 all_VCs_full
 
 #root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-#load(paste(root_dir,'significance_DGE_VC.RData',sep=''))
+#load(file.path(root_dir,'significance_DGE_VC.RData'))
 #all_VCs_full
 
 
@@ -129,15 +140,15 @@ relativise = function(col) { #per sample
 }
 
 root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(paste(root_dir,'augmented_VC.RData',sep=''))
+load(file.path(root_dir,'augmented_VC.RData'))
 load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/study_spe_taxa.RData')
 load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/study_spe_uncollapsed_taxa.RData')
 pdf('/users/abaud/abaud/P50_HSrats/plots/relationship_abund_pvalues_DGE_Helenes.pdf',bg='white')
 par(mfrow = c(2,2), mar = c(4,4,4,1))
 for (study in c('NY','MI','TN_behavior','TN_breeder')) {
 	print(study)
-	#this_biomt = get(paste('filtered_full_biomt_',study,sep=''))
-	this_biomt = get(paste('filtered_collapsed_full_biomt_',study,sep=''))
+	#this_biomt = get(file.path('filtered_full_biomt_',study))
+	this_biomt = get(file.path('filtered_collapsed_full_biomt_',study))
 	this_biomt = apply(this_biomt, FUN = relativise, MAR = 2)
 
 	grop = grep(paste('_',study, sep=''),all_VCs_full$trait1)
