@@ -69,7 +69,9 @@ dev.off()
 q()
 
 
-######## Plot with jitter function
+
+
+######### NOT USED- Plot with jitter function #############
 #all_VCs$study_pair = factor(all_VCs$study_pair, levels = names(medians))
 cols = rep("#396C93", dim(all_VCs)[1])
 cols[all_VCs$pv_chi2dof2 < 0.05] = "#E64B35FF"

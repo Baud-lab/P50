@@ -42,20 +42,22 @@ for (study in studies) {
 	means[,study] = apply(rel_abundances[w,], FUN = mean, MAR = 2) #### means is actually sometimes medians now
 }
 
-threshold = 0.1
+
+##### To collapse taxa in "Sum of lower abundance families"
+threshold = 0.1 # 0.1 # lower the threshold, higher the fragmentation of bars
 
 #for condition 1
 my_any = function(row) {
 	any(row >= threshold)
 }
 any_above_threshold = apply(means, FUN = my_any, MAR = 1)
+condition = any_above_threshold
 
 #for condition 2
 #overall_means = apply(means, MAR = 1, FUN = mean)
-
-condition = any_above_threshold
 #condition = (overall_means >= threshold)
 
+# For both conditions now
 sums = apply(means[!condition,], MAR = 2, FUN = sum)
 
 means = means[condition,]
@@ -64,16 +66,59 @@ means = means[order(overall_means),]
 means = rbind(means, sums)
 rownames(means)[dim(means)[1]] = 'Sum of lower abundance families'
 
-library(RColorBrewer)
-n <- dim(means)[1]
-qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-if (n > length(col_vector)) rep = TRUE else rep = FALSE
-cols = sample(col_vector, n, replace = rep)
 
-pdf('/users/abaud/abaud/P50_HSrats/plots/average_genera_barplots__f.pdf', width = 8)
-barplot(means, col= cols, las = 1, border = NA, ylab = 'Mean relative abundance across all samples in the cohort')
-plot(1,1, col = 'white')
-legend(x = 'topleft', legend = rownames(means)[seq(length(cols),1, by = -1)], fill = cols[seq(length(cols),1, by = -1)], border = 'white', bty = 'n', cex = 0.6)
+### Setting things up to plot
+dict = c("NY"="NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
+colnames(means) = unname(dict[colnames(means)])
+colord = c("NY", "MI", "TN1", "TN2")
+means = means[,colord]
+
+#library(RColorBrewer)
+n <- dim(means)[1]
+##### One way to get colors
+#qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+#coolors = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+#if (n > length(coolors)) rep = TRUE else rep = FALSE
+#cols = sample(coolors, n, replace = rep)
+
+##### Another way to get colors
+#coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#FABFD2FF",
+#            "#8CD17DFF", "#A0CBE8FF", "#51A3CCFF", "#FFAA0EFF", "#835B82FF", "#DF65B0FF",
+#            "#B07AA1FF", "#B26F2CFF", "#CC5500FF", "#FFD200FF", "#85B22CFF", "#F28E2BFF", 
+#            "#D7B5A6FF", "#FFD8B2FF", "#993D00FF", "#FFBE7DFF", "#FFE474FF", "#B6992DFF",
+#            "#E5FFB2FF", "#9D7660FF", "#BFB2FFFF", "#B2E5FFFF", "#8491B4FF", "#B2AD8FFF",
+#            "#6E8E84FF", "#91D1C2FF", "#DC0000FF", "#0F6B99FF", "#CE1256FF", "#260F99FF", 
+#            "#D4A6C8FF", "#8A60B0FF", "#C994C7FF", "#499894FF", "#6551CCFF", "#E5B17EFF",
+#            "#800080FF", "#C3E57EFF", "#E7298AFF", "#D37295FF", "#7E6148FF", "#E57E7EFF",   
+#            "#662700FF", "#FFB2B2FF", "#CC5151FF")  #"#67001FFF") "#B22C2CFF",
+#set.seed(1); cols = sample(coolors, n, replace = F)
+
+#### Setting colors specifically
+#coolors = c("#DC0000FF", "#F39B7FFF","#3C5488FF","#9EADD5FF", "#00A087FF")
+coolors = c("#4A6990FF", "#7AA6DCFF", "#00A087FF", "#91D1C2FF", "#EFC000FF")
+cols = coolors[1:n]
+
+### For all if want to have a look
+#scales::show_col(cols)
+
+
+#pdf('/users/abaud/abaud/P50_HSrats/plots/average_genera_barplots__f.pdf', width = 8)
+pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/average_genera_barplots__f.pdf", h= 7, w = 10)
+par(mar=c(5.1,5.1,2.1,7.1))
+
+barplot(means, col= cols, las = 1, border = NA, 
+        ylab = '', 
+        #cex.lab=1.4, 
+        cex.axis=1.25)
+title( ylab = 'Mean relative abundance across all samples in the cohort', 
+       cex.lab = 1.4, line=3.5)
+#plot(1,1, col = 'white')
+legend(x = 'topright', legend = rownames(means)[seq(length(cols),1, by = -1)], 
+       fill = cols[seq(length(cols),1, by = -1)],
+       border = NA, 
+       bty = 'n', cex = 0.6, 
+       #horiz = T, 
+       xpd=T, inset=c(-0.2,0))
+
 dev.off()
 
