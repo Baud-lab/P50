@@ -93,6 +93,7 @@ draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=
   )
   box(lwd=1)
   abline(h=5.8, lty=2, lwd = 1.5, col="black")
+  abline(h=8.4, lty=3, lwd = 1.5, col="black")
   
   # y-axis
   axis(2, cex.axis=cex.y, las = 1, line = 0) 
@@ -155,7 +156,7 @@ draw_legend = function(dat, x.space=25, y.space=23){#y.ins=-0.2, x.ins=0, y.step
   xcord = grconvertX(0, "npc") # change here to put more to the right/left, increase = to right
   x.step = (abs(grconvertX(0, "npc")) + abs(grconvertX(1, "npc"))) / x.space #25 # step of 0.01 
   cex.lab=1.4
-  x.inter = 0.8
+  x.inter = 0.7
   
   # Legend for shapes 
   # From Manhattan above
@@ -173,7 +174,7 @@ draw_legend = function(dat, x.space=25, y.space=23){#y.ins=-0.2, x.ins=0, y.step
          cex = cex.lab, #x.intersp = x.inter, 
          border=NULL
   )
-  xcord = xcord + x.step*3 # change *N to distance more the first and second legend
+  xcord = xcord + x.step*3.4 # change *N to distance more the first and second legend
   
   for (chr in unique(sigs[,"chr"])[order((unique(sigs[,"chr"])))]){
     lgdf =  sigs[sigs$chr == chr,]
@@ -195,7 +196,9 @@ draw_legend = function(dat, x.space=25, y.space=23){#y.ins=-0.2, x.ins=0, y.step
                legend = lgdf[x, "legend name"], 
                x.intersp = x.inter, #text.width=txt.wd,
                #title=chr,
-               fill = lgdf[x,"col"], 
+               lwd = 9, lty= 2, seg.len=0.5,
+               col = lgdf[x,"col"], 
+               #fill = lgdf[x,"col"], 
                border = F,
                #pch = 15, 
                cex = cex.lab, 
@@ -215,14 +218,30 @@ draw_legend = function(dat, x.space=25, y.space=23){#y.ins=-0.2, x.ins=0, y.step
              legend = lgdf[, "legend name"], 
              x.intersp = x.inter, #text.width=txt.wd,
              #title=chr,
-             fill = lgdf[,"col"], border = F,
+             lwd = 9, lty= 2, seg.len=0.5,
+             col = lgdf[,"col"], 
+             #fill = lgdf[x,"col"], 
+             border = F,
              #pch = 15, 
              cex = cex.lab, 
              #y.intersp = 1.2, 
-             #inset = c(x.ins+0.05, y.ins), 
-             horiz=T,
-             #ncol =length(lgdf[, "legend name"]), 
+             #inset = c(x.insp, y.ins), 
+             horiz=T, 
              bty="n", xpd = T)
+      
+      ##legend(x=xcord,
+      ##       y=ycord,
+      ##       legend = lgdf[, "legend name"], 
+      ##       x.intersp = x.inter, #text.width=txt.wd,
+      ##       #title=chr,
+      ##       fill = lgdf[,"col"], border = F,
+      ##       #pch = 15, 
+      ##       cex = cex.lab, 
+      ##       #y.intersp = 1.2, 
+      ##       #inset = c(x.ins+0.05, y.ins), 
+      ##       horiz=T,
+      ##       #ncol =length(lgdf[, "legend name"]), 
+      ##       bty="n", xpd = T)
       
     }
     ycord = (abs(ycord))-y.step
@@ -257,17 +276,17 @@ coolors = c(coolors, "darkgrey" = "darkgrey")
 res$col = unname(coolors[res$col])
 
 #### Subset for tests
-## dot = do.call(rbind, lapply(as.numeric(unique(res$chr)), function(x) {
-##   set.seed(34)
-##   non_sig = res[sample(which(res[,"chr"] == x & res[,"col"] == "darkgrey"), size = 90), ]
-##   sr = which(res[,"chr"] == x & res[,"col"] != "darkgrey")
-##   if(length(sr) != 0){
-##     if(length(sr) < 10) sig = res[sample(sr, size = length(sr)), ]
-##     else sig = res[sample(sr, size = 10), ]
-##   } else{ sig = matrix(nrow = 0, ncol = ncol(non_sig))}
-##   return(rbind(sig, non_sig))
-## }
-## ))
+##  dot = do.call(rbind, lapply(as.numeric(unique(res$chr)), function(x) {
+##    set.seed(34)
+##    non_sig = res[sample(which(res[,"chr"] == x & res[,"col"] == "darkgrey"), size = 90), ]
+##    sr = which(res[,"chr"] == x & res[,"col"] != "darkgrey")
+##    if(length(sr) != 0){
+##      if(length(sr) < 10) sig = res[sample(sr, size = length(sr)), ]
+##      else sig = res[sample(sr, size = 10), ]
+##    } else{ sig = matrix(nrow = 0, ncol = ncol(non_sig))}
+##    return(rbind(sig, non_sig))
+##  }
+##  ))
 
 
 
@@ -276,7 +295,7 @@ res$col = unname(coolors[res$col])
 ##   pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2_test.pdf", h=7, w=23.5)
 ##   par(mar=c(5.1,5.1,2.1,0.5))
 ##   draw_manhattan_plot(dot, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
-##   draw_legend(dot, x.space = 60) #, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
+##   draw_legend(dot, x.space = 70) #, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
 ##   dev.off()
 pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2_HT.pdf", h=8, w=23.5)
 par(mar=c(5.1,5.1,2.1,0.5))
@@ -288,7 +307,7 @@ cat("Plotting\n")
 # layout.show(n = 2)
 
 draw_manhattan_plot(res, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
-draw_legend(res, x.space = 65) #, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
+draw_legend(res, x.space = 75) #, y.ins=-0.25, y.step =0.06, txt.wd = 280000000)
 dev.off()
 q()
 
