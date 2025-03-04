@@ -113,7 +113,8 @@ plot_asv = function(asv){
     
     # x-axis label with sample size
     sizes = table(genos_oi)
-    xlabs = paste0(names(sizes), "\n(N=", sizes,")")
+    #xlabs = paste0(names(sizes), "\n(N=", sizes,")")
+    xlabs = names(sizes)
     
     #boxplot(counts[,1] ~ meta_oi$sex + genos, varwidth = T, notch = T, outline = F, ylab = 'Raw counts Paraprevotella ASV_5163', xlab = 'Sex:Genotype')
     #males have fewer Paraprevotella - opposite of positive correlation between testosterone and Para in https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7612624/
@@ -147,20 +148,40 @@ plot_asv = function(asv){
     ###         boxwex=0.2,
     ###         add=T)
     
-    #### boxplot only
-    boxplot(formula, 
-            col = alpha("#4DBBD5", 0.2),
-            outline=F, #pch=16,outline=T,
-            ylab = "",#paste0(ylob, ' (raw counts)'), 
-            xlab = '', 
-            xaxt="n",
-            main = "St6galnac1", 
-            drawRect=F,#font.main=4,
-            las = 1, cex.axis = 1.2, cex.main = 1.5)
+    #### boxplot N points
+    bp = boxplot(formula, 
+                 col = alpha("white", 0), border=alpha("white", 0), #alpha("#4DBBD5", 0.2),
+                  outline=F, #pch=16,outline=T,
+                  ylab = "",#paste0(ylob, ' (raw counts)'), 
+                  xlab = '', 
+                  xaxt="n",
+                  main = "St6galnac1", 
+                  drawRect=F,#font.main=4,
+                  varwidth = TRUE,
+                  las = 1, cex.axis = 1.2, cex.main = 1.5)
 
-    axis(1, at=1:length(xlabs), labels=rep("", length(xlabs)))
-    axis(1, at=1:length(xlabs), labels=xlabs, tck=F, lwd=0, line=1, cex.axis=1.25)
+    axis(1, at=1:length(xlabs), labels=xlabs, cex.axis=1.25)
     title(ylab = paste0(ylob, ' (raw counts)'), cex.lab=1.4, line=3.8)
+    
+    at.dict = seq_along(sizes); names(at.dict) = names(sizes)
+    nooutl = !names(counts_oi[,1]) %in% names(bp$out)
+    Nout = table(at.dict[unname(genos_oi[!nooutl])]); names(Nout) = names(sizes)
+    set.seed(20); 
+    points(x = jitter(unname(at.dict[unname(genos_oi[nooutl])]), factor=1), #c(1,0.9,0.5)),
+           y = counts_oi[nooutl, 1], #jitter(counts_oi[,1], factor=1), 
+           pch=16, cex=1, 
+           col = "#4DBBD5")#"#396C93") #"#4DBBD5") col = "#4DBBD5FF"
+    bp = boxplot(formula, 
+                 col = alpha("white", 0.5),
+                 outline=F, #pch=16,outline=T,
+                 ylab = "",#paste0(ylob, ' (raw counts)'), 
+                 xlab = '', xaxt="n",
+                 drawRect=F,#font.main=4,
+                 varwidth = TRUE,
+                 #boxwex = 0.8,
+                 las = 1, cex.axis = 1.2, cex.main = 1.5,
+                 add=T)  
+    axis(1, at=1:length(xlabs), labels=paste0("(",Nout, " outliers)"), tck=F, lwd=0, line=1.5, cex.axis=1, font = 3)
   }
   
 }

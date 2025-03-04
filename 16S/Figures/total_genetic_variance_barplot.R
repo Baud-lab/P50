@@ -38,52 +38,73 @@ sel$total_heritability / selDGE$prop_Ad1 #
 ## toplot["IGE",]= (2-1)^2*sel$prop_As1
    
 toplot = matrix(NA, ncol = 2*nrow(sel), nrow = 4)
+#toplot = matrix(NA, ncol = 2*nrow(sel), nrow = 6)
 colnames(toplot) = c(sel$trait1, paste0(sel$trait1, "_classicHerit"))
 rownames(toplot) = c("Mic-DGE", "cov(Mic-DGE,Mic-IGE)", "Mic-IGE", "Mic-DGE alone")
-
+#rownames(toplot) = c("Mic-DGE","cov(Mic-DGE,Mic-IGE)", "Mic-IGE", "Mic-DGE alone", "STE-DGE", "STE-DGE alone")
 toplot["Mic-DGE",1:nrow(sel)] = sel$prop_Ad1
 toplot["cov(Mic-DGE,Mic-IGE)",1:nrow(sel)] = 2*(2-1)*sel$corr_Ad1s1*sqrt(sel$prop_Ad1*sel$prop_As1)
 toplot["Mic-IGE",1:nrow(sel)]= (2-1)^2*sel$prop_As1
-toplot["Mic-DGE alone",1:nrow(sel)] = 0
+toplot[c("Mic-DGE alone"),1:nrow(sel)] = 0
 
-toplot["Mic-DGE alone",(nrow(sel)+1) : (2*nrow(sel))] = selDGE$prop_Ad1
+toplot["Mic-DGE alone", (nrow(sel)+1) : (2*nrow(sel))] = selDGE$prop_Ad1
 toplot[c("Mic-DGE", "cov(Mic-DGE,Mic-IGE)", "Mic-IGE"),(nrow(sel)+1) : (2*nrow(sel))] = 0
+
+# Saving STE
+ste = matrix(NA, ncol = 2*nrow(sel), nrow = 2)
+colnames(ste) = c(sel$trait1, paste0(sel$trait1, "_classicHerit"))
+rownames(ste) = c("STE-DGE", "STE-DGE alone")
+ste["STE-DGE",1:nrow(sel)] = sel$STE_Ad1
+ste["STE-DGE alone",1:nrow(sel)] = 0
+ste["STE-DGE alone", (nrow(sel)+1) : (2*nrow(sel))] = selDGE$STE_Ad1
+ste["STE-DGE", (nrow(sel)+1) : (2*nrow(sel))] = 0
 
 #ord = order(colnames(toplot)) # order alfabetically, lose info about most sign
 ord = c(sapply(sel$trait1, function(t) grep(t, colnames(toplot), value = T)))
 toplot = toplot[,ord]
-# 
+ste = ste[,ord] 
 #barplot(toplot[,grep(sel$trait1[1], colnames(toplot))], col=colors()[c(23,12, 25)], )
 #barplot(toplot, col=colors()[c(23,12, 25)], )
 #"#E64B35FF" "#4DBBD5FF" "#00A087FF" "#3C5488FF" "#F39B7FFF" "#8491B4FF" "#91D1C2FF" "#DC0000FF" "#7E6148FF" "#B09C85FF"
 #coolors = c("#8491B4FF", "#A4036FFF", "#F39B7FFF", "#3C5488FF")#,"") #"#610345" "#C59FC9"
 coolors = c("#8491B4FF","#91D1C2FF","#F39B7FFF","#3C5488FF")
 
+#A function to add arrows on the chart
+error.bar <- function(x, y, upper, lower=upper, length=0.05,...){
+  arrows(x,y+upper, x, y-lower, angle=90, code=3, length=length, ...)
+}
+
 pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/tot_herit_barplot.pdf", h = 6, w = 8)
 par(mar=c(5.1,5.1,2.5,3.5))
-barplot(toplot[,grep(sel$trait1[1], colnames(toplot))], col=coolors, 
-        space=0.1, xlim=c(0, ncol(toplot)+2), ylim=c(0,max(apply(toplot[,sel$trait1], 2,sum) )),
-        xaxt="n",border = NA,cex.axis = 1.25,
-        las=1, )
-
-barplot(toplot[,grep(sel$trait1[2], colnames(toplot))], col=coolors, 
-        space=c(2+1, 0.1), xaxt="n", axes = F, border = NA,
-        add=T)
-
-barplot(toplot[,grep(sel$trait1[3], colnames(toplot))], col=coolors, 
-        space=c(3+2+1, 0.1), xaxt="n", axes = F,border = NA,
-        add=T)
+#t = sel$trait1[1]
+bars <- function(trait1, space=0, add=F, ...){
+  traitplot = toplot[,grep(trait1, colnames(toplot))] 
+  bp = barplot(traitplot, col=coolors, 
+          space=c(space, 0.1), xlim=c(0, ncol(toplot)+2), ylim=c(0,max(apply(toplot, 2,sum)+0.04 )),
+          xaxt="n",
+          border = NA, cex.axis = 1.25,
+          las=1, add=add, ...)
+  segments(bp[1], max(apply(traitplot, 2,sum))+0.01 , bp[2], max(apply(traitplot, 2,sum))+0.01)
+          #angle=90, code=3, length=0.05) # this cna be used in case want to use arrows instead of segments
+  text(mean(c(bp[1], bp[2])), max(apply(traitplot, 2,sum)) + 0.015, "**", cex=1.25, font=2)
+  #error.bar(bp[1], toplot["Mic-DGE",grep(paste0(t,"$"), colnames(toplot))], 
+  #          ste["STE-DGE",grep(paste0(t,"$"), colnames(toplot))])
+  #error.bar(bp[2], toplot["Mic-DGE alone",grep(paste0(t,"_classicHerit"), colnames(toplot))], 
+  #          ste["STE-DGE alone",grep(paste0(t,"_classicHerit"), colnames(toplot))])
+  #bp1 = bp; rm(bp); rm(t)
+  return(bp)
+}
+bp1 = bars(sel$trait1[1])
+bp2 = bars(sel$trait1[2], space = 2+1, add=T, axes = F)
+bp3 = bars(sel$trait1[3], space = 3+2+1, add=T, axes = F)
 
 #labx = unlist(lapply(strsplit(sel$trait1, "_"), function(x) paste(x[1:2], collapse = " ")))
 labx = gsub("_all", "",sel$trait1)
-axis(1, at=c(1,4,7), labels = labx, tck=F, lwd=0, cex.axis = 1.25)
+axis(1, at=c(mean(bp1), mean(bp2), mean(bp3)), labels = labx, tck=F, lwd=0, cex.axis = 1.25)
 title(ylab="total genetic variance", cex.lab=1.8, line=3.5)
 legend("topright", fill = coolors, 
        border = NA , bty="o", legend = c(rownames(toplot)), cex=1.2, xpd=T, #,
        inset = c(-0.1,-0.1))
 
 dev.off()
-
-
-
 
