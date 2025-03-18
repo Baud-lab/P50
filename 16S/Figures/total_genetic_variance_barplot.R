@@ -74,7 +74,7 @@ error.bar <- function(x, y, upper, lower=upper, length=0.05,...){
   arrows(x,y+upper, x, y-lower, angle=90, code=3, length=length, ...)
 }
 
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/tot_herit_barplot.pdf", h = 6, w = 8)
+pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/tot_herit_barplot.pdf", h = 6, w = 7)
 par(mar=c(5.1,5.1,2.5,3.5))
 #t = sel$trait1[1]
 bars <- function(trait1, space=0, add=F, ...){
@@ -101,9 +101,9 @@ bp3 = bars(sel$trait1[3], space = 3+2+1, add=T, axes = F)
 #labx = unlist(lapply(strsplit(sel$trait1, "_"), function(x) paste(x[1:2], collapse = " ")))
 labx = gsub("_all", "",sel$trait1)
 axis(1, at=c(mean(bp1), mean(bp2), mean(bp3)), labels = labx, tck=F, lwd=0, cex.axis = 1.25)
-title(ylab="total genetic variance", cex.lab=1.8, line=3.5)
+title(ylab="total genetic variance", cex.lab=1.4, line=4)
 legend("topright", fill = coolors, 
-       border = NA , bty="o", legend = c(rownames(toplot)), cex=1.2, xpd=T, #,
+       border = NA , bty="o", legend = c(rownames(toplot)), cex=1.1, xpd=T, #,
        inset = c(-0.1,-0.1))
 
 dev.off()

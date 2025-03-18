@@ -25,12 +25,14 @@ mox = max(-log10(all_VCs_full$pvalue_DGE), na.rm = T)
 #qqunif(all_VCs_full[g_TN_behavior,'pvalue_DGE'],ci=T,las=1, main ='TN behavior: 950', ylim = c(0,mox), col = cols[g_TN_behavior], pch = pchs[g_TN_behavior])
 #g_TN_breeder = grepl('_TN_breeder',all_VCs_full$trait1)
 #qqunif(all_VCs_full[g_TN_breeder,'pvalue_DGE'],ci=T,las=1, main ='TN breeders: 555 rats', ylim = c(0,mox), col = cols[g_TN_breeder], pch = pchs[g_TN_breeder])
-pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/QQplot_pvalues_IGE_Helenes.pdf', h=6, w=6)
+pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/QQplot_pvalues_IGE_Helenes.pdf', h=6, w=7)
 par(mar=c(5.1,5.1,2.1,2.1))
 qqunif(all_VCs_full[,'pvalue_DGE'],ci=T,
        las=1, main ='All cohorts mega-analysis: 3,767 rats', 
        ylim = c(0,mox), col = cols, pch = pchs, 
        cex.axis = 1.25, cex.lab=1.4, cex = 1.2)
 legend("topleft", pch=16, col=c("red","orange"), 
-       legend=c("Bonferroni < 0.05","FDR < 10%"), cex = 1.1)
+       #legend=c(expression(italic(S.aureus)~Area~(mm^2)), "ciao"),
+       legend=c(expression(Bonferroni~italic(p)~"<"~0.05), "FDR < 10%"), 
+       cex = 1.2, title = "Significance of Mic-IGE:", title.font = 2)
 dev.off()
