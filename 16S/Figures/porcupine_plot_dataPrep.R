@@ -1,21 +1,13 @@
 library(rhdf5)
-library(parallel)
-#library(RColorBrewer)
+library(parallel) # required for mclapply
 
-######### Function to get a palette of colours?
-#map2color<-function(x,pal,limits=NULL){
-#  if(is.null(limits)) limits=range(x)
-#  pal[findInterval(x,seq(limits[1],limits[2],length.out=length(pal)+1), all.inside=TRUE)]
-#}
-
-
-####### Loading data
-## Loading 'unpruned_bug_QTLs'
+# Loading 'unpruned_bug_QTLs'
 load('/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/QTLs_alpha1e-04_unpruned.RData')
 unpruned_bug_QTLs = unpruned_bug_QTLs[unpruned_bug_QTLs$tax_level != 'community_trait',]
 DGE_QTLs = unpruned_bug_QTLs
 DGE_QTLs = DGE_QTLs[DGE_QTLs$logP > 5.8,]
 
+# - Amelie comments -
 #leave in as there are still some _all
 #       VCs$taxon1 = sub('_all','',VCs$taxon1)
 
@@ -36,27 +28,19 @@ my_extract_genus = function(full_taxon) {
 }
 DGE_QTLs$genus = sapply(DGE_QTLs$full_taxon, my_extract_genus) #no NA due to prior exclusion of phenotypes without genus taxonomy
 taxa = DGE_QTLs[match(pheno_names, DGE_QTLs$measure),'genus'] #genera corresponding to unique measures (after excluding those mapping to higher level than taxon)
+# - end Amelie comments -
 
-##### Setting some fake colours to set them later
+# Setting mock colours to set them later - col1:coln
 n <- length(unique(taxa))
 colours = paste0("col", 1:n)
 names(colours) = unique(taxa)
 
-#qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-#col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-#
-#col_vector = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
-#colours = sample(col_vector, n)
-##plot(1:length(pheno_names), col = colours)
-#names(colours) = sample(unique(taxa))
-#motch = match(taxa, names(colours))
-#colours = colours[motch]
 
-
-###### Loading cumpos
+# Loading cumpos
 load('/users/abaud/abaud/P50_HSrats/data/cumpos_P50_rats_Rn7.RData')
 
 my_f = function(k) {
+  # - Amelie comments -
   measure = pheno_names[k]
   taxon = taxa[k]
   if (grepl('ASV', measure)) pvalues_dir_DGE = '/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/' else
@@ -104,6 +88,7 @@ my_f = function(k) {
   
   #	if (any(DGE_h5[,'logP']> 7 & DGE_h5[,'chr'] == 1) ) print(k)
   ret = DGE_h5[DGE_h5[,'logP']>=3,]
+  # - end Amelie comments -
   
   cat("done with measure ", measure, "\n")
   return(ret)
