@@ -149,7 +149,7 @@ rm(all_resMI, all_resNY)
 
 res = get_res(vddir, val, sid, simdir)
 all_res = res$all_res
-ylimi= sapply(c("DGE","IGE","cor.DGE.IGE","DEE","IEE","cor.DEE.IEE","CE","tot.phenot.var"), \(p) range(all_res[,p], na.rm = T))
+#ylimi= sapply(c("DGE","IGE","cor.DGE.IGE","DEE","IEE","cor.DEE.IEE","CE","tot.phenot.var"), \(p) range(all_res[,p], na.rm = T))
 sim_param = res$sim_param
 head(all_res) # check
 table(all_res[,c("analysis","simcor")]) # check
@@ -269,7 +269,7 @@ complot2 = function(p,psim,pvar, lg.pos=NULL){
                    wex=0.5,
                    areaEqual = F,
                    ylim = ylim)
-  #abline(h=mean(sim_param[sim_param$param==psim,"values"]), col="grey", lty=1, lwd=0.5)
+  abline(h=mean(sim_param[sim_param$param==psim,"values"]), col="grey", lty=1, lwd=0.5)
   xcoord = c(sapply(ats[,"at"], function(a){rep(a, nsim)}))
   points(x=jitter(xcoord, factor=0.2), 
          y=c(all_res[order(all_res$simcor,all_res$analysis),p]), cex=0.5, col=rep(sapply(boxcol, \(a) {rep(a,nsim)}), 3) )

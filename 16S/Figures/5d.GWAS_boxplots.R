@@ -5,10 +5,10 @@
 ## save(full_biomt, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData")
 ## save(clr_counts, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_clr_counts.RData")
 
-suppressMessages(library("scales"))
-suppressMessages(library("vioplot"))
+suppressMessages(library("scales")) # needed for alpha() - box transparency
 
 # Loading counts - raw or clr - files saved from dataPrep script
+# TODO: change here depending if want to plot using raw counts or clr counts
 data_type = "raw_counts"
 cat("Loading",data_type,"\n")
 
@@ -166,7 +166,7 @@ plot_asv = function(asv){
 
 cat("Starting plot\n")
 # Open pdf to save plot
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/all_chr10_boxplots_clr.pdf", h = 6, w = 7)
+pdf(paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/all_chr10_boxplots_",data_type,".pdf"), h = 6, w = 7)
 par(font.main=4, mar=c(5.1,6.1,2.1,1.1))
 
 #plot_asv("ASV_5163")
