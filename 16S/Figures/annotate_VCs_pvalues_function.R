@@ -64,8 +64,3 @@ annotate = function(VCs) {
 
 	return(VCs)
 }
-
-# [1] "measure"    "marker"     "chr"        "pos"        "pvalue"    
-# [6] "logP"       "ci_starts"  "ci_stops"   "merge"      "tax_level" 
-#[11] "taxon1"     "study1"     "full_taxon"
-
