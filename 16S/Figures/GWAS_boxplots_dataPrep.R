@@ -1,6 +1,7 @@
-###### Saving - this will go in another file
+# Splitting file in two smaller ones 
 processing_dir = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/'
-load(file.path(processing_dir,'full_biomt_clr_counts.RData')) # 10 GB no sufficient # with 15 are enough; loading "clr_counts", "full_biomt"
+load(file.path(processing_dir,'full_biomt_clr_counts.RData')) # need to ask for 15GB of mem on cluster to do this; loading "clr_counts", "full_biomt"
+
 # Saving the two objects separately so that need less computing mem
 save(full_biomt, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData")
 save(clr_counts, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_clr_counts.RData")
@@ -9,7 +10,7 @@ save(clr_counts, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipe
 # dim(clr_counts)
 
 
-#### Small file to test
+### # Small file to test
 ### data_type = "raw_counts"
 ### asv = "ASV_5095"
 ### 

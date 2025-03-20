@@ -1,7 +1,6 @@
-
-###### Splitting file to load only necessary data - less memory req - in dataPrep script
+## # Files to load split in smaller ones - less memory req - in dataPrep script
 ## processing_dir = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/'
-## load(file.path(processing_dir,'full_biomt_clr_counts.RData')) # 10 GB no sufficient # with 15 are enough; loading "clr_counts", "full_biomt"
+## load(file.path(processing_dir,'full_biomt_clr_counts.RData')) # need to ask for 15GB of mem on cluster to do this; loading "clr_counts", "full_biomt"
 ## # Saving the two objects separately so that need less computing mem
 ## save(full_biomt, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData")
 ## save(clr_counts, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_clr_counts.RData")
@@ -9,13 +8,13 @@
 suppressMessages(library("scales"))
 suppressMessages(library("vioplot"))
 
-####### Loading counts - raw or clr - files saved from dataPrep script
+# Loading counts - raw or clr - files saved from dataPrep script
 data_type = "raw_counts"
 cat("Loading",data_type,"\n")
 
-# Loading small file to test
-#asv = "ASV_5095"
-#load(paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_",data_type,"_",asv,".Rdata")) # small file to test
+## # Loading small file to test - cam be created using code in dataPrep script
+## #asv = "ASV_5095"
+## #load(paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_",data_type,"_",asv,".Rdata")) # small file to test
 
 if(data_type == "raw_counts"){
   load("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData") # loading "full_biomt"
@@ -32,8 +31,8 @@ if(data_type == "raw_counts"){
 }
 ls()
 
-
-#### Reading and preparing genos 
+# - Amelie comments -
+# Reading and preparing genos 
 cat("working on genos\n")
 local_genos = read.table('/users/abaud/abaud/P50_HSrats/data/dosages/P50_Rn7_chr10qtl_allSNPS.raw', as.is = T, header = T, check.names = F)
 # print(object.size(local_genos), units="Gb")
@@ -67,15 +66,17 @@ chr_genos = factor(chr_genos, levels = c('Single copy','Het','Partial dupl./trip
 names(chr_genos) = names(genos)
 
 save_genos = chr_genos
+# - end Amelie comments -
 
 
-##### Loading metadata
+# Loading metadata
 cat("Loading metadata\n")
-
 load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData') # loads 'metadata'
+# DEfine cohorts names as in paper
 dict = c("NY"="NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
 metadata$study = unname(dict[metadata[,"study"]])
 
+# Function to plot boxplot per each asv
 plot_asv = function(asv){
   cat("doing asv ", asv,"\n")
   if(data_type == "raw_counts"){
@@ -86,12 +87,8 @@ plot_asv = function(asv){
   }else{
     stop("data_type need to be 'raw_counts' or 'clr_counts'")
   }
-  # save(data_type,asv,counts, file = paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_",data_type,"_",asv,".Rdata"))  
   dim(counts)
   
-  #c('NY','MI','TN1','TN2')
-  #lapply(c('NY','MI','TN1','TN2'), function(study){
-    #print(study)
   for (study in c('NY','TN1','TN2','MI')) {
     if (asv == 'ASV_5163' & study == 'MI') next
     if (asv %in% c('ASV_5095','ASV_2821','ASV_17008') & study != 'MI') next
@@ -131,191 +128,51 @@ plot_asv = function(asv){
     formula = as.formula(counts_oi[,1] ~ genos_oi) 
     # formula = as.formula(counts_oi[,1] ~ meta_oi$sex + genos_oi) # other possibility 
     
-    #### vioplot + bplot - not working much with small n
-    ###vioplot(formula, 
-    ###        col = alpha("#4DBBD5", 0.2),
-    ###        ylab = "",#paste0(ylob, ' (raw counts)'), 
-    ###        xlab = '', 
-    ###        xaxt="n",
-    ###        main = "St6galnac1", 
-    ###        drawRect=F,
-    ###        las = 1, cex.axis = 1.25, cex.main = 1.5)
-    ### boxplot(formula, col="white",
-    ###         outline = F, 
-    ###         yaxt="n",
-    ###         xlab = '', 
-    ###         xaxt="n",
-    ###         boxwex=0.2,
-    ###         add=T)
-    
-    #### boxplot N points
+    # Plot 
+    # prepare base plot (no boxplot yet)
     bp = boxplot(formula, 
-                 col = alpha("white", 0), border=alpha("white", 0), #alpha("#4DBBD5", 0.2),
-                  outline=F, #pch=16,outline=T,
-                  ylab = "",#paste0(ylob, ' (raw counts)'), 
-                  xlab = '', 
-                  xaxt="n",
-                  main = "St6galnac1", 
-                  drawRect=F,#font.main=4,
-                  varwidth = TRUE,
-                  las = 1, cex.axis = 1.2, cex.main = 1.5)
-
+                 col = alpha("white", 0), border=alpha("white", 0), outline=F, ylab = "",xlab = '', xaxt="n",
+                  main = "St6galnac1", drawRect=F, varwidth = TRUE, las = 1, cex.axis = 1.2, cex.main = 1.5)
+    # add ticks and ticks labels to x axis
     axis(1, at=1:length(xlabs), labels=xlabs, cex.axis=1.25)
+    # add y label
     title(ylab = paste0(ylob, ' (raw counts)'), cex.lab=1.4, line=3.8)
     
+    # Define x positions for points
     at.dict = seq_along(sizes); names(at.dict) = names(sizes)
     nooutl = !names(counts_oi[,1]) %in% names(bp$out)
     Nout = table(at.dict[unname(genos_oi[!nooutl])]); names(Nout) = names(sizes)
     set.seed(20); 
+    # add points
     points(x = jitter(unname(at.dict[unname(genos_oi[nooutl])]), factor=1), #c(1,0.9,0.5)),
-           y = counts_oi[nooutl, 1], #jitter(counts_oi[,1], factor=1), 
+           y = counts_oi[nooutl, 1], 
            pch=16, cex=1, 
-           col = "#4DBBD5")#"#396C93") #"#4DBBD5") col = "#4DBBD5FF"
+           col = "#4DBBD5")
+    # add boxes
     bp = boxplot(formula, 
                  col = alpha("white", 0.5),
-                 outline=F, #pch=16,outline=T,
-                 ylab = "",#paste0(ylob, ' (raw counts)'), 
+                 outline=F, 
+                 ylab = "",
                  xlab = '', xaxt="n",
-                 drawRect=F,#font.main=4,
+                 drawRect=F,
                  varwidth = TRUE,
-                 #boxwex = 0.8,
                  las = 1, cex.axis = 1.2, cex.main = 1.5,
                  add=T)  
+    # add number of outliers at the bottom
     axis(1, at=1:length(xlabs), labels=paste0("(",Nout, " outliers)"), tck=F, lwd=0, line=1.5, cex.axis=1, font = 3)
   }
   
 }
 
 cat("Starting plot\n")
-
+# Open pdf to save plot
 pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/all_chr10_boxplots_clr.pdf", h = 6, w = 7)
 par(font.main=4, mar=c(5.1,6.1,2.1,1.1))
+
 #plot_asv("ASV_5163")
 plot_asv(asv="ASV_5095")
 plot_asv("ASV_2821")
 plot_asv("ASV_17008")
+
 dev.off()
-q()
-
-
-##### boxplot only
-boxplot(formula, 
-        col = alpha("#4DBBD5", 0.2),
-        outline=F,
-        ylab = "",#paste0(ylob, ' (raw counts)'), 
-        xlab = '', 
-        xaxt="n",
-        main = "St6galnac1", 
-        drawRect=F,#font.main=4,
-        las = 1, cex.axis = 1.25, cex.main = 1.5, 
-        boxwex=0.8)
-axis(1, at=1:length(xlabs), labels=rep("",length(xlabs)))
-axis(1, at=1:length(xlabs), labels=xlabs, tck=F, lwd=0, line=1, cex.axis=1.25)
-title(ylab = paste0(ylob, ' (raw counts)'), cex.lab=1.4, line=3.8)
-
-### add points, not really working
-at.dict = seq_along(sizes); names(at.dict) = names(sizes)
-points(x = unname(at.dict[unname(genos_oi)]),
-       y = jitter(counts_oi[,1], factor=1), 
-       pch=1, cex=1, 
-       col = "black")
-#bg=alpha("yellow", 0.7))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### pdf('/users/abaud/abaud/P50_HSrats/plots/all_chr10_boxplots_clr.pdf', width = 14, height = 10)
-#### par(mfrow = c(2,3))
-
-#### for (asv in c('ASV_5163','ASV_5095','ASV_2821','ASV_17008')) {
-####     counts = t(full_biomt)[,asv, drop = F] #all rats together, original data
-####     #counts = t(clr_counts)[,asv, drop = F] #all rats together
-####     #load(paste(processing_dir,'study_spe_uncollapsed_taxa.RData',sep='')) #before QN
-####     #counts = t(filtered_clr_counts_NY)[,'ASV_5163', drop = F]
-####     #load(paste(processing_dir,'NONresids_qned_counts_uncollapsed.RData',sep='')) #before accounting for covs
-####     #counts = t(qned_counts_NY)[,'ASV_5163', drop = F]
-####     #load(paste(processing_dir,'resids_qned_counts_uncollapsed.RData',sep=''))
-####     #counts = t(resids_qned_counts_NY)[,'ASV_5163', drop = F]
-####     save_counts = counts
-#### 
-####     for (study in c('NY','TN_behavior','TN_breeder','MI')) {
-####         if (asv == 'ASV_5163' & study == 'MI') next
-####         if (asv %in% c('ASV_5095','ASV_2821','ASV_17008') & study != 'MI') next
-#### 
-####         genos = save_genos
-####         counts = save_counts
-#### 
-####         load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData') # loads 'metadata'
-####         metadata = metadata[which(metadata$study == study),] #to select rats when full_biomt or clr_counts are used
-####         motch = match(rownames(counts), metadata$deblur_rooname)
-####         metadata = metadata[na.exclude(motch),]
-####         counts = counts[!is.na(motch),, drop = F]
-####         motch = match(metadata$host_subject_id,	names(genos))
-####         metadata = metadata[!is.na(motch),]
-####         counts = counts[!is.na(motch),, drop = F]
-####         genos = genos[na.exclude(motch)]
-####         table(genos, metadata$sex, useNA = 'always')
-#### 
-#### 
-####         #boxplot(counts[,1] ~ metadata$sex + genos, varwidth = T, notch = T, outline = F, ylab = 'Raw counts Paraprevotella ASV_5163', xlab = 'Sex:Genotype')
-####         #males have fewer Paraprevotella - opposite of positive correlation between testosterone and Para in https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7612624/
-####         #but consistent with slightly higher Para in WT females in https://www.frontiersin.org/files/Articles/330013/fmicb-09-01008-HTML/image_m/fmicb-09-01008-g005.jpg (Fig 5)
-#### 
-####         #before QN, F0 M0 F1 high and M1 F2 M2 0
-####         if (asv == 'ASV_5095' | asv == 'ASV_5163') moin = paste('Paraprevotella',asv,study,sep=' ')
-####         if (asv == 'ASV_2821') moin = paste('A. muciniphila',asv,study,sep=' ')
-####         if (asv == 'ASV_17008') moin = paste('Muribaculaceae',asv,study,sep=' ')
-####         #boxplot(counts[,1] ~ genos, varwidth = T, notch = F, outline = F, ylab = 'CLR transformed counts', xlab = 'Genotype', main = moin, las = 1, cex.axis = 1.5, cex.lab = 1.5, cex.main = 1.5)
-####         boxplot(counts[,1] ~ metadata$sex + genos, varwidth = F, notch = T, outline = T, ylab = 'Raw counts', xlab = 'Sex:Genotype', main = paste(asv,study,sep='_'))
-####     }
-#### }
-#### dev.off()
-
-
-
-
-
-
-
-anova(lm(counts[,1] ~ metadata$sex * genos))
-#with full_biomt
-Analysis of Variance Table
-
-Response: counts[, 1]
-                     Df  Sum Sq Mean Sq F value    Pr(>F)    
-metadata$sex          1   17472   17472  3.1806    0.0748 .  
-genos                 1  232901  232901 42.3978 1.144e-10 ***
-metadata$sex:genos    1     323     323  0.0588    0.8084    
-Residuals          1069 5872262    5493                      
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-#with clr_counts: both sex and genos effects more pronounced
-Analysis of Variance Table
-
-Response: counts[, 1]
-                     Df Sum Sq Mean Sq F value    Pr(>F)    
-metadata$sex          1   1261  1261.3 25.4315 5.381e-07 ***
-genos                 1   4814  4813.9 97.0629 < 2.2e-16 ***
-metadata$sex:genos    1     67    66.8  1.3466    0.2461    
-Residuals          1069  53017    49.6                      
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-
-
-
-
 

@@ -1,17 +1,17 @@
-#get full taxon from taxonomy. previously run
-#load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/taxonomy.RData')
-#parse_taxonomy = function(tax_word) {
-#  splot = strsplit(tax_word,';')[[1]]
-#  #treat deblur taxonomic calls
-#  missing = 7 - length(splot)
-#  if (missing>0) splot = c(splot,rep(NA,missing))
-#  #treat OTU taxonomic calls
-#  splot[splot %in% c("d__","p__","c__","o__","f__","g__","s__")] = NA
-#  return(splot)
-#}
-#parsed_taxonomy = t(sapply(taxonomy[,'full_taxon'],FUN = parse_taxonomy))
-#parsed_taxonomy = cbind(taxonomy, parsed_taxonomy)
-#save(parsed_taxonomy, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/parsed_taxonomy.RData')
+## # Get full taxon from taxonomy. previously run
+## load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/taxonomy.RData')
+## parse_taxonomy = function(tax_word) {
+##   splot = strsplit(tax_word,';')[[1]]
+##   #treat deblur taxonomic calls
+##   missing = 7 - length(splot)
+##   if (missing>0) splot = c(splot,rep(NA,missing))
+##   #treat OTU taxonomic calls
+##   splot[splot %in% c("d__","p__","c__","o__","f__","g__","s__")] = NA
+##   return(splot)
+## }
+## parsed_taxonomy = t(sapply(taxonomy[,'full_taxon'],FUN = parse_taxonomy))
+## parsed_taxonomy = cbind(taxonomy, parsed_taxonomy)
+## save(parsed_taxonomy, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/parsed_taxonomy.RData')
 
 
 #call with source('/users/abaud/abaud/P50_HSrats/code/variance_decomposition/felipes_deblur/annotate_VCs_pvalues_function.R')
