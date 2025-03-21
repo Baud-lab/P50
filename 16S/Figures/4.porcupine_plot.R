@@ -5,9 +5,9 @@ load("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/QTLs_alpha1e-04_unpruned_
 
 # Add full taxon name and study name to results
 cat("annotating results\n")
-# TODO: change the path here to the 'annotate_VCs_pvalues_function.R'
-#source('/path/to/git/P50/16S/Figures/annotate_VCs_pvalues_function.R') # annotate() function 
-source('/users/abaud/htonnele/git/lab/P50/16S/Figures/annotate_VCs_pvalues_function.R') # annotate() function 
+# TODO: change the path here to the 'fun_annotate_VCs_pvalues.R'
+#source('/path/to/git/P50/16S/Figures/fun_annotate_VCs_pvalues.R') # annotate() function 
+source('/users/abaud/htonnele/git/lab/P50/16S/Figures/fun_annotate_VCs_pvalues.R') # annotate() function 
 # Selecting significant res
 res_sigs = res[res$logP > 5.8,] 
 # Defining which traits are significant 

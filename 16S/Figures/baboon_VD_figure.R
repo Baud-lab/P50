@@ -1,7 +1,5 @@
 #change ASV etc at bottom
 
-#### Figure 2C ####
-
 #Need a df with columns Vcage, Vmom, VA, VR, heritability (=VA / (VA + Vmom + Vcage + VR))
 #change trait to phenotype 
 #have heritability column
@@ -17,17 +15,16 @@ library(reshape2)
 library(ggplot2)
 library(cowplot)
 
+# - Amelie comments -
 root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(file.path(root_dir,'augmented_VC.RData'))
+load(paste(root_dir,'augmented_VC.RData',sep=''))
 save_all_VCs = all_VCs_full
 
 my_f = function(signif_taxon) {
-   g = grep(signif_taxon,plotdat$phenotype)[1]
+  g = grep(signif_taxon,plotdat$phenotype)[1]
   annotate("text", x = plotdat[g,'variable_order']-1, y = sum(plotdat[g,c('heritability','Vmom','Vcage')]*100)+1, size = 5, label = "*")
 }
 
-#pdf(paste('/nfs/users/abaud/abaud/P50_HSrats/plots/herit_per_tax_level.pdf',sep=''), width = 15, height = 10)
-par(mfrow = c(2,2))
 for (study in c('MI','NY','TN_behavior','TN_breeder')) {
   all_VCs = save_all_VCs
   all_VCs = all_VCs[grep(study,all_VCs$trait1),]
@@ -109,8 +106,7 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
   plotdat <- merge(plotdat, h_order, by.x = "phenotype", by.y = "phenotype")
   
   #plot(1:4,1:4,pch = 16, col = c('#a1dab4','#016450','#41b6c4','#225ea8'))
-  #pal <- c('#a1dab4','#016450','#225ea8')
-  pal <- c("#3C5488FF","#00A087FF","#91D1C2FF") 
+  pal <- c('#a1dab4','#016450','#225ea8')
   
   ## no legend
   th2 <- theme(
@@ -153,6 +149,8 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
     lapply(unique(plotdat[plotdat$cw_qvalue_DGE <= 0.1 & plotdat$status == "Non-taxa phenotype",'phenotype']), my_f)
   
   
+  
+  
   line_info <- h_order %>%
     group_by(tax_level2) %>%
     summarise(line_min = min(variable_order), line_max = max(variable_order), line_mid = mean(variable_order))
@@ -168,7 +166,7 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
                legend.title = element_text(size=14),
                legend.text = element_text(size=12),
                legend.position = c(0.7, 0.075),
-  #             legend.position = c(0.6, 0.04), 
+               #             legend.position = c(0.6, 0.04), 
                axis.text.y = element_blank(),
                axis.title.y = element_text(color="black", size=20),
                axis.title.x = element_text(color="black", size=15),
@@ -195,7 +193,7 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
     labs(y="Percent variance explained", x="Microbial phenotype") +
     annotate("text", x = range_p[2]+5, y = 30,label = paste("Single-taxon phenotype (n=",range_p[2],")",sep=''), color="black", size=5) +
     scale_x_discrete(expand=c(0,0)) +
-  
+    
     annotate("segment", x = range_p[1], xend = range_p[2], y = -1, yend = -1, colour = "darkgrey") + 
     annotate("text", x = range_p[2], y = -3, size = 5, angle = 90, label = "Phylum") +
     
@@ -210,7 +208,7 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
     
     annotate("segment", x = range_g[1], xend = range_g[2], y = -1, yend = -1, colour = "darkgrey") + 
     annotate("text", x = mean(range_g), y = -3, size = 5, angle = 90, label = "Genus") +
-  
+    
     annotate("segment", x = range_s[1], xend = range_s[2], y = -1, yend = -1, colour = "darkgrey") + 
     annotate("text", x = mean(range_s), y = -3, size = 5, angle = 90, label = "Species") +
     
@@ -223,49 +221,10 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
     lapply(unique(plotdat[plotdat$cw_qvalue_DGE <= 0.1 & plotdat$status != "Non-taxa phenotype",'phenotype']), my_f)
   
   
-  
   #pdf(paste('/nfs/users/abaud/abaud/P50_HSrats/plots/baboon_fig_',study,'.pdf',sep=''), width = 5, height = 20)
-  #print(plot_grid(pC_1, pC_2, align = "hv", ncol = 1, rel_heights = c(1,18)))
-  #dev.off()
+  pdf(paste('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/baboon_fig_',study,'.pdf',sep=''), width = 5, height = 20)
+  print(plot_grid(pC_1, pC_2, align = "hv", ncol = 1, rel_heights = c(1,18)))
+  dev.off()
   
-  boxplot(h_order$heritability ~ factor(h_order$tax_level2, levels = c('phylum','class','order','family','genus','species','ASV')), ylab = 'Heritability', xlab = '', varwidth = TRUE, las = 1, main = study)
-  # boxplot(h_order$Vmom ~ factor(h_order$tax_level2, levels = c('phylum','class','order','family','genus','species','ASV')), ylab = 'Maternal effects', xlab = '',, varwidth = TRUE, las = 1)
-  # boxplot(h_order$Vcage~ factor(h_order$tax_level2, levels = c('phylum','class','order','family','genus','species','ASV')), ylab = 'Cage effects', xlab = '',, varwidth = TRUE, las = 1)
-  # boxplot(h_order$Vcage~ factor(h_order$tax_level2, levels = c('composition','phylum','class','order','family','genus','species','ASV')), ylab = 'Cage effects', xlab = '',, varwidth = TRUE, las = 1)
-
 }
-#dev.off()
-
-
-
-###### Trying new thingss
-study = "MI"
-
-h_order$tax_level2 = factor(h_order$tax_level2, levels = c('phylum','class','order','family','genus','species','ASV'))
-bp = boxplot(h_order$heritability ~ h_order$tax_level2, 
-             col = alpha("white", 0), border=alpha("white", 0), #alpha("#4DBBD5", 0.2),
-             #outline=F, #pch=16,outline=T,
-             ylab = "",#paste0(ylob, ' (raw counts)'), 
-             xlab = '', 
-             main = study, 
-             varwidth = TRUE,
-             #main = "St6galnac1", 
-             las = 1, cex.axis = 1.2, cex.main = 1.5, type="n", )
-
-at.dict = seq_along(levels(h_order$tax_level2)); names(at.dict) = levels(h_order$tax_level2)
-set.seed(20); points(x = jitter(unname(at.dict[h_order$tax_level2]), factor=0.5),
-                     y = h_order$heritability, #jitter(counts_oi[,1], factor=1), 
-                     pch=16, cex=1, 
-                     col = "#4DBBD5FF")
-bp = boxplot(h_order$heritability ~ h_order$tax_level2, 
-             col = alpha("white", 0.5),
-             outline=F, #pch=16,outline=T,
-             ylab = "",#paste0(ylob, ' (raw counts)'), 
-             xlab = '', 
-             main = study, 
-             varwidth = TRUE,
-             #main = "St6galnac1", 
-             las = 1, cex.axis = 1.2, cex.main = 1.5, add=T)
-
-title(ylab ="Heritability", cex.lab=1.4, line=3.8)
-
+# - end Amelie comments -
