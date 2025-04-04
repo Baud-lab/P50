@@ -1,13 +1,10 @@
 library(rhdf5)
-fid='/users/abaud/abaud/P50_HSrats/data/P50_rats_Rn7_Helene.h5'
+fid='HSrats.h5'
 
 load('/nfs/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
 save_metadata = metadata
 
 load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/resids_qned_counts.RData')
-#resids_qned_counts_all
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/resids_presence.RData')
-#resids_presence_all
 
 #write down to use in qsub_varianceDecomp.sh etc. 
 dim(resids_qned_counts_all)
@@ -24,39 +21,17 @@ dim(resids_qned_counts_TN_breeder)
 dim(resids_qned_counts_MI)[1] + dim(resids_qned_counts_NY)[1] + dim(resids_qned_counts_TN_behavior)[1] + dim(resids_qned_counts_TN_breeder)[1]
 #1212
 
-dim(resids_presence_all)
-#64 3898
-dim(resids_presence_MI)
-#53 1120
-dim(resids_presence_NY)
-#61 1179
-dim(resids_presence_TN_behavior)
-#59 1025
-dim(resids_presence_TN_breeder)
-#63 574
-
-dim(resids_presence_all)[1] + dim(resids_presence_MI)[1] + dim(resids_presence_NY)[1] + dim(resids_presence_TN_behavior)[1] + dim(resids_presence_TN_breeder)[1]
-#216
-
 #start with colnames of bug_data are full_ids but later turned to host_subject_id
-all_rats = unique(c(colnames(resids_presence_all),colnames(resids_presence_MI),colnames(resids_presence_NY), colnames(resids_presence_TN_behavior), colnames(resids_presence_TN_breeder)))
+all_rats = unique(c(colnames(resids_qned_counts_all),colnames(resids_qned_counts_MI),colnames(resids_qned_counts_NY), colnames(resids_qned_counts_TN_behavior), colnames(resids_qned_counts_TN_breeder)))
 
 count_data = matrix(ncol = dim(resids_qned_counts_all)[1] + dim(resids_qned_counts_MI)[1] + dim(resids_qned_counts_NY)[1] + dim(resids_qned_counts_TN_behavior)[1] + dim(resids_qned_counts_TN_breeder)[1], nrow = length(all_rats))
 colnames(count_data)  = c(paste(rownames(resids_qned_counts_all),'all',sep='_'), paste(rownames(resids_qned_counts_MI),'MI',sep='_'),paste(rownames(resids_qned_counts_NY),'NY',sep='_'),paste(rownames(resids_qned_counts_TN_behavior),'TN_behavior',sep='_'),paste(rownames(resids_qned_counts_TN_breeder),'TN_breeder',sep='_'))
 rownames(count_data) = all_rats
 
-presence_data = matrix(ncol = dim(resids_presence_all)[1] + dim(resids_presence_MI)[1] + dim(resids_presence_NY)[1] + dim(resids_presence_TN_behavior)[1] + dim(resids_presence_TN_breeder)[1], nrow = length(all_rats))
-colnames(presence_data)  = c(paste(rownames(resids_presence_all),'all',sep='_'), paste(rownames(resids_presence_MI),'MI',sep='_'),paste(rownames(resids_presence_NY),'NY',sep='_'),paste(rownames(resids_presence_TN_behavior),'TN_behavior',sep='_'),paste(rownames(resids_presence_TN_breeder),'TN_breeder',sep='_'))
-rownames(presence_data) = all_rats
-
-for (study in c('all','MI','NY','TN_behavior','TN_breeder')) {
+for (study in c('all','MI','NY','TN_behavior','TN_breeder')) { #TN_behavior is TN1; TN_breeder is TN2
 	resids = get(paste('resids_qned_counts_',study,sep=''))
 	motch = match(all_rats, colnames(resids))
 	count_data[,paste(rownames(resids),study,sep='_')] = t(resids[,motch])
-
-	resids = get(paste('resids_presence_',study,sep=''))
-	motch = match(all_rats, colnames(resids))
-	presence_data[,paste(rownames(resids),study,sep='_')] = t(resids[,motch])
 
 }
 motch = match(rownames(count_data), metadata$deblur_rooname)
@@ -68,7 +43,7 @@ rownames(count_data) = metadata$host_subject_id
 count_data[is.na(count_data)] = (-999)
 
 coolnames = colnames(count_data)
-save(coolnames, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/coolnames_Helene.RData')
+save(coolnames, file = 'coolnames_Helene.RData')
 
 h5createGroup(fid,"phenotypes")
 h5createGroup(fid,"phenotypes/deblur_counts")

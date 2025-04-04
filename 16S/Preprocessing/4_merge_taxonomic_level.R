@@ -1,7 +1,7 @@
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/full_biomt_clr_counts.RData')
+load('full_biomt_clr_counts.RData')
 all(rownames(clr_counts) == names(full_biomt))
 #TRUE
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/taxonomy.RData')
+load('taxonomy.RData')
 
 # now get new full_biomt with collapses at various taxonomic levels
 all(rownames(clr_counts) == taxonomy[,'asv_id'])
@@ -18,8 +18,8 @@ parse_taxonomy = function(tax_word) {
 parsed_taxonomy = t(sapply(taxonomy[,'full_taxon'],FUN = parse_taxonomy))
 rownames(parsed_taxonomy) = taxonomy[,'asv_id']
 
-#parsed_taxonomy = cbind(taxonomy, parsed_taxonomy)
-#save(parsed_taxonomy, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/parsed_taxonomy.RData')
+toSave_parsed_taxonomy = cbind(taxonomy, parsed_taxonomy)
+save(toSave_parsed_taxonomy, file = 'parsed_taxonomy.RData')
 
 my_f = function(taxon) {
   w = which(parsed_taxonomy[,k] == taxon)
@@ -35,7 +35,7 @@ my_f = function(taxon) {
 collapsed_clr_counts = NULL
 collapsed_full_biomt = NULL
 full_taxa = c()
-#dim(parsed_taxonomy)[2] = 7 different levels
+#dim(parsed_taxonomy)[2] so 7 different levels
 for (k in 1:dim(parsed_taxonomy)[2]) {
   #all choices at given level
 
@@ -57,5 +57,5 @@ for (k in 1:dim(parsed_taxonomy)[2]) {
 colnames(collapsed_clr_counts) = colnames(clr_counts)
 colnames(collapsed_full_biomt) = colnames(clr_counts)
 
-save(collapsed_clr_counts, collapsed_full_biomt, full_taxa, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData')
+save(collapsed_clr_counts, collapsed_full_biomt, full_taxa, file = 'collapsed_full_biomt_collapsed_clr_counts.RData')
 

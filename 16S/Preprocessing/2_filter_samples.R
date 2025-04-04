@@ -1,9 +1,10 @@
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/deblur_biom.RData')
+load('metadata_augmented_16S_metabo_deblur.RData')
+load('deblur_biom.RData')
 #remove from deblur blanks (which are not in metadata),  duplicates (whose secondary ids are not in metadata), bad rats and unknown rats - genotyped or not
 motch = match(rownames(deblur),metadata[which(metadata$bad_rat == FALSE & metadata$unknown_rat == FALSE),'deblur_rooname'])
 deblur = deblur[!is.na(motch),]
-#[1]  4129 93090 - reported in paper
+dim(deblur)
+#[1]  4129 93090
 
 motch = match(rownames(deblur),metadata$deblur_rooname)
 any(is.na(motch))
@@ -16,6 +17,7 @@ metadata = metadata[motch,]
 #exclude non genotyped first
 keep = which(metadata$genotyped)  
 deblur = deblur[keep,]
+dim(deblur)
 #[1]  4107 93090
 metadata = metadata[keep,]
 
@@ -31,7 +33,7 @@ deblur = deblur[keep,]
 metadata = metadata[keep,]
 
 dim(deblur)
-#[1]  3886 93090 - reported in paper
+#[1]  3886 93090 
 
-save(deblur, file = paste('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/deblur_genotyped_2sd.RData',sep=''))
+save(deblur, file = paste('deblur_genotyped_2sd.RData',sep=''))
 

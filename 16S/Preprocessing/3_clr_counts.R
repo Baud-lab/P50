@@ -8,6 +8,7 @@ any(is.na(motch))
 metadata = metadata[motch,]
 
 full_biomt = t(deblur)
+dim(full_biomt)
 #[1] 93090  3886
 
 #cols must be rats
@@ -31,8 +32,8 @@ offset = 0.00001
 full_biomt = full_biomt + offset
 
 geom_means = apply(full_biomt, FUN = calculate_gm_mean, MAR = 2)
-plot(geom_means, metadata[,'nb_seqs_16S'])
-cor(geom_means, metadata[,'nb_seqs_16S'])
+#plot(geom_means, metadata[,'nb_seqs_16S'])
+#cor(geom_means, metadata[,'nb_seqs_16S'])
 #cor = 0.604672
 
 clr_counts = do_clr_default(full_biomt)
@@ -57,13 +58,13 @@ clr_counts = do_clr_default(full_biomt)
 #take back offset as use full_biomt (not in clr table) to track presence/absence from full_biomt table later
 full_biomt = full_biomt - offset
 
-save(full_biomt, clr_counts, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/full_biomt_clr_counts.RData')
+save(full_biomt, clr_counts, file = 'full_biomt_clr_counts.RData')
 
-pdf('/users/abaud/abaud/P50_HSrats/plots/behaviour_CLR_deblur.pdf')
-somple = sample(1:dim(full_biomt)[2], size = 50)
-for(i in somple) {
-	plot(full_biomt[,i], clr_counts[,i])
-}
-dev.off()
+#pdf('/users/abaud/abaud/P50_HSrats/plots/behaviour_CLR_deblur.pdf')
+#somple = sample(1:dim(full_biomt)[2], size = 50)
+#for(i in somple) {
+#	plot(full_biomt[,i], clr_counts[,i])
+#}
+#dev.off()
 
 

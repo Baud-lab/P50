@@ -1,18 +1,17 @@
-# does what it says: boxcox transformation (mindful of covariates) first then regress out covariates
+#boxcox transformation (mindful of covariates) first then regress out covariates
 #this script is for collapsed/taxa level data; similar script for uncollapsed/asv level data 
 
 library(MASS)
 
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/full_biomt_clr_counts.RData')
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/study_spe_taxa.RData')
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
+load('full_biomt_clr_counts.RData')
+load('study_spe_taxa.RData')
+load('metadata_augmented_16S_metabo_deblur.RData')
 
 invrank= function(row) {qnorm((rank(row,na.last="keep", ties.method = "random")-0.5)/sum(!is.na(row)))}
 
 my_regress = function(row) {
 	if (study == 'all') { 
 		covariates = c('sex','prep','batch','lib_size','study_cov','weaning_suite') 
-		#test covariates = c('sex','prep','batch','study_cov','weaning_suite')  #lib size fucks up even though it has normal distrib
 	} else if (study %in% c('MI','NY')) {
 		covariates = c('sex','prep','batch','lib_size') 
 	} else if (study == 'TN_behavior') {
@@ -28,10 +27,9 @@ my_regress = function(row) {
 	return(resids)
 }
 
-for (study in c('all','MI','NY','TN_behavior','TN_breeder')) {
+for (study in c('all','MI','NY','TN_behavior','TN_breeder')) { #TN_behavior is TN1; TN_breeder is TN2
 	print(study)
 	filtered_collapsed_biomt_counts = get(paste('filtered_collapsed_clr_counts',study,sep='_'))
-	filtered_collapsed_biomt_presence =  get(paste('filtered_presence',study,sep='_')) #is also collapsed even though doesnt say in name
 
 	if (any(!colnames(filtered_collapsed_biomt_counts) %in% metadata$deblur_rooname)) stop('wherzit')
 	motch = match(colnames(filtered_collapsed_biomt_counts), metadata$deblur_rooname)
@@ -67,7 +65,6 @@ for (study in c('all','MI','NY','TN_behavior','TN_breeder')) {
 	study_cov = study_cov[cc]
 	weaning_suite = weaning_suite[cc]
 	filtered_collapsed_biomt_counts = filtered_collapsed_biomt_counts[,cc]
-	filtered_collapsed_biomt_presence = filtered_collapsed_biomt_presence[,cc]
 
 	qned_counts = t(apply(filtered_collapsed_biomt_counts, FUN = invrank, MAR = 1))
 	colnames(qned_counts) = colnames(filtered_collapsed_biomt_counts)
@@ -77,19 +74,13 @@ for (study in c('all','MI','NY','TN_behavior','TN_breeder')) {
 	colnames(resids_qned_counts) = colnames(filtered_collapsed_biomt_counts)
 	assign(paste('resids_qned_counts',study,sep='_'),resids_qned_counts)
 
-	resids_presence = t(apply(filtered_collapsed_biomt_presence, FUN = my_regress, MAR = 1))
-	colnames(resids_presence) = colnames(filtered_collapsed_biomt_presence)
-	assign(paste('resids_presence',study,sep='_'),resids_presence)
-
 }
 
 lost = ls()
 to_save = lost[grepl('qned_counts_',lost)]
-save(list = to_save, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/NONresids_qned_counts.RData')
+save(list = to_save, file = 'NONresids_qned_counts.RData')
 to_save = lost[grepl('resids_qned_counts_',lost)]
-save(list = to_save, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/resids_qned_counts.RData')
-to_save = lost[grepl('resids_presence_',lost)]
-save(list = to_save, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/resids_presence.RData')
+save(list = to_save, file = 'resids_qned_counts.RData')
 
 
 

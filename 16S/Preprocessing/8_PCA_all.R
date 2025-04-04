@@ -1,8 +1,8 @@
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData')
+load('collapsed_full_biomt_collapsed_clr_counts.RData')
 # collapsed_clr_counts is post CLR post collapsing to higher level taxa
 save_collapsed_clr_counts = collapsed_clr_counts
 
-pdf('/nfs/users/abaud/abaud/P50_HSrats/plots/PCA_paper.pdf')
+pdf('PCA_paper.pdf')
 
 for (tax_level in c("p__","c__","o__","f__","g__")) {
 
@@ -10,7 +10,7 @@ for (tax_level in c("p__","c__","o__","f__","g__")) {
 	pca = prcomp(t(collapsed_clr_counts))
 	vars = round(pca$sdev^2 / (sum(pca$sdev^2))*100, digits = 0)
 
-	load('/nfs/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
+	load('metadata_augmented_16S_metabo_deblur.RData')
 	motch = match(colnames(collapsed_clr_counts), metadata$deblur_rooname)
 	any(is.na(motch))
 	#FALSE

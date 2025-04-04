@@ -4,11 +4,11 @@ library(fast.adonis)
 library(plyr)
 
 #issues to install packages on the cluster so analysis ran on laptop
-load('~/Downloads/collapsed_full_biomt_collapsed_clr_counts.RData')
+load('collapsed_full_biomt_collapsed_clr_counts.RData')
 # collapsed_clr_counts is post CLR post collapsing to higher level taxa
 save_collapsed_clr_counts = t(collapsed_clr_counts)
 
-load('~/Downloads/metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_augmented_16S_metabo_deblur.RData')
 motch = match(rownames(save_collapsed_clr_counts), metadata$deblur_rooname)
 any(is.na(motch))
 #FALSE
