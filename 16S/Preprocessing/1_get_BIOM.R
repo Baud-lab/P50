@@ -11,7 +11,7 @@ load('175568_57950_analysis_16S_FilterfeaturesagainstreferencefilterfeaturesPhyl
 deblur = as.matrix(as.data.frame(biom$data))
 #not intuitive but correct...
 rownames(deblur) = unlist(biom$columns)
-taxonomy = read.table('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/taxonomy_Greengenes2.txt', as.is = T)
+taxonomy = read.table('taxonomy_Greengenes2.txt', as.is = T)
 motch = match(unlist(biom$rows), taxonomy[,1])
 sum(is.na(motch))
 #0

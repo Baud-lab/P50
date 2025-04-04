@@ -1,4 +1,4 @@
-1_get_BIOM.R #takes artefact 175568 (left-most) from Qiita's analysis 57950 as input, as well as metadata_augmented_16S_metabo_deblur.RData
+1_get_BIOM.R #takes artefact 175568 (left-most) from Qiita's analysis 57950 as input, as well as metadata_augmented_16S_metabo_deblur.RData and taxonomy_Greengenes2.txt
 
 2_filter_samples.R
 
