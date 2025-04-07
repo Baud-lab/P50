@@ -8,7 +8,7 @@ load('collapsed_full_biomt_collapsed_clr_counts.RData')
 # collapsed_clr_counts is post CLR post collapsing to higher level taxa
 save_collapsed_clr_counts = t(collapsed_clr_counts)
 
-load('metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_16Spaper.RData')
 motch = match(rownames(save_collapsed_clr_counts), metadata$deblur_rooname)
 any(is.na(motch))
 #FALSE

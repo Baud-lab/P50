@@ -1,4 +1,4 @@
-load('metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_16Spaper.RData')
 load('deblur_biom.RData')
 #remove from deblur blanks (which are not in metadata),  duplicates (whose secondary ids are not in metadata), bad rats and unknown rats - genotyped or not
 motch = match(rownames(deblur),metadata[which(metadata$bad_rat == FALSE & metadata$unknown_rat == FALSE),'deblur_rooname'])

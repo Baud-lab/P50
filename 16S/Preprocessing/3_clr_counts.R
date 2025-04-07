@@ -1,6 +1,6 @@
 #change all full_biomt into collapsed_full_biomt and vice versa
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
-load(paste('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/deblur_genotyped_2sd.RData',sep=''))
+load('metadata_16Spaper.RData')
+load(paste('deblur_genotyped_2sd.RData',sep=''))
 
 motch = match(rownames(deblur),metadata$deblur_rooname)
 any(is.na(motch))

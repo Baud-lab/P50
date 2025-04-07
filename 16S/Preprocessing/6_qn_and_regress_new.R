@@ -5,7 +5,7 @@ library(MASS)
 
 load('full_biomt_clr_counts.RData')
 load('study_spe_taxa.RData')
-load('metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_16Spaper.RData')
 
 invrank= function(row) {qnorm((rank(row,na.last="keep", ties.method = "random")-0.5)/sum(!is.na(row)))}
 

@@ -1,10 +1,10 @@
 library(rhdf5)
 fid='HSrats.h5'
 
-load('/nfs/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_16Spaper.RData')
 save_metadata = metadata
 
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/resids_qned_counts.RData')
+load('resids_qned_counts.RData')
 
 #write down to use in qsub_varianceDecomp.sh etc. 
 dim(resids_qned_counts_all)
@@ -41,9 +41,6 @@ metadata = metadata[motch,]
 rownames(count_data) = metadata$host_subject_id
 
 count_data[is.na(count_data)] = (-999)
-
-coolnames = colnames(count_data)
-save(coolnames, file = 'coolnames_Helene.RData')
 
 h5createGroup(fid,"phenotypes")
 h5createGroup(fid,"phenotypes/deblur_counts")

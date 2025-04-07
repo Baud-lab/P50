@@ -5,7 +5,7 @@
 
 load('collapsed_full_biomt_collapsed_clr_counts.RData')
 
-load('metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_16Spaper.RData')
 motch = match(colnames(collapsed_clr_counts),metadata$deblur_rooname)
 any(is.na(motch))
 #FALSE
