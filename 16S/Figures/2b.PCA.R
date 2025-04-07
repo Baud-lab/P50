@@ -10,7 +10,7 @@ for (tax_level in c("p__","c__","o__","f__","g__")) {
 	pca = prcomp(t(collapsed_clr_counts))
 	vars = round(pca$sdev^2 / (sum(pca$sdev^2))*100, digits = 0)
 
-	load('metadata_augmented_16S_metabo_deblur.RData')
+	load('metadata_16Spaper.RData')
 	motch = match(colnames(collapsed_clr_counts), metadata$deblur_rooname)
 	any(is.na(motch))
 	#FALSE
