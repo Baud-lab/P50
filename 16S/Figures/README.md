@@ -7,12 +7,12 @@ Code: `2a.average_taxonomy_barplots.R`
 
 + Full biomatrix -> _collapsed\_full\_biomt_
 ```
-/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData #(1)
+collapsed_full_biomt_collapsed_clr_counts.RData #(1)
 ```
 
 + Metadata
 ```
-/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo.RData #(2)
+metadata_16Spaper.RData #(2)
 ```
 </details>
 
@@ -26,12 +26,12 @@ Code: `2b.PCA.R`
 
 + CLR counts -> _collapsed\_clr\_counts_
 ```
-/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData #(1)
+collapsed_full_biomt_collapsed_clr_counts.RData #(1)
 ```
 
 + Metadata 2
 ```
-/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData #(3)
+metadata_16Spaper.RData #(3)
 ```
 </details>
  
@@ -47,12 +47,12 @@ Code: `3a.compare_herit_microbes_phenos.R`
   
 + VD of phenotypes
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/residuals_02Jan2020/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/all_estNste.Rdata #(4)
+phenos_all_estNste.Rdata #(4)
 ```
 
 + VD of microbiome
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_VC.RData #(5)
+augmented_VC.RData #(5)
 ```
 </details>
   
@@ -66,17 +66,17 @@ Code: `3b.dataPrep_prev_abund_herit.R` + `3b.prev_abund_herit.R`
 
 + For ASVs
 ```
-/users/abaud/data/secondary/P50_HSrats/felipes_deblur/full_biomt_clr_counts.RData #(6)
+full_biomt_clr_counts.RData #(6)
 ```
 
 + For taxa
 ```
-/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData #(1)
+collapsed_full_biomt_collapsed_clr_counts.RData #(1)
 ```
 
 + Heritability data
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_VC.RData #(5)
+augmented_VC.RData #(5)
 ```
 </details>
 
@@ -85,12 +85,12 @@ Code: `3b.dataPrep_prev_abund_herit.R` + `3b.prev_abund_herit.R`
 
 + For ASVs - intermediate output from dataPrep
 ```
-/users/abaud/abaud/P50_HSrats/output/prev_abund_asvs_biomt.RData 
+prev_abund_asvs_biomt.RData 
 ```
 
 + For taxa - intermediate output from dataPrep
 ```
-/users/abaud/abaud/P50_HSrats/output/prev_abund_taxa_biomt.RData
+prev_abund_taxa_biomt.RData
 ```
 </details>
 
@@ -123,7 +123,7 @@ Code: `3d.herit_corrs.R`
 
 + Heritability data 
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_VC.RData #(5)
+augmented_VC.RData #(5)
 ```
 </details>
   
@@ -137,7 +137,7 @@ Code: `3e.boxplot_gen_corrs.R`
 
 + Genetic correlations 
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/bivariate/all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData #(9)
+all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData #(9)
 ```
 </details>
 
@@ -155,12 +155,12 @@ Source: `fun_annotate_VCs_pvalues.R` - annotate() function
 
 + Cumulative position annotation 
 ```
-/users/abaud/abaud/P50_HSrats/data/cumpos_P50_rats_Rn7.RData #(10)
+cumpos_P50_rats_Rn7.RData #(10)
 ```
 
 + Unpruned QTLs
 ```
-/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/QTLs_alpha1e-04_unpruned.RData #(11)
+QTLs_alpha1e-04_unpruned.RData #(11)
 ```
 
 + Dir with GWAS for ASVs 
