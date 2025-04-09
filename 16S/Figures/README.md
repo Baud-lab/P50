@@ -7,7 +7,7 @@ Code: `2a.average_taxonomy_barplots.R`
 
 + Full biomatrix -> _collapsed\_full\_biomt_
 ```
-collapsed_full_biomt_collapsed_clr_counts.RData #(1)
+collapsed_full_biomt_collapsed_clr_counts.RData #(1), created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
 ```
 
 + Metadata
