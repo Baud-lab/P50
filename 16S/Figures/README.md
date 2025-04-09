@@ -26,7 +26,7 @@ Code: `2b.PCA.R`
 
 + CLR counts -> _collapsed\_clr\_counts_
 ```
-collapsed_full_biomt_collapsed_clr_counts.RData #(1)
+collapsed_full_biomt_collapsed_clr_counts.RData #(1), created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
 ```
 
 + Metadata 2
