@@ -1,4 +1,4 @@
-Data files and intermediate results files available from https://figshare.com/account/home#/collections/7761632
+Data files and intermediate results files will shortly be available on figshare
 
 ## Figure 2. Variation in the HS rat gut microbiome
 
