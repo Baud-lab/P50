@@ -1,10 +1,9 @@
 #load phenotype Variance Components (VCs) data
-load(file.path(phenos_dir,'phenos_all_estNste.Rdata'))
+load('phenos_all_estNste.Rdata')
 all_VCs_phenos = VCs
 
 #load microbiome data
-root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(file.path(root_dir,'augmented_VC.RData'))
+load('augmented_VC.RData')
 all_VCs_16S = all_VCs_full
 
 #determine if phenotype is behavioural or not
@@ -55,7 +54,7 @@ cols = c(colorRampPalette(c("#003A6B","#ACD0E6"))(n), "grey40", "grey75")
 
 
 # Starting with plot
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/barplots_herits_studies_pheno.pdf", width = 8, h = 6)
+pdf("barplots_herits_studies_pheno.pdf", width = 8, h = 6)
 # Set plot margin
 par(mar = c(5.1, 5.1, 2.1, 2.1)) # default: c(5.1, 4.1, 4.1, 2.1)
 

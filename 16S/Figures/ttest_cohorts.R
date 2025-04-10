@@ -1,5 +1,6 @@
+# results reported in section 1. Between-environment variation in the cecal microbiome of the paper
 
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData')
+load('collapsed_full_biomt_collapsed_clr_counts.RData')
 abundances = t(collapsed_clr_counts)
 #taxa in cols
 
@@ -7,7 +8,7 @@ abundances = t(collapsed_clr_counts)
 tax_level = 'f__'
 abundances = abundances[,grep(tax_level, colnames(abundances))]
 
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo.RData')
+load('metadata_16Spaper.RData')
 my_strsplit = function(mot, code) {
     splot = strsplit(mot, '.', fixed = T)[[1]]
     if (length(splot) == 3) return(splot[code])

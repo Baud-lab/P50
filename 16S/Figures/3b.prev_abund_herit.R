@@ -3,16 +3,15 @@ library(corrplot) # needed for colorlegend and COL1 when plotting
 #### Data were prepared in 'prev_abund_herit_dataPrep.R'
 
 # Load both ASV level and taxa level microbiome data, and assign common variable name for subsequent use
-load('/users/abaud/abaud/P50_HSrats/output/prev_abund_asvs_biomt.RData') # ASVs
-load('/users/abaud/abaud/P50_HSrats/output/prev_abund_taxa_biomt.RData') # Taxa
+load('prev_abund_asvs_biomt.RData') # ASVs
+load('prev_abund_taxa_biomt.RData') # Taxa
 for (study in c('MI','NY','TN_behavior','TN_breeder')) {
 	assign(paste("prevs", study, sep='_'), c(get(paste("prevalence", study, sep='_')), get(paste("collapsed_prevalence", study, sep='_'))))
 	assign(paste("meds", study, sep='_'), c(get(paste("median", study, sep='_')), get(paste("collapsed_median", study, sep='_'))))
 }
 
 # Load heritability data
-root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(file.path(root_dir,'augmented_VC.RData'))
+load('augmented_VC.RData')
 
 # Choose 'estimate' - if based on heritability estimate; 
 type=c("estimate") 
@@ -41,7 +40,7 @@ labels = unname(quantile(val_oi)[c(1,3,5)])
 
 
 # Open pdf to save plot
-outpdf = paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/prev_abund_herit_",type,"_biomt.pdf"); cat("saving pdf to: ", outpdf, "\n")
+outpdf = paste0("prev_abund_herit_",type,"_biomt.pdf"); cat("saving pdf to: ", outpdf, "\n")
 pdf(outpdf, h=6, w = 6)
 par(mar = c(5.1,5.1,2.1,2.1))
 #all_prevs = c() #previously used to have all cohorts in one plot
