@@ -1,25 +1,17 @@
-# Loading VD data 
-root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(file.path(root_dir,'augmented_IGE_VC.RData'))
+# to draw bar with only one color corresponding to DGE only model
+load('augmented_VC.RData')
+DGEonly_VCs = all_VCs_full
 
-colnames(all_VCs_full)
-all_VCs_full$total_heritability
-
-all_VCs_full = all_VCs_full[all_VCs_full$study1 == 'all',] # not sure I have to, but will do as it is done in the qqplot
-
+# Now loading VD data from model with DGE and IGE
+load('augmented_IGE_VC_allOnly.RData')
 # one bar with three different colors for:
 ## 1. all_VCs_full$prop_Ad1 
 ## 2. 2*(2-1)*all_VCs_full$corr_Ad1s1*sqrt(all_VCs_full$prop_Ad1*all_VCs_full$prop_As1) 
 ## 3. (2-1)^2*all_VCs_full$prop_As1
 
-# next to this bar another bar with only one color corresponding to 
-## 1. all_VCs_full$prop_Ad1 from DGE only model
-load(file.path("/users/abaud/abaud/P50_HSrats/output/VD/univariate/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect", "all_estNste.Rdata"))
-asv_VCs = VCs
-
 # for the **three phenotypes most significantly affected by Mic-IGE** (as said in the text), so 6 bars total
 sel = all_VCs_full[order(all_VCs_full$pvalue_DGE, decreasing = F),][1:3,]
-selDGE= asv_VCs[asv_VCs$trait1 %in% sel$trait1,]
+selDGE= DGEonly_VCs[DGEonly_VCs$trait1 %in% sel$trait1,]
   
 # total herit is 4.4, 7.35, 5 times greater than classical heritability across these 3 phenotypes
 sel$total_heritability / selDGE$prop_Ad1 # 
@@ -62,7 +54,7 @@ bars <- function(trait1, space=0, add=F, ...){
 }
 
 # Open pdf to save plot
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/tot_herit_barplot.pdf", h = 6, w = 7)
+pdf("tot_herit_barplot.pdf", h = 6, w = 7)
 par(mar=c(5.1,5.1,2.5,3.5))
 
 # Bar plot

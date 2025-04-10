@@ -1,3 +1,5 @@
+Data files and intermediate results files available from https://figshare.com/account/home#/collections/7761632
+
 ## Figure 2. Variation in the HS rat gut microbiome
 
 #### Panel A.
@@ -7,12 +9,12 @@ Code: `2a.average_taxonomy_barplots.R`
 
 + Full biomatrix -> _collapsed\_full\_biomt_
 ```
-collapsed_full_biomt_collapsed_clr_counts.RData #(1), created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
+collapsed_full_biomt_collapsed_clr_counts.RData # created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
 ```
 
 + Metadata
 ```
-metadata_16Spaper.RData #(2)
+metadata_16Spaper.RData # figshare
 ```
 </details>
 
@@ -26,12 +28,12 @@ Code: `2b.PCA.R`
 
 + CLR counts -> _collapsed\_clr\_counts_
 ```
-collapsed_full_biomt_collapsed_clr_counts.RData #(1), created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
+collapsed_full_biomt_collapsed_clr_counts.RData # created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
 ```
 
 + Metadata 2
 ```
-metadata_16Spaper.RData #(3)
+metadata_16Spaper.RData # figshare
 ```
 </details>
  
@@ -47,12 +49,12 @@ Code: `3a.compare_herit_microbes_phenos.R`
   
 + VD of phenotypes
 ```
-phenos_all_estNste.Rdata #(4)
+phenos_all_estNste.Rdata # figshare
 ```
 
 + VD of microbiome
 ```
-augmented_VC.RData #(5)
+augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
   
@@ -66,29 +68,29 @@ Code: `3b.dataPrep_prev_abund_herit.R` + `3b.prev_abund_herit.R`
 
 + For ASVs
 ```
-full_biomt_clr_counts.RData #(6)
+full_biomt_clr_counts.RData # created by P50/16S/Preprocessing/3_clr_counts.R
 ```
 
 + For taxa
 ```
-collapsed_full_biomt_collapsed_clr_counts.RData #(1)
+collapsed_full_biomt_collapsed_clr_counts.RData # created by P50/16S/Preprocessing/4_merge_taxonomic_level.R
 ```
 
 + Heritability data
 ```
-augmented_VC.RData #(5)
+augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
 <details>
 <summary>Input - plot:</summary>
 
-+ For ASVs - intermediate output from dataPrep
++ For ASVs - intermediate output from 3b.dataPrep_prev_abund_herit.R
 ```
 prev_abund_asvs_biomt.RData 
 ```
 
-+ For taxa - intermediate output from dataPrep
++ For taxa - intermediate output from 3b.dataPrep_prev_abund_herit.R
 ```
 prev_abund_taxa_biomt.RData
 ```
@@ -102,14 +104,9 @@ Code: `3c.boxplots_different_VCs.R`
 <details>
 <summary>Input:</summary>
 
-+ VD for ASVs
++ Heritability data
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/all_estNste.Rdata #(7)
-```
-
-+ VD for taxa
-```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/all_estNste.Rdata #(8)
+augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
  
@@ -123,11 +120,11 @@ Code: `3d.herit_corrs.R`
 
 + Heritability data 
 ```
-augmented_VC.RData #(5)
+augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
   
-Output: **compare\_herits\_Helenes\_diff\_centers.pdf**
+Output: **compare\_herits\_diff\_centers.pdf**
 <br/><br/>
 
 #### Panel E.
@@ -137,7 +134,7 @@ Code: `3e.boxplot_gen_corrs.R`
 
 + Genetic correlations 
 ```
-all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData #(9)
+all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
@@ -148,30 +145,21 @@ Output: **comp\_gen\_corrs\_across\_cohorts.pdf**
 
 #### Panel.
 Code: `4.dataPrep_porcupine_plot.R` + `4.porcupine_plot.R` <br/>
-Source: `fun_annotate_VCs_pvalues.R` - annotate() function
+Source: `annotate_VCs_pvalues.R` - annotate() function
 
 <details>
 <summary>Input - dataPrep:</summary>
 
 + Cumulative position annotation 
 ```
-cumpos_P50_rats_Rn7.RData #(10)
+cumpos_P50_rats_Rn7.RData # figshare
 ```
 
 + Unpruned QTLs
 ```
-QTLs_alpha1e-04_unpruned.RData #(11)
+QTLs_alpha1e-04_unpruned.RData # figshare
 ```
 
-+ Dir with GWAS for ASVs 
-```
-/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/ #(12)
-```
-
-+ Dir with GWAS for taxa 
-```
-/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/ #(13)
-```
 </details> 
 
 <details>
@@ -179,18 +167,9 @@ QTLs_alpha1e-04_unpruned.RData #(11)
 
 + summarised QTLs - intermediate output from dataPrep
 ```
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData
+QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData
 ```
 
-+ Dir to load snps in LD
-```
-/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/ #(12)
-```
-
-+ For “annotate” function 
-```
-/users/abaud/data/secondary/P50_HSrats/felipes_deblur/parsed_taxonomy.RData #(14)
-```
 </details>
   
 Output: **porcupine\_uncollapsed\_genus2.pdf**
@@ -199,37 +178,23 @@ Output: **porcupine\_uncollapsed\_genus2.pdf**
 ## Figure 5. Association between Paraprevotella and the *St6galnac1* locus on chromosome 10
 
 #### Panel D.
-Code: `5d.dataPrep_GWAS_boxplots.R` + `5d.GWAS_boxplots.R`
-<details>
-<summary>Input - dataPrep:</summary>
-
-+ CLR and raw counts 
-```
-/users/abaud/data/secondary/P50_HSrats/felipes_deblur/full_biomt_clr_counts.RData #(6)
-```
-</details>
-
+Code: `5d.GWAS_boxplots.R`
 <details>
 <summary>Input - plot:</summary>
 
-+ full biomatrix -> *full_biomt* - intermediate output from dataPrep
++ CLR and raw counts 
 ```
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData
-```
-
-+ CLR -> *clr_counts* - intermediate output from dataPrep
-```
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_clr_counts.RData
+full_biomt_clr_counts.RData # created by P50/16S/Preprocessing/3_clr_counts.R
 ```
 
 + Geno positions 
 ```
-/users/abaud/abaud/P50_HSrats/data/dosages/P50_Rn7_chr10qtl_allSNPS.raw #(15)
+/users/abaud/abaud/P50_HSrats/data/dosages/P50_Rn7_chr10qtl_allSNPS.raw # figshare
 ```
 
 + Metadata 
 ```
-/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData #(3)
+metadata_16Spaper.RData # figshare
 ```
 </details>
 
@@ -245,7 +210,7 @@ Code: `6b.qqplot_micIGE.R`
 
 + VC data 
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_IGE_VC.RData #(16)
+augmented_IGE_VC_allOnly.RData # figshare
 ```
 </details>
 
@@ -257,14 +222,14 @@ Code: `6c.total_genetic_variance_barplot.R`
 <details>
 <summary>Input:</summary>
 
-+ VD data
++ VD with DGE and IGE
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_IGE_VC.RData #(16)
+augmented_IGE_VC_allOnly.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 
-+ VD without IGE 
++ VD with DGE only (without IGE)
 ```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/all_estNste.Rdata #(7)
+augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
@@ -274,7 +239,6 @@ Output: **tot\_herit\_barplot.pdf**
 
 #### Panel D (and Supp. Fig. 14). 
 Code: `6d.simulations.R` <br/>
-Source: `fun_prepareVD_res.R` - prepare_res() function
 <details>
 <summary>Input:</summary>
   

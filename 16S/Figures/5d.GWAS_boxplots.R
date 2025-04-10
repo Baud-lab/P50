@@ -1,10 +1,3 @@
-## # Files to load split in smaller ones - less memory req - in dataPrep script
-## processing_dir = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/'
-## load(file.path(processing_dir,'full_biomt_clr_counts.RData')) # need to ask for 15GB of mem on cluster to do this; loading "clr_counts", "full_biomt"
-## # Saving the two objects separately so that need less computing mem
-## save(full_biomt, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData")
-## save(clr_counts, file = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_clr_counts.RData")
-
 suppressMessages(library("scales")) # needed for alpha() - box transparency
 
 # Loading counts - raw or clr - files saved from dataPrep script
@@ -12,17 +5,13 @@ suppressMessages(library("scales")) # needed for alpha() - box transparency
 data_type = "raw_counts"
 cat("Loading",data_type,"\n")
 
-## # Loading small file to test - cam be created using code in dataPrep script
-## #asv = "ASV_5095"
-## #load(paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_",data_type,"_",asv,".Rdata")) # small file to test
-
 if(data_type == "raw_counts"){
-  load("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_full_biomt.RData") # loading "full_biomt"
+  load("full_biomt.RData") # loading "full_biomt"
   stopifnot("full_biomt" %in% ls())
   stopifnot(!"clr_counts" %in% ls()) # to avoid any possible confusion
   # will give error if loaded the wrong file
 }else if( data_type == "clr_counts" ){
-  load("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/felipes_deblur_clr_counts.RData") # loading "clr_counts"
+  load("clr_counts.RData") # loading "clr_counts"
   stopifnot("clr_counts" %in% ls())
   stopifnot(!"full_biomt" %in% ls()) # to avoid any possible confusion
   # will give error if loaded the wrong file
@@ -31,10 +20,9 @@ if(data_type == "raw_counts"){
 }
 ls()
 
-# - Amelie comments -
 # Reading and preparing genos 
 cat("working on genos\n")
-local_genos = read.table('/users/abaud/abaud/P50_HSrats/data/dosages/P50_Rn7_chr10qtl_allSNPS.raw', as.is = T, header = T, check.names = F)
+local_genos = read.table('P50_Rn7_chr10qtl_allSNPS.raw', as.is = T, header = T, check.names = F)
 # print(object.size(local_genos), units="Gb")
 sample_names = local_genos[,2]
 local_genos = local_genos[,-c(1:6)]
@@ -71,7 +59,7 @@ save_genos = chr_genos
 
 # Loading metadata
 cat("Loading metadata\n")
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData') # loads 'metadata'
+load('metadata_16Spaper.RData') # loads 'metadata'
 # DEfine cohorts names as in paper
 dict = c("NY"="NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
 metadata$study = unname(dict[metadata[,"study"]])
@@ -166,7 +154,7 @@ plot_asv = function(asv){
 
 cat("Starting plot\n")
 # Open pdf to save plot
-pdf(paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/all_chr10_boxplots_",data_type,".pdf"), h = 6, w = 7)
+pdf(paste0("all_chr10_boxplots_",data_type,".pdf"), h = 6, w = 7)
 par(font.main=4, mar=c(5.1,6.1,2.1,1.1))
 
 #plot_asv("ASV_5163")

@@ -1,6 +1,5 @@
 # Load heritability data
-root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(file.path(root_dir,'augmented_VC.RData'))
+load('augmented_VC.RData')
 
 # Build center_spe_herits table with one row per microbiome phenotype and 4 columns corresponding to 4 cohorts
 union = unique(all_VCs_full$taxon)
@@ -95,7 +94,7 @@ my_points <- function(x, y, ...) {
 colr = "#E64B35FF"
 
 # Open pdf to save plot
-pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/compare_herits_Helenes_diff_centers.pdf', w=6,h=6)
+pdf('compare_herits_diff_centers.pdf', w=6,h=6)
 
 # Plot using R's pairs plot 
 # calling 'my_points' - upper tri - and 'my_cor' - lower tri

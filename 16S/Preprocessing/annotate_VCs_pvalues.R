@@ -1,5 +1,5 @@
 ## # Get full taxon from taxonomy. previously run
-## load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/taxonomy.RData')
+## load('taxonomy.RData') #from 1_get_BIOM.R
 ## parse_taxonomy = function(tax_word) {
 ##   splot = strsplit(tax_word,';')[[1]]
 ##   #treat deblur taxonomic calls
@@ -11,11 +11,12 @@
 ## }
 ## parsed_taxonomy = t(sapply(taxonomy[,'full_taxon'],FUN = parse_taxonomy))
 ## parsed_taxonomy = cbind(taxonomy, parsed_taxonomy)
-## save(parsed_taxonomy, file = '/users/abaud/data/secondary/P50_HSrats/felipes_deblur/parsed_taxonomy.RData')
+## save(parsed_taxonomy, file = 'parsed_taxonomy.RData')
 
 
-#call with source('/users/abaud/abaud/P50_HSrats/code/variance_decomposition/felipes_deblur/annotate_VCs_pvalues_function.R')
-#will retrieve annotate
+#do:
+#source('annotate_VCs_pvalues_function.R')
+#VCs = annotate(VCs)
 
 annotate = function(VCs) {
 #expected VCs dataframe with column trait1 
@@ -42,7 +43,7 @@ annotate = function(VCs) {
 		}	
 	}
 
-	load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/parsed_taxonomy.RData')
+	load('parsed_taxonomy.RData')
 
 	VCs$full_taxon = NA
 	for (i in 1:dim(VCs)[1]) {
