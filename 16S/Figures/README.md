@@ -242,53 +242,22 @@ Code: `6d.simulations.R` <br/>
 <details>
 <summary>Input:</summary>
   
-+ Results from simulations (MI and NY)
++ Results from simulations
 ```
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/P50_Rn7_pruned_DGE_cageEffect_None_all_estNste*.Rdata #(17) (DGEonly-MI)
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste*.Rdata #(18) (wt IGE-MI)
+./MI/P50_Rn7_pruned_DGE_cageEffect_None_all_estNste*.Rdata # DGE only (no IGE), MI cohort; in *, 0.9 0 and neg0.9 refers to the DGE-IGE correlation; 21 refers to the seed used to simulate
+./MI/P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste*.Rdata # DGE and IGE, MI cohort; in *, 0.9 0 and neg0.9 refers to the DGE-IGE correlation; 21 refers to the seed used to simulate
 
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/P50_Rn7_pruned_DGE_cageEffect_None_all_estNste*.Rdata #(19) (DGEonly-NY)
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste*.Rdata #(20) (wt IGE-NY)
+./NY/P50_Rn7_pruned_DGE_cageEffect_None_all_estNste*.Rdata # DGE only (no IGE), NY cohort; in *, 0.9 0 and neg0.9 refers to the DGE-IGE correlation; 22 refers to the seed used to simulate
+./NY/P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste*.Rdata  # DGE and IGE, NY cohort; in *, 0.9 0 and neg0.9 refers to the DGE-IGE correlation; 22 refers to the seed used to simulate
 ```
 
-+ Simulated values (MI and NY)
++ Simulated values
 ```
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/params_uni*.txt #(21 -MI)
-/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/params_uni*.txt #(22 -NY)
+MI/params_uni*.txt #(21 -MI)
+NY/params_uni*.txt #(22 -NY)
 ```
 </details>
 
 Output: **{MI,NY}\_DG1\_IG1\_VCs\_from\_sim\_0.9.0.0.neg0.9.pdf** 
 <br/><br/>
 
-
-## Supp. Figure 3. Comparison of heritability at different taxonomic levels
-
-#### Panels. 
-Code: `supp3.boxplot_herit_taxlevel.R` 
-<details>
-<summary>Input:</summary>
-
-+ VD data 
-```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_VC.RData #(5)
-```
-</details>
-
-Output: **herit\_per\_tax\_level.pdf**
-<br/><br/>
-
-## Supp. Figure 4. Decomposition of the variance of microbiome phenotypes
-
-#### Panels. 
-Code: `supp4.baboon_VD_figure.R` 
-<details>
-<summary>Input:</summary>
-
-+ VD data 
-```
-/users/abaud/abaud/P50_HSrats/output/VD/univariate/augmented_VC.RData #(5)
-```
-</details>
-
-Output: **baboon\_fig\_{study}.pdf**

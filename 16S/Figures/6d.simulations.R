@@ -7,7 +7,7 @@ library(vioplot) # for violinplot
 #         value="0.9,0.0,neg0.9", 
 #         pop = "MI",
 #         seed= "21",
-#         inputdir = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/",
+#         inputdir = "./MI/",
 #         outpre = "./MI_DG1_IG1",
 #         model = "uni")
 
@@ -16,7 +16,7 @@ opt=list(pvar="cor(DGE,IGE)",
          value="0.9,0.0,neg0.9",
          pop = "NY",
          seed= "22",
-         inputdir = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/",
+         inputdir = "./NY/",
          outpre = "./NY_DG1_IG1",
          model = "uni")#"uni")
 
@@ -125,8 +125,8 @@ get_res = function(inputdir, val, sid){
 
     
 # Defining ylim for each plot - so that concordant between the two populations
-all_resMI = get_res("/users/abaud/htonnele/PRJs/outputs/P50_HSrats/16S/simulations/MI/", val, 21)
-all_resNY = get_res("/users/abaud/htonnele/PRJs/outputs/P50_HSrats/16S/simulations/NY/", val, 22)
+all_resMI = get_res("./MI/", val, 21)
+all_resNY = get_res("./NY/", val, 22)
 ylimi = sapply(c("DGE","IGE","cor.DGE.IGE","DEE","IEE","cor.DEE.IEE","CE","tot.phenot.var"), 
                \(p) range(c(all_resMI$all_res[,p], all_resNY$all_res[,p]), na.rm = T))
 rm(all_resMI, all_resNY)
