@@ -143,37 +143,7 @@ Output: **comp\_gen\_corrs\_across\_cohorts.pdf**
 
 ## Figure 4. Microbiome-associated loci
 
-#### Panel.
-Code: `4.dataPrep_porcupine_plot.R` + `4.porcupine_plot.R` <br/>
-Source: `annotate_VCs_pvalues.R` - annotate() function
-
-<details>
-<summary>Input - dataPrep:</summary>
-
-+ Cumulative position annotation 
-```
-cumpos_P50_rats_Rn7.RData # figshare
-```
-
-+ Unpruned QTLs
-```
-QTLs_alpha1e-04_unpruned.RData # figshare
-```
-
-</details> 
-
-<details>
-<summary>Input - plot:</summary>
-
-+ summarised QTLs - intermediate output from dataPrep
-```
-QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData
-```
-
-</details>
-  
-Output: **porcupine\_uncollapsed\_genus2.pdf**
-<br/><br/>
+microbiome_DGE_QTLs.RData # figshare
 
 ## Figure 5. Association between Paraprevotella and the *St6galnac1* locus on chromosome 10
 
