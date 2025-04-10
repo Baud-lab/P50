@@ -1,4 +1,4 @@
-Data files and intermediate results files available from https://figshare.com/account/home#/collections/7761632
+Data files and intermediate results files will shortly be available on figshare
 
 1_get_BIOM.R #takes artefact 175568 (left-most) from Qiita's analysis 57950 as input, as well as metadata_16Spaper.RData and taxonomy_Greengenes2.txt
 
