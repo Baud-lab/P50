@@ -274,23 +274,22 @@ Output: **tot\_herit\_barplot.pdf**
 
 #### Panel D (and Supp. Fig. 14). 
 Code: `6d.simulations.R` <br/>
-Source: `fun_prepareVD_res.R` - prepare_res() function
 <details>
 <summary>Input:</summary>
   
-+ Results from simulations - in VD folder (MI and NY)
++ Results from simulations (MI and NY)
 ```
-/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/VD/cage_422/setUhDGhIG/DG1_IG1/ #(17 -MI)
-/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/VD/cage_654/setUhDGhIG/DG1_IG1/ #(18 -NY)
+/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/P50_Rn7_pruned_DGE_cageEffect_None_all_estNste*.Rdata #(17) (DGEonly-MI)
+/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste*.Rdata #(18) (wt IGE-MI)
 
-+ P50_Rn7_pruned_DGE_cageEffect_None_all_estNste.Rdata #(DGE only) 
-+ P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste.Rdata #(wt IGE) 
+/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/P50_Rn7_pruned_DGE_cageEffect_None_all_estNste*.Rdata #(19) (DGEonly-NY)
+/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste*.Rdata #(20) (wt IGE-NY)
 ```
 
-+ Simulated values - in simulation folder (MI and NY)
++ Simulated values (MI and NY)
 ```
-/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/mockphenos/cage_422/setUhDGhIG/DG1_IG1/ #(19 -MI)
-/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/mockphenos/cage_654/setUhDGhIG/DG1_IG1/ #(20 -NY)
+/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/params_uni*.txt #(21 -MI)
+/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/params_uni*.txt #(22 -NY)
 ```
 </details>
 

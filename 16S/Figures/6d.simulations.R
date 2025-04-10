@@ -1,29 +1,24 @@
 #!/usr/bin/env Rscript
 library(vioplot) # for violinplot
 
-sourcefun = "/users/abaud/htonnele/git/lab/P50/16S/Figures/" # 
-source(file.path(sourcefun, "fun_prepareVD_res.R"))
-
 # TODO: comment MI and uncomment NY
 ##### MI - different corr ######
-opt=list(pvar="cor(DGE,IGE)",
-         value="0.9,0.0,neg0.9", 
-         pop = "MI",
-         seed= "21",
-         vddir = "/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/VD/cage_422/setUhDGhIG/DG1_IG1/",
-         simdir = "/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/mockphenos/cage_422/setUhDGhIG/DG1_IG1/",
-         outpre = "/users/abaud/htonnele/PRJs/plots/simP50/setUhDGhIG/paper/MI_DG1_IG1",
-         model = "uni")
+#opt=list(pvar="cor(DGE,IGE)",
+#         value="0.9,0.0,neg0.9", 
+#         pop = "MI",
+#         seed= "21",
+#         inputdir = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/MI/",
+#         outpre = "./MI_DG1_IG1",
+#         model = "uni")
 
 ##### NY - different corr ######
-#opt=list(pvar="cor(DGE,IGE)",
-#         value="0.9,0.0,neg0.9",
-#         pop = "NY",
-#         seed= "22",
-#         vddir = "/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/VD/cage_654/setUhDGhIG/DG1_IG1/",
-#         simdir = "/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/mockphenos/cage_654/setUhDGhIG/DG1_IG1/",
-#         outpre = "/users/abaud/htonnele/PRJs/plots/simP50/setUhDGhIG/paper/NY_DG1_IG1",
-#         model = "uni")#"uni")
+opt=list(pvar="cor(DGE,IGE)",
+         value="0.9,0.0,neg0.9",
+         pop = "NY",
+         seed= "22",
+         inputdir = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/simulations/NY/",
+         outpre = "./NY_DG1_IG1",
+         model = "uni")#"uni")
 
 # Get options
 val = unlist(strsplit(opt$value,","))
@@ -32,13 +27,25 @@ pdfVCs = paste0(opt$outpre, "_VCs_from_sim_", paste(val,collapse="."),".pdf")
 pvar=opt$pvar
 pop=opt$pop
 sid = unlist(strsplit(opt$seed,"[.]"))   # Otherwise, keep as character
-vddir = opt$vddir
-simdir = opt$simdir
+inputdir = opt$inputdir
 model = unlist(strsplit(opt$model, "_"))[1]
 
 
 # Function to get VD files and simulated values for different set of simulations 
-get_res = function(vddir, val, sid, simdir){
+get_res = function(inputdir, val, sid){
+  # these are the columns of the estimates (as come out from analysis - find them in CoreQuantGen/Rsrc/functions/prepare_res.R)
+  colest = c('trait1', 'trait2', 'sample_size1', 'sample_size1_cm', 'sample_size2', 'sample_size2_cm', #6
+             'union_focal', 'inter_focal', 'union_cm', 'inter_cm', #4
+             'covariates_names', 'conv', 'LML', #3
+             'prop_Ad1', 'prop_Ad2','prop_As1', 'prop_As2', #4
+             'corr_Ad1d2', 'corr_Ad1s1', 'corr_Ad1s2', 'corr_Ad2s1','corr_Ad2s2', 'corr_As1s2', #6
+             'prop_Ed1', 'prop_Ed2','prop_Es1', 'prop_Es2', #4
+             'corr_Ed1d2', 'corr_Ed1s1', 'corr_Ed1s2', 'corr_Ed2s1', 'corr_Ed2s2', 'corr_Es1s2', #6
+             'prop_Dm1', 'prop_Dm2', 'corr_Dm1Dm2', #3
+             'prop_C1',  'prop_C2', 'corr_C1C2', #3
+             'tot_genVar1', 'tot_genVar2', #2
+             'total_var1', 'total_var2') #2
+  
   # Columns to exclude when reading the file - not useful
   nocols=c(grep("2",colest,value=T),"covariates_names","conv","LML","time_exec","union_focal", "inter_focal", "union_cm", "inter_cm")
   
@@ -47,8 +54,8 @@ get_res = function(vddir, val, sid, simdir){
     estE = data.frame()
     for(v in val){
       ## getting VD results
-      f = list.files(file.path(vddir, v, sid), pattern = namerdata, 
-                           recursive=T,full.names=T)
+      f = list.files(inputdir, pattern = paste(namerdata, v, sid, sep="_"),
+                   recursive=T,full.names=T)
       load(f);
       if(exists("res")){
         VCs=res$VCs
@@ -63,8 +70,8 @@ get_res = function(vddir, val, sid, simdir){
     return(estE)
   }
   
-  DGEest = get_est("P50_Rn7_pruned_DGE_cageEffect_None_all_estNste.Rdata")
-  IGEest = get_est("P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste.Rdata")
+  DGEest = get_est("P50_Rn7_pruned_DGE_cageEffect_None_all_estNste")
+  IGEest = get_est("P50_Rn7_pruned_DGE_IGE_cageEffect_None_all_estNste")
   
   # 'DGE only' and 'with IGE' estimates in same dataframe
   x = IGEest
@@ -83,45 +90,43 @@ get_res = function(vddir, val, sid, simdir){
                        "simcor" = c(x[,"simcor"], y[,"simcor"]))
   
     
-    all_res[,"analysis"] = factor(all_res[,"analysis"], levels=c("DGEonly", "wtIGE"))
-    all_res[,"simcor"] = factor(all_res[,"simcor"], levels=unique(all_res[,"simcor"])[order(unique(all_res[,"simcor"]))])#c("-0.9","0.0","0.9"))
+  all_res[,"analysis"] = factor(all_res[,"analysis"], levels=c("DGEonly", "wtIGE"))
+  all_res[,"simcor"] = factor(all_res[,"simcor"], levels=unique(all_res[,"simcor"])[order(unique(all_res[,"simcor"]))])#c("-0.9","0.0","0.9"))
+  
+  # Get simulated values
+  prop_names = grep("prop_", colnames(IGEest), value = T)
+  corr_names = grep("corr_", colnames(IGEest), value = T) # NB: this is equal to corr_uni_names when have estimates from uni
+  totv_names = grep("tot_|total_", colnames(IGEest), value = T)
+  corP_names = grep("corParams", colnames(IGEest), value=T)
+  
+  sim_param = data.frame()
+  for(v in val){ # need IGEest - or estimate of some sort 
+    simfile = list.files(inputdir, pattern = paste0("params_.*_V",v,"_S",sid), recursive =T, full.names=T)
     
-    # Get simulated values
-    prop_names = grep("prop_", colnames(IGEest), value = T)
-    corr_names = grep("corr_", colnames(IGEest), value = T) # NB: this is equal to corr_uni_names when have estimates from uni
-    totv_names = grep("tot_|total_", colnames(IGEest), value = T)
-    corP_names = grep("corParams", colnames(IGEest), value=T)
+    #b. get simulated params -> put in sim_prop, sim_corr, sim_tot
+    simP_df = read.csv(simfile, header = T, sep="\t")
+    sim_prop = simP_df[gsub("prop_", "var_", prop_names), "prop_params"]
+    names(sim_prop) = prop_names
     
-    sim_param = data.frame()
-    for(v in val){ # need IGEest - or estimate of some sort 
-      simfile = list.files(file.path(simdir, v, sid), pattern = "params", recursive =T, full.names=T)
-      
-      #b. get simulated params -> put in sim_prop, sim_corr, sim_tot
-      simP_df = read.csv(simfile, header = T, sep="\t")
-      sim_prop = simP_df[gsub("prop_", "var_", prop_names), "prop_params"]
-      names(sim_prop) = prop_names
-      
-      sim_corr = simP_df[corr_names, "set_params"] # not splitting yet in corr_uni, corr_bi as dataframe from uni has only phenotype 1
-      names(sim_corr) = corr_names 
-      
-      sim_totv = simP_df[c("var_y1"), "var_term"] # NB: this can't compare as the rest is stdized! ??
-      names(sim_totv) = c("total_var1") #,"total_var2" ) #totv_names
-      
-      sim_param = rbind(sim_param,
-                        data.frame("param" = names(c(sim_prop, sim_corr, sim_totv)),
-                                   "values" = c(sim_prop, sim_corr, sim_totv), 
-                                   "corr" = rep(gsub("neg","-",v), length(c(sim_prop, sim_corr, sim_totv)))))
-    }
-    #str(sim_param)
-    return(list("all_res" = all_res, "sim_param" = sim_param))
+    sim_corr = simP_df[corr_names, "set_params"] # not splitting yet in corr_uni, corr_bi as dataframe from uni has only phenotype 1
+    names(sim_corr) = corr_names 
+    
+    sim_totv = simP_df[c("var_y1"), "var_term"] # NB: this can't compare as the rest is stdized! ??
+    names(sim_totv) = c("total_var1") #,"total_var2" ) #totv_names
+    
+    sim_param = rbind(sim_param,
+                      data.frame("param" = names(c(sim_prop, sim_corr, sim_totv)),
+                                 "values" = c(sim_prop, sim_corr, sim_totv), 
+                                 "corr" = rep(gsub("neg","-",v), length(c(sim_prop, sim_corr, sim_totv)))))
+  }
+  #str(sim_param)
+  return(list("all_res" = all_res, "sim_param" = sim_param))
 }
 
     
 # Defining ylim for each plot - so that concordant between the two populations
-all_resMI = get_res("/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/VD/cage_422/setUhDGhIG/DG1_IG1/", val, 21, 
-                    "/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/mockphenos/cage_422/setUhDGhIG/DG1_IG1/")
-all_resNY = get_res("/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/VD/cage_654/setUhDGhIG/DG1_IG1/", val, 22,
-                    "/users/abaud/htonnele/nf_PRJs/nf-CoreQuantGen/simulations/output/simP50/mockphenos/cage_654/setUhDGhIG/DG1_IG1/")
+all_resMI = get_res("/users/abaud/htonnele/PRJs/outputs/P50_HSrats/16S/simulations/MI/", val, 21)
+all_resNY = get_res("/users/abaud/htonnele/PRJs/outputs/P50_HSrats/16S/simulations/NY/", val, 22)
 ylimi = sapply(c("DGE","IGE","cor.DGE.IGE","DEE","IEE","cor.DEE.IEE","CE","tot.phenot.var"), 
                \(p) range(c(all_resMI$all_res[,p], all_resNY$all_res[,p]), na.rm = T))
 rm(all_resMI, all_resNY)
@@ -130,7 +135,7 @@ rm(all_resMI, all_resNY)
 
 
 # Get the results
-res = get_res(vddir, val, sid, simdir)
+res = get_res(inputdir, val, sid)
 all_res = res$all_res
 sim_param = res$sim_param
 head(all_res) # check
