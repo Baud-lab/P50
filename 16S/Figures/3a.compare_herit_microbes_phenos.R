@@ -1,6 +1,5 @@
-#load phenotype data
-phenos_dir ='/users/abaud/abaud/P50_HSrats/output/VD/univariate/residuals_02Jan2020/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-load(file.path(phenos_dir,'all_estNste.Rdata'))
+#load phenotype Variance Components (VCs) data
+load(file.path(phenos_dir,'phenos_all_estNste.Rdata'))
 all_VCs_phenos = VCs
 
 #load microbiome data

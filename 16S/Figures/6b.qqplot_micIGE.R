@@ -1,7 +1,6 @@
 library(gap) # qqunif function - to plot
 # Loading VC data
-root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-load(file.path(root_dir,'augmented_IGE_VC.RData'))
+load('augmented_IGE_VC_allOnly.RData')
 
 # Selecting only the ones corresponding to all cohorts together
 all_VCs_full = all_VCs_full[all_VCs_full$study1 == 'all',]
@@ -17,7 +16,7 @@ pchs[all_VCs_full$cw_qvalue_DGE < 0.1] = 16 # FDR < 10%
 
 
 # Open pdf to save plot
-pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/QQplot_pvalues_IGE_Helenes.pdf', h=6, w=7)
+pdf('QQplot_pvalues_IGE_Helenes.pdf', h=6, w=7)
 par(mar=c(5.1,5.1,2.1,2.1))
 
 # Define y limit max

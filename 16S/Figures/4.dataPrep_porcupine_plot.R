@@ -2,7 +2,7 @@ library(rhdf5)
 library(parallel) # required for mclapply
 
 # Loading 'unpruned_bug_QTLs'
-load('/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/QTLs_alpha1e-04_unpruned.RData')
+load('QTLs_alpha1e-04_unpruned.RData')
 unpruned_bug_QTLs = unpruned_bug_QTLs[unpruned_bug_QTLs$tax_level != 'community_trait',]
 DGE_QTLs = unpruned_bug_QTLs
 DGE_QTLs = DGE_QTLs[DGE_QTLs$logP > 5.8,]
@@ -37,15 +37,14 @@ names(colours) = unique(taxa)
 
 
 # Loading cumpos
-load('/users/abaud/abaud/P50_HSrats/data/cumpos_P50_rats_Rn7.RData')
+load('cumpos_P50_rats_Rn7.RData')
 
 my_f = function(k) {
   # - Amelie comments -
   measure = pheno_names[k]
   taxon = taxa[k]
-  if (grepl('ASV', measure)) pvalues_dir_DGE = '/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/' else
-    pvalues_dir_DGE = '/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-  
+  pvalues_dir_DGE = ''
+
   cat("starting with measure", measure, "\n")
   DGE_h5 = h5read(paste(pvalues_dir_DGE,'/',measure,'.h5',sep=''),'/')
   
@@ -98,6 +97,6 @@ res = mclapply(1:length(pheno_names), my_f, mc.cores = 14)
 res = do.call('rbind',res)
 #unique(res$col)
 
-outfile = "/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData"
+outfile = "QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData"
 cat("saving file to", outfile, "\n")
 save(res, file = outfile)

@@ -1,11 +1,11 @@
 # Loading counts (not CLR transformed)
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData')
+load('collapsed_full_biomt_collapsed_clr_counts.RData')
 # use collapsed_full_biomt; not CLR transformed; collapsed at taxonomic levels
 abundances = t(collapsed_full_biomt)
 # taxa in cols
 
 # Loading metadata 
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo.RData')
+load('metadata_16Spaper.RData')
 
 # TODO: need to choose tax level (eg. genus) otherwise not correct to get relative abundances (as same reads count towards genus, order...)
 tax_level = 'f__'
@@ -108,7 +108,7 @@ cols = coolors[1:n]
 
 
 # Open pdf to save plot
-pdf(paste0("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/average_genera_barplots__",gsub("__","",tax_level),".pdf"), h= 7, w = 10)
+pdf(paste0("average_genera_barplots__",gsub("__","",tax_level),".pdf"), h= 7, w = 10)
 par(mar=c(5.1,5.1,2.1,7.1))
 
 # barplot

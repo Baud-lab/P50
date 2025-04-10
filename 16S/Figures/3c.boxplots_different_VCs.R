@@ -12,33 +12,21 @@ library(reshape2) # to rearrange data to plot
 library(ggsci) # for the colours of pal_npg
 library(vioplot) # for violin plot
 
-# Load heritability data 
-### should start from augmented_DGE_VC_wALL.RData instead, keeping only ASV and taxa level phenotypes (no community phenotype)
-### - Amelie comments - keep or remove the above? - end Amelie comments -
-root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-# For ASVs
-deblur_counts_uncollapsed_dir ='deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-load(file.path(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata'))
-asv_VCs = VCs
-# For taxa
-deblur_counts_dir ='deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-load(file.path(root_dir,deblur_counts_dir,'all_estNste.Rdata'))
-tax_levels_VCs = VCs
-# Merge
-all(colnames(tax_levels_VCs) == colnames(asv_VCs))
-all_VCs = rbind(tax_levels_VCs, asv_VCs)
+load('augmented_VC.RData')
+all_VCs = all_VCs_full
 
-# Assign cohort
-### instead should load heritability data from augmented_DGE_VC_wALL.RData and it would already be there
-### - Amelie comments - keep or remove the above? - end Amelie comments -
-all_VCs$study = NA
-for (i in 1:dim(all_VCs)[1]) {
-  # Naming cohorst as in paper
-  if(grepl('_MI$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = 'MI'
-  if(grepl('_NY$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = 'NY'
-  if(grepl('_TN_behavior$', all_VCs[i,'trait1'])) all_VCs[i,'study'] ="TN1" #'TN_behavior'
-  if(grepl('_TN_breeder$', all_VCs[i,'trait1'])) all_VCs[i,'study'] = "TN2" #'TN_breeder'
-}
+#root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
+# For ASVs
+#deblur_counts_uncollapsed_dir ='deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
+#load(file.path(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata'))
+#asv_VCs = VCs
+# For taxa
+#deblur_counts_dir ='deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
+#load(file.path(root_dir,deblur_counts_dir,'all_estNste.Rdata'))
+#tax_levels_VCs = VCs
+# Merge
+#all(colnames(tax_levels_VCs) == colnames(asv_VCs))
+#all_VCs = rbind(tax_levels_VCs, asv_VCs)
 
 options(warn = 2)
 
@@ -62,7 +50,7 @@ mods3temp <- mods %>%
          Maternal = 100*(Vmom/(Vcage+Vmom+VA+VR)),
          `Additive genetic` = 100*(VA/(Vcage+Vmom+VA+VR)),
   )
-mods3 = mods3temp[,c('phenotype','study', 'Cage', 'Maternal', 'Additive genetic')]
+mods3 = mods3temp[,c('phenotype','study1', 'Cage', 'Maternal', 'Additive genetic')]
 
 # Melt the data to get the Components as a column
 mods3 <- reshape2::melt(mods3)
@@ -88,7 +76,7 @@ formula = as.formula(plotdat$est ~ plotdat$component + plotdat$study)
 
 ### Option violin plot + boxplot
 # Open pdf to save plot
-pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/VCs_merged_viopl_col.pdf', width = 7, h=6)
+pdf('VCs_merged_viopl_col_test.pdf', width = 7, h=6)
 vio_col = rep(pal, length(study_order))
 box_col = "white"
 
@@ -126,7 +114,7 @@ dev.off()
 
 ## ### Option boxplot only
 ## # Open pdf to save plot
-## pdf('/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/VCs_merged_bplot.pdf', width = 7, h=6)
+## pdf('VCs_merged_bplot.pdf', width = 7, h=6)
 ## par(mar=c(5.1,5.1,2.1,2.1))
 ## 
 ## box_col  = c(rep(pal, length(study_order)))

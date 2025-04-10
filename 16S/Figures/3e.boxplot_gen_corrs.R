@@ -1,7 +1,7 @@
 library('beeswarm') # for dots
 
 # Load genetic correlations
-load('/users/abaud/abaud/P50_HSrats/output/VD/bivariate/all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData')
+load('all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData')
 
 # Define cohort names as in paper
 dict = c('NY'= 'NY',
@@ -20,7 +20,7 @@ all_VCs[,'study_pair'] = factor(all_VCs$study_pair,
 
 
 # Open pdf to save plot
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/comp_gen_corrs_across_cohorts.pdf", h= 6, w = 10.5)
+pdf("comp_gen_corrs_across_cohorts.pdf", h= 6, w = 10.5)
 par(mar=c(5.1,5.1,2.1,2.1))
 
 # Set colours depending on p-value

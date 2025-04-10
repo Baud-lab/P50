@@ -1,13 +1,13 @@
 
 # Loading res to plot
 cat("loading data to plot\n")
-load("/users/abaud/htonnele/PRJs/P50_HSrats/16S/output/QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData")
+load("QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData")
 
 # Add full taxon name and study name to results
 cat("annotating results\n")
 # TODO: change the path here to the 'fun_annotate_VCs_pvalues.R'
 #source('/path/to/git/P50/16S/Figures/fun_annotate_VCs_pvalues.R') # annotate() function 
-source('/users/abaud/htonnele/git/lab/P50/16S/Figures/fun_annotate_VCs_pvalues.R') # annotate() function 
+source('annotate_VCs_pvalues.R') # annotate() function 
 # Selecting significant res
 res_sigs = res[res$logP > 5.8,] 
 # Defining which traits are significant 
@@ -30,7 +30,7 @@ res <- res[order(res$logP, decreasing = T),]
 
 
 # Annotating snps in ld
-pvalues_dir='/users/abaud/abaud/P50_HSrats/output/pvalues_LOCO_unpruned/deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
+pvalues_dir=''
 target_loci = c('1:196217481','4:70834123','10:101974959')
 all_ld = NULL
 for (target_locus in target_loci) {
@@ -237,7 +237,7 @@ res$col = unname(coolors[res$col])
 
 
 # Open pdf to save plot
-pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2.pdf", h=8, w=23.5)
+pdf("porcupine_uncollapsed_genus2.pdf", h=8, w=23.5)
 par(mar=c(5.1,5.1,2.1,0.5))
 
 cat("Plotting\n")

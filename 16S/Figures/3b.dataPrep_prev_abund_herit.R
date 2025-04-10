@@ -1,15 +1,15 @@
 # Load microbiome data
 # for ASVs
-load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/full_biomt_clr_counts.RData') # loads 'clr_counts' and 'full_biomt' - 2.7GB each 
-outfile = '/users/abaud/abaud/P50_HSrats/output/prev_abund_asvs_biomt.RData'
+load('full_biomt_clr_counts.RData') # loads 'clr_counts' and 'full_biomt' - 2.7GB each 
+outfile = 'prev_abund_asvs_biomt.RData'
 
 ## for taxa 
 # TODO: uncomment following lines to get file for taxa
-#load('/users/abaud/data/secondary/P50_HSrats/felipes_deblur/collapsed_full_biomt_collapsed_clr_counts.RData') # loads 'collapsed_clr_counts' 'collapsed_full_biomt' 'full_taxa' - 200mb all
-#outfile = '/users/abaud/abaud/P50_HSrats/output/prev_abund_taxa_biomt.RData'
+#load('collapsed_full_biomt_collapsed_clr_counts.RData') # loads 'collapsed_clr_counts' 'collapsed_full_biomt' 'full_taxa' - 200mb all
+#outfile = 'prev_abund_taxa_biomt.RData'
 
 # Load metadata
-load('/users/abaud/abaud/P50_HSrats/data/metadata/metadata_augmented_16S_metabo_deblur.RData')
+load('metadata_16Spaper.RData')
 if (any(grepl('collapsed_clr_counts', ls()))) motch = match(colnames(collapsed_clr_counts),metadata$deblur_rooname) else motch = match(colnames(clr_counts),metadata$deblur_rooname)
 any(is.na(motch))
 #FALSE
