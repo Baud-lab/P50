@@ -5,6 +5,9 @@ library(corrplot) # needed for colorlegend and COL1 when plotting
 # Load both ASV level and taxa level microbiome data, and assign common variable name for subsequent use
 load('prev_abund_asvs_biomt.RData') # ASVs
 load('prev_abund_taxa_biomt.RData') # Taxa
+all (names(prevs) == names (meds))
+#TRUE
+
 for (study in c('MI','NY','TN_behavior','TN_breeder')) {
 	assign(paste("prevs", study, sep='_'), c(get(paste("prevalence", study, sep='_')), get(paste("collapsed_prevalence", study, sep='_'))))
 	assign(paste("meds", study, sep='_'), c(get(paste("median", study, sep='_')), get(paste("collapsed_median", study, sep='_'))))
@@ -55,18 +58,14 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) { #to have one plot per c
   # selecting cohort name as for title
   studytitle = dict[study]
   
-  # - Amelie comments - 
   prevs = get(paste("prevs", study, sep='_'))
 	motch = match(paste(names(prevs), study, sep='_'), all_VCs_full$trait1)
 	cols = all_VCs_full[na.exclude(motch),'color_Ad1']
-	#all_cols = c(all_cols, cols) #previously used to have all cohorts in one plot
-	#all_prevs = c(all_prevs, prevs[!is.na(motch)]) #previously used to have all cohorts in one plot
+	prevs = prevs[!is.na(motch)]
 	meds = get(paste("meds", study, sep='_'))
-	#all_meds = c(all_meds, meds[!is.na(motch)]) #previously used to have all cohorts in one plot
-	#	plot(prevs, meds, col= cols) #previously used to have all cohorts in one plot
-	# - end Amelie comments - 
+	meds = meds[!is.na(motch)]
 	
-	# Plot
+	# Plot 
 	plot(prevs, meds, col= cols, 
 	     xlab = paste0("Prevalence in ",studytitle," cohort"), ylab = "", 
 	     las = 1, cex.lab = 1.4, cex.axis = 1.25,
