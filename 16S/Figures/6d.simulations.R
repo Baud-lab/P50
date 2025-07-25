@@ -3,22 +3,22 @@ library(vioplot) # for violinplot
 
 # TODO: comment MI and uncomment NY
 ##### MI - different corr ######
-#opt=list(pvar="cor(DGE,IGE)",
-#         value="0.9,0.0,neg0.9", 
-#         pop = "MI",
-#         seed= "21",
-#         inputdir = "./MI/",
-#         outpre = "./MI_DG1_IG1",
-#         model = "uni")
+opt=list(pvar="cor(DGE,IGE)",
+         value="0.9,0.0",
+         pop = "MI",
+         seed= "21",
+         inputdir = "./MI/",
+         outpre = "./MI_DG1_IG1",
+         model = "uni")
 
 ##### NY - different corr ######
-opt=list(pvar="cor(DGE,IGE)",
-         value="0.9,0.0,neg0.9",
-         pop = "NY",
-         seed= "22",
-         inputdir = "./NY/",
-         outpre = "./NY_DG1_IG1",
-         model = "uni")#"uni")
+#opt=list(pvar="cor(DGE,IGE)",
+#         value="0.9,0.0", 
+#         pop = "NY",
+#         seed= "22",
+#         inputdir = "./NY/",
+#         outpre = "./NY_DG1_IG1",
+#         model = "uni")#"uni")
 
 # Get options
 val = unlist(strsplit(opt$value,","))
@@ -147,9 +147,23 @@ nsim = unique(table(all_res[,c("analysis","simcor")]))
 boxcol = c("analysed with DGE only"="#3C5488FF", "analysed with DGE and IGE"="#00A087FF")
 segcol=c("#DC0000FF")
 # Set x coordinates at which plot each boxplot
-ats = data.frame("at" = c(1:2,4:5,7:8),
-                 "analysis" = rep(c("DGEonly", "wtIGE"), 3),
-                 "simcor" = c(sapply(levels(all_res$simcor), \(l) rep(l, 2))))  
+# Set x coordinates at which plot each boxplot
+if(length(val) == 3){
+  ats = data.frame("at" = c(1:2,4:5,7:8),
+                   "analysis" = rep(c("DGEonly", "wtIGE"), 3),
+                   "simcor" = c(sapply(levels(all_res$simcor), \(l) rep(l, 2))))  
+  
+}else if(length(val) == 2){
+  ats = data.frame("at" = c(1:2,4:5),
+                   "analysis" = rep(c("DGEonly", "wtIGE"), 2),
+                   "simcor" = c(sapply(levels(all_res$simcor), \(l) rep(l, 2))))  
+}else if(length(val) == 1){
+  ats = data.frame("at" = c(1:2),
+                   "analysis" = rep(c("DGEonly", "wtIGE"), 1),
+                   "simcor" = c(sapply(levels(all_res$simcor), \(l) rep(l, 2))))  
+}else{
+  stop(paste0("Can't plot with the current number of value: ", length(val)))
+}
 
 # Function to plot when wtIGE and DGE only
 complot= function(p,psim,pvar, lg.pos=NULL){
@@ -157,7 +171,7 @@ complot= function(p,psim,pvar, lg.pos=NULL){
   ylim = ylimi[,p]
   # Build plot
   # violinplot
-  vioplot::vioplot(formula, col = alpha(boxcol,0.2), 
+  vioplot::vioplot(formula, col = adjustcolor(boxcol,alpha.f = 0.2), 
                    at = ats[,"at"], names = rep('', length(ats[,"at"])), 
                    las = 1, xlab = '', xaxt = "n", ylab='',
                    cex.axis = 1.25,  
@@ -176,7 +190,7 @@ complot= function(p,psim,pvar, lg.pos=NULL){
   # boxplot
   boxplot(formula, at=ats[,"at"], xlim=c(0,9), 
           add=T, 
-          boxwex = 0.2, col=alpha("white",0.5), outline=F, 
+          boxwex = 0.2, col=adjustcolor("white",alpha.f = 0.5), outline=F, 
           xaxt="n", yaxt="n")
   # line for simulated value
   segments(x0=ats[c(1,3,5),"at"]-0.5, 
@@ -218,7 +232,7 @@ complot= function(p,psim,pvar, lg.pos=NULL){
     # legend for segment
     legend(lg.pos, 
            legend=c(paste0("simulated ",p), names(boxcol)),
-           text.col = c("black", rep(alpha("white", 0),2)),
+           text.col = c("black", rep(adjustcolor("white", alpha.f = 0),2)),
            lty=c(2,NA,NA), lwd=c(2,NA,NA), col = c(segcol,NA,NA), seg.len = 1.5,
            cex=1, border = F, ncol=1, xpd=T, bg="white",
            x.intersp = 0.5)
@@ -242,7 +256,7 @@ complot2 = function(p, psim, pvar, lg.pos=NULL){
   formula = formula(all_res[,p] ~ all_res[,"simcor"])
   # Build plot
   # violinplot
-  vioplot::vioplot(formula, col = alpha(boxcol,0.3), 
+  vioplot::vioplot(formula, col = adjustcolor(boxcol,alpha.f = 0.3), 
                    at = ats[,"at"], 
                    las = 1, xlab = '', xaxt = "n", ylab='',
                    cex.axis = 1.25,  
@@ -261,7 +275,7 @@ complot2 = function(p, psim, pvar, lg.pos=NULL){
   # boxplot
   boxplot(formula, at=ats[,"at"], xlim=c(0,9), 
           add=T, 
-          boxwex = 0.2, col=alpha("white",0.5), outline=F, 
+          boxwex = 0.2, col=adjustcolor("white",alpha.f = 0.5), outline=F, 
           xaxt="n", yaxt="n")
   # line for simulated value
   segments(x0=ats[,"at"]-0.5, 
@@ -304,7 +318,7 @@ complot2 = function(p, psim, pvar, lg.pos=NULL){
     # legend for segment
     legend(lg.pos, 
            legend=c(paste0("simulated ",p), names(boxcol)),
-           text.col = c("black", rep(alpha("white", 0),2)),
+           text.col = c("black", rep(adjustcolor("white", alpha.f = 0),2)),
            lty=c(2,NA,NA), lwd=c(2,NA,NA), col = c(segcol,NA,NA), seg.len = 1.5,
            cex=1, border = F, ncol=1, xpd=T, bg="white",
            x.intersp = 0.5)
