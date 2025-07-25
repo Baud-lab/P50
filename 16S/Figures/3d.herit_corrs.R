@@ -27,6 +27,21 @@ Ns = c("NY\n(N = 1,167)", "MI\n(N = 1,112)", "TN1\n(N = 950)", "TN2\n(N = 555)")
 # Colnames for plotting
 colnames(center_spe_herits) = Ns[match(colnames(center_spe_herits), unlist(lapply(strsplit(Ns, "\n"),"[[", 1)))]
 
+# Setting dot colours for all
+dotcol = rep("grey20", nrow(center_spe_herits))
+names(dotcol) = rownames(center_spe_herits)
+
+# Load results from porcupine for dot colour
+load("porcupine_colors.RData")
+# Selecting only significant ones
+sign = tosave[which(tosave$col != "darkgrey"),]
+rm(tosave) # no need ot keep and quite big
+sign[,"slim_trait1"] = gsub("_MI|_NY|_TN_breeder|_TN_behavior", "", sign$trait1)
+row_sig = names(dotcol)[names(dotcol) %in% sign[,"slim_trait1"]]
+motch = match(row_sig, sign$slim_trait1)
+#sign[motch,"slim_trait1"] == row_sig # rownames(center_spe_herits[row_sig,]) == sign[motch,"slim_trait1"]
+dotcol[row_sig] = sign[motch, "col"] 
+
 
 # Function for plot on lower triangle
 my_cor <- function(x, y, ...) {
@@ -73,8 +88,20 @@ my_points <- function(x, y, ...) {
   current_col <- mfg[2]
   total_rows <- mfg[3]
   
-  # Plot points
-  points(x, y, pch = 16)
+  # Plot black points first
+  black_indices <- which(pch.col == pch.bg )
+  if(length(black_indices) > 0) {
+    points(x[black_indices], y[black_indices], pch = 16, col =pch.bg)
+  }
+  
+  # Then plot colored points on top
+  colored_indices <- which(pch.col != pch.bg)
+  if(length(colored_indices) > 0) {
+    points(x[colored_indices], y[colored_indices], pch = 16, col = pch.col[colored_indices])
+  }
+  
+  ## # Plot points (all together, no colour priority)
+  ## points(x, y, pch = 16, col= pch.col)
   
   # Get axis breaks for this panel
   breaks <- create_axis_breaks(x,y, lim) # NB: change here depending on x-ylim
@@ -90,8 +117,12 @@ my_points <- function(x, y, ...) {
   }
 }
 
+
 # Define colours for significant correlation - used in 'my_cor'
 colr = "#E64B35FF"
+#pch.col= "blue"
+pch.col = adjustcolor(dotcol, alpha.f = 0.9)
+pch.bg = adjustcolor("grey20", alpha.f = 0.9)
 
 # Open pdf to save plot
 pdf('compare_herits_diff_centers.pdf', w=6,h=6)
@@ -109,3 +140,4 @@ pairs(center_spe_herits,
       oma = c(2.1, 2.1, 5.1, 5.1))
 
 dev.off()
+
