@@ -5,10 +5,12 @@ library(corrplot) # needed for colorlegend and COL1 when plotting
 # Load both ASV level and taxa level microbiome data, and assign common variable name for subsequent use
 load('prev_abund_asvs_biomt.RData') # ASVs
 load('prev_abund_taxa_biomt.RData') # Taxa
-all (names(prevs) == names (meds))
+#all (names(prevs) == names (meds))
 #TRUE
 
 for (study in c('MI','NY','TN_behavior','TN_breeder')) {
+  print(all (names(paste("prevs", study, sep='_')) == names (paste("prevs", study, sep='_'))))
+  # TRUE all
 	assign(paste("prevs", study, sep='_'), c(get(paste("prevalence", study, sep='_')), get(paste("collapsed_prevalence", study, sep='_'))))
 	assign(paste("meds", study, sep='_'), c(get(paste("median", study, sep='_')), get(paste("collapsed_median", study, sep='_'))))
 }
@@ -54,6 +56,9 @@ par(mar = c(5.1,5.1,2.1,2.1))
 # Define cohorts names as in paper
 dict = c("NY" = "NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
 
+#check = all_VCs_full[gsub("_MI|_NY|_TN_behavior|_TN_breeder","", all_VCs_full$trait1) %in% names(meds_NY[which(meds_NY > 0.10)]),c("trait1","prop_Ad1")]
+#check[grep("_NY", check$trait1),]
+
 for (study in c('MI','NY','TN_behavior','TN_breeder')) { #to have one plot per cohort
   # selecting cohort name as for title
   studytitle = dict[study]
@@ -75,8 +80,8 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) { #to have one plot per c
 	      line = 3.5)
 
 	# Legend
-	# define position
-	lg_xlim = c(0.01,0.1) # this should be the same for all
+	# define position on the x axis
+	lg_xlim = c(0.51,0.55) # this should be the same for all
 	ystart = round(max(meds), 2)-max(meds)/25
 	lg_ylim = c(ystart-max(meds)/5, ystart)
 	# add legend bar
