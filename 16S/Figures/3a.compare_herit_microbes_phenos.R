@@ -22,6 +22,7 @@ all_VCs_phenos$behavioural_pheno = apply(all_VCs_phenos,
 #visual check
 sort(all_VCs_phenos[which(all_VCs_phenos[,'behavioural_pheno']),'trait1'])
 sort(all_VCs_phenos[-which(all_VCs_phenos[,'behavioural_pheno']),'trait1'])
+# Saving list of behavioural and physiological phenotypes
 phenos_df = all_VCs_phenos[,c("trait1", "behavioural_pheno")]
 phenos_df[which(phenos_df[,"behavioural_pheno"]) ,"type"] = "behaviour"
 phenos_df[-which(phenos_df[,"behavioural_pheno"]),"type"] = "physiology"
