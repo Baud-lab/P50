@@ -22,7 +22,12 @@ all_VCs_phenos$behavioural_pheno = apply(all_VCs_phenos,
 #visual check
 sort(all_VCs_phenos[which(all_VCs_phenos[,'behavioural_pheno']),'trait1'])
 sort(all_VCs_phenos[-which(all_VCs_phenos[,'behavioural_pheno']),'trait1'])
-
+phenos_df = all_VCs_phenos[,c("trait1", "behavioural_pheno")]
+phenos_df[which(phenos_df[,"behavioural_pheno"]) ,"type"] = "behaviour"
+phenos_df[-which(phenos_df[,"behavioural_pheno"]),"type"] = "physiology"
+phenos_df = phenos_df[, c("trait1", "type")]
+colnames(phenos_df) = c("trait", "type")
+write.csv(phenos_df, file="phenotypes_beh_phy.csv", row.names = F, quote = F)
 
 # Define function to obtain counts for each set of phenotypes to plot
 #     subdf: sub-dataframe with set of phenotypes of interest
