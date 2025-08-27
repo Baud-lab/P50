@@ -17,7 +17,7 @@ selDGE= DGEonly_VCs[DGEonly_VCs$trait1 %in% sel$trait1,]
 sel$total_heritability / selDGE$prop_Ad1 # 
 
 
-# Creating matrix to plot te 3 most significant 
+# Creating matrix to plot the 3 most significant 
 toplot = matrix(NA, ncol = 2*nrow(sel), nrow = 4)
 
 colnames(toplot) = c(sel$trait1, paste0(sel$trait1, "_classicHerit"))
