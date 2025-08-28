@@ -1,7 +1,9 @@
 # Load heritability data
-load('augmented_VC.RData')
+load('augmented_DGE_VC_wALL.RData')
 
 # Build center_spe_herits table with one row per microbiome phenotype and 4 columns corresponding to 4 cohorts
+#filtering out results for "all" - focus on different centers
+all_VCs_full = all_VCs_full[all_VCs_full$study1 != "all",]
 union = unique(all_VCs_full$taxon)
 center_spe_herits = matrix(nrow = length(union), ncol = 4, NA)
 rownames(center_spe_herits) = union
@@ -28,20 +30,26 @@ Ns = c("NY\n(N = 1,167)", "MI\n(N = 1,112)", "TN1\n(N = 950)", "TN2\n(N = 555)")
 colnames(center_spe_herits) = Ns[match(colnames(center_spe_herits), unlist(lapply(strsplit(Ns, "\n"),"[[", 1)))]
 
 # Setting dot colours for all
-dotcol = rep("grey20", nrow(center_spe_herits))
+#dotcol = rep("grey20", nrow(center_spe_herits))
+inscol = "grey50" # colour of non-sign
+dotcol = rep(inscol, nrow(center_spe_herits))
 names(dotcol) = rownames(center_spe_herits)
 
 # Load results from porcupine for dot colour
 load("porcupine_colors.RData")
 # Selecting only significant ones
-sign = tosave[which(tosave$col != "darkgrey"),]
+#sign = tosave[which(tosave$col != "darkgrey"),] # all significant ones
+top_taxa = c("ASV_3613_NY","ASV_3613_MI",
+             "ASV_3613_TN2","ASV_18566_NY",
+             "ASV_18566_MI","ASV_18566_TN1",
+             "ASV_5163_NY","ASV_5163_TN1") # ref to supplementary tables 2-4
+sign = tosave[tosave[,"trait1"] %in% top_taxa & tosave$col != "darkgrey",] # only 3 top peaks
 rm(tosave) # no need ot keep and quite big
 sign[,"slim_trait1"] = gsub("_MI|_NY|_TN_breeder|_TN_behavior", "", sign$trait1)
 row_sig = names(dotcol)[names(dotcol) %in% sign[,"slim_trait1"]]
 motch = match(row_sig, sign$slim_trait1)
 #sign[motch,"slim_trait1"] == row_sig # rownames(center_spe_herits[row_sig,]) == sign[motch,"slim_trait1"]
 dotcol[row_sig] = sign[motch, "col"] 
-
 
 # Function for plot on lower triangle
 my_cor <- function(x, y, ...) {
@@ -121,8 +129,9 @@ my_points <- function(x, y, ...) {
 # Define colours for significant correlation - used in 'my_cor'
 colr = "#E64B35FF"
 #pch.col= "blue"
-pch.col = adjustcolor(dotcol, alpha.f = 0.9)
-pch.bg = adjustcolor("grey20", alpha.f = 0.9)
+#pch.col = adjustcolor(dotcol, alpha.f = 0.9)
+pch.col = adjustcolor(dotcol, alpha.f = 1)
+pch.bg = adjustcolor(inscol, alpha.f = 1)
 
 # Open pdf to save plot
 pdf('compare_herits_diff_centers.pdf', w=6,h=6)
