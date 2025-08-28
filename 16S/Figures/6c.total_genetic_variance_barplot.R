@@ -1,5 +1,5 @@
 # to draw bar with only one color corresponding to DGE only model
-load('augmented_VC.RData')
+load('augmented_DGE_VC_wALL.RData')
 DGEonly_VCs = all_VCs_full
 
 # Now loading VD data from model with DGE and IGE

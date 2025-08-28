@@ -16,7 +16,7 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
 }
 
 # Load heritability data
-load('augmented_VC.RData')
+load('augmented_DGE_VC_wALL.RData')
 
 # Choose 'estimate' - if based on heritability estimate; 
 type=c("estimate") 

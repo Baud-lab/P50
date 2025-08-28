@@ -3,7 +3,7 @@ load('phenos_all_estNste.Rdata')
 all_VCs_phenos = VCs
 
 #load microbiome data
-load('augmented_VC.RData')
+load('augmented_DGE_VC_wALL.RData')
 all_VCs_16S = all_VCs_full
 
 #determine if phenotype is behavioural or not

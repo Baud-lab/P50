@@ -12,7 +12,7 @@ library(reshape2) # to rearrange data to plot
 library(ggsci) # for the colours of pal_npg
 library(vioplot) # for violin plot
 
-load('augmented_VC.RData')
+load('augmented_DGE_VC_wALL.RData')
 all_VCs = all_VCs_full
 
 #root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
