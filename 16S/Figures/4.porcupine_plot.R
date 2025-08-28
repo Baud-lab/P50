@@ -10,6 +10,7 @@ cat("annotating results\n")
 source('annotate_VCs_pvalues.R') # annotate() function 
 # Selecting significant res
 res_sigs = res[res$logP > 5.8,] 
+res_sigs <- res_sigs[order(res_sigs$logP, decreasing = T),]
 # Defining which traits are significant 
 uniqs = unique(res_sigs$trait1)
 # Selecting significant traits
@@ -31,7 +32,7 @@ res <- res[order(res$logP, decreasing = T),]
 
 # Annotating snps in ld
 pvalues_dir=''
-target_loci = c('1:196217481','4:70834123','10:101974959')
+target_loci = c('1:196498032','4:70473002','10:101972884') #updated based on GWAS with whole sample
 all_ld = NULL
 for (target_locus in target_loci) {
   splot = strsplit(target_locus,':')[[1]]
