@@ -139,10 +139,15 @@ draw_legend = function(dat, x.space=25, y.space=23){
   
   # Legend for shapes 
   # From Manhattan above
-  sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18, "all" = 16)
-  dict_coh = c(NY="NY", MI="MI", TN_behavior = "TN1", TN_breeder= "TN2", all = "all") #dict_coh[names(sig.pch)]
-  dict_pch = c("15"="22", "16"="21", "17"="24", "18"="23", "16"="21") #dict_pch[as.character(sig.pch)]
-  
+  if (all(dat$study1 == 'all')) {
+	  sig.pch = c('all' = 16)
+	  dict_coh = c(all = 'all') #dict_coh[names(sig.pch)]
+	  dict_pch = c("16"="21") #dict_pch[as.character(sig.pch)]
+  } else {
+    sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18)
+    dict_coh = c(NY="NY", MI="MI", TN_behavior = "TN1", TN_breeder= "TN2") #dict_coh[names(sig.pch)]
+    dict_pch = c("15"="22", "16"="21", "17"="24", "18"="23") #dict_pch[as.character(sig.pch)]
+  }
   # legend for pch - cohorts
   legend(x=xcord,
          y=ycord,
