@@ -3,7 +3,7 @@ load('augmented_DGE_VC_wALL.RData')
 DGEonly_VCs = all_VCs_full
 
 # Now loading VD data from model with DGE and IGE
-load('augmented_IGE_VC_allOnly.RData')
+load('augmented_IGE_VC.RData')
 # one bar with three different colors for:
 ## 1. all_VCs_full$prop_Ad1 
 ## 2. 2*(2-1)*all_VCs_full$corr_Ad1s1*sqrt(all_VCs_full$prop_Ad1*all_VCs_full$prop_As1) 
