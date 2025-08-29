@@ -5,6 +5,8 @@ all_VCs_phenos = VCs
 #load microbiome data
 load('augmented_DGE_VC_wALL.RData')
 all_VCs_16S = all_VCs_full
+#filtering out results for "all" - focus on different centers
+all_VCs_16S = all_VCs_16S[all_VCs_16S$study1 != "all",]
 
 #determine if phenotype is behavioural or not
 non_behav = c('adams','baculum','bicknell','insulin','physiological')

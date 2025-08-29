@@ -14,19 +14,8 @@ library(vioplot) # for violin plot
 
 load('augmented_DGE_VC_wALL.RData')
 all_VCs = all_VCs_full
-
-#root_dir = '/users/abaud/abaud/P50_HSrats/output/VD/univariate/'
-# For ASVs
-#deblur_counts_uncollapsed_dir ='deblur_counts_uncollapsed/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-#load(file.path(root_dir,deblur_counts_uncollapsed_dir,'all_estNste.Rdata'))
-#asv_VCs = VCs
-# For taxa
-#deblur_counts_dir ='deblur_counts/P50_Rn7_pruned_DGE_cageEffect_maternalEffect/'
-#load(file.path(root_dir,deblur_counts_dir,'all_estNste.Rdata'))
-#tax_levels_VCs = VCs
-# Merge
-#all(colnames(tax_levels_VCs) == colnames(asv_VCs))
-#all_VCs = rbind(tax_levels_VCs, asv_VCs)
+#filtering out results for "all" - focus on different centers
+all_VCs_full = all_VCs_full[all_VCs_full$study1 != "all",]
 
 options(warn = 2)
 

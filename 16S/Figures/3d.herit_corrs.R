@@ -128,12 +128,13 @@ my_points <- function(x, y, ...) {
 
 # Define colours for significant correlation - used in 'my_cor'
 colr = "#E64B35FF"
-#pch.col= "blue"
-#pch.col = adjustcolor(dotcol, alpha.f = 0.9)
 pch.col = adjustcolor(dotcol, alpha.f = 1)
 pch.bg = adjustcolor(inscol, alpha.f = 1)
 
 # Open pdf to save plot
+# NB: pdf was edited in Adobe Illustrator to do the following:
+#     keep dot colour for only those dots which taxon showed a significant QTL in both cohorts 
+#     increase the size of the dots which taxon showed a significant QTL in both cohorts 
 pdf('compare_herits_diff_centers.pdf', w=6,h=6)
 
 # Plot using R's pairs plot 

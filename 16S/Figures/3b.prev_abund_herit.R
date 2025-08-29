@@ -17,6 +17,8 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
 
 # Load heritability data
 load('augmented_DGE_VC_wALL.RData')
+#filtering out results for "all" - focus on different centers
+all_VCs_full = all_VCs_full[all_VCs_full$study1 != "all",]
 
 # Choose 'estimate' - if based on heritability estimate; 
 type=c("estimate") 

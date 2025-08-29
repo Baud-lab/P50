@@ -1,5 +1,4 @@
-#setwd("/users/abaud/htonnele/PRJs/P50_HSrats/16S/data/")
-
+# Loading VD data from model with DGE only
 load('augmented_DGE_VC_wALL.RData')
 DGEonly_VCs = all_VCs_full
 rm(all_VCs_full)
