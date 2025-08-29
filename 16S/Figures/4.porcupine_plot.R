@@ -10,6 +10,7 @@ cat("annotating results\n")
 source('annotate_VCs_pvalues.R') # annotate() function 
 # Selecting significant res
 res_sigs = res[res$logP > 5.8,] 
+res_sigs <- res_sigs[order(res_sigs$logP, decreasing = T),]
 # Defining which traits are significant 
 uniqs = unique(res_sigs$trait1)
 # Selecting significant traits
@@ -31,7 +32,7 @@ res <- res[order(res$logP, decreasing = T),]
 
 # Annotating snps in ld
 pvalues_dir=''
-target_loci = c('1:196217481','4:70834123','10:101974959')
+target_loci = c('1:196498032','4:70473002','10:101972884') #updated based on GWAS with whole sample
 all_ld = NULL
 for (target_locus in target_loci) {
   splot = strsplit(target_locus,':')[[1]]
@@ -58,7 +59,7 @@ draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=
   
   # Selecting rows that have a different color than the default - significant dots
   w = which(dat[,'col'] != 'darkgrey')
-  sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18)
+  sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18, "all" = 16)
   
   # Defining pch and colour of significant dots depending on cohorts and taxa
   if (length(w)!=0) {
@@ -138,10 +139,15 @@ draw_legend = function(dat, x.space=25, y.space=23){
   
   # Legend for shapes 
   # From Manhattan above
-  sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18)
-  dict_coh = c(NY="NY", MI="MI", TN_behavior = "TN1", TN_breeder= "TN2") #dict_coh[names(sig.pch)]
-  dict_pch = c("15"="22", "16"="21", "17"="24", "18"="23") #dict_pch[as.character(sig.pch)]
-  
+  if (all(dat$study1 == 'all')) {
+	  sig.pch = c('all' = 16)
+	  dict_coh = c(all = 'all') #dict_coh[names(sig.pch)]
+	  dict_pch = c("16"="21") #dict_pch[as.character(sig.pch)]
+  } else {
+    sig.pch = c("NY" = 15, "MI" = 16, "TN_behavior" = 17, "TN_breeder" = 18)
+    dict_coh = c(NY="NY", MI="MI", TN_behavior = "TN1", TN_breeder= "TN2") #dict_coh[names(sig.pch)]
+    dict_pch = c("15"="22", "16"="21", "17"="24", "18"="23") #dict_pch[as.character(sig.pch)]
+  }
   # legend for pch - cohorts
   legend(x=xcord,
          y=ycord,
