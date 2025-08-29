@@ -1,7 +1,10 @@
 
 # Loading res to plot
 cat("loading data to plot\n")
+#to plot for the whole sample AFTER plotting for teh individual cohorts, comment out the following lines
 load("QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData")
+#to plot for the whole sample AFTER plotting for teh individual cohorts,uncomment the following lines
+load("QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot_ALL.RData")
 
 # Add full taxon name and study name to results
 cat("annotating results\n")
@@ -219,10 +222,18 @@ coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#F
 names(coolors) = colres[-which(colres == "darkgrey")]
 coolors = c(coolors, "darkgrey" = "darkgrey")
 
+#to plot for the whole sample AFTER plotting for teh individual cohorts, comment out the following lines
 res$col = unname(coolors[res$col])
 tosave = res[,c("trait1","full_taxon","col")]
 save(tosave, file = "porcupine_colors.RData")
 
+#to plot for the whole sample AFTER plotting for teh individual cohorts, uncomment the following lines
+#porcupine_colors.RData")
+#w = which(res$col != 'darkgrey')
+#motch = match(res[w,'full_taxon'], tosave$full_taxon)
+#res[w,'col'] = tosave[motch,'col']
+#res[is.na(res$col),'col'] = 'darkgrey'
+	   
 #### Subset for tests
 ##  dot = do.call(rbind, lapply(as.numeric(unique(res$chr)), function(x) {
 ##    set.seed(34)
