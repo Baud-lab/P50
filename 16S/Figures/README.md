@@ -54,7 +54,7 @@ phenos_all_estNste.Rdata # figshare
 
 + VD of microbiome
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
   
@@ -78,7 +78,7 @@ collapsed_full_biomt_collapsed_clr_counts.RData # created by P50/16S/Preprocessi
 
 + Heritability data
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
@@ -106,7 +106,7 @@ Code: `3c.boxplots_different_VCs.R`
 
 + Heritability data
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
  
@@ -120,7 +120,7 @@ Code: `3d.herit_corrs.R`
 
 + Heritability data 
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
   
@@ -231,7 +231,7 @@ augmented_IGE_VC_allOnly.RData # created by P50/16S/Preprocessing/annotate_VCs_p
 
 + VD with DGE only (without IGE)
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
