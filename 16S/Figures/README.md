@@ -141,7 +141,7 @@ all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData # created by P50/16S/Preprocess
 Output: **comp\_gen\_corrs\_across\_cohorts.pdf**
 <br/><br/>
 
-## Figure 4. Microbiome-associated loci
+## Figure 4 (individual cohorts) and Supplementary Figure 6 (whole sample). Microbiome-associated loci
 
 #### Panel.
 Code: `4.dataPrep_porcupine_plot.R` + `4.porcupine_plot.R` <br/>
