@@ -11,7 +11,6 @@ load("scrambled_VCs_full_model4Helene.Rdata")
 
 
 ######## plots from here ########
-# NB: horizontal lines for broken axis were edited in Adobe Illustrator and replaced with //
 pdf("suppN.VCs_permut_boxplot.pdf", w = 8, h = 4)
 
 traitplot = c("ASV_13916", "ASV_18948", "ASV_17551")
