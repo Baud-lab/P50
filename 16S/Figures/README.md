@@ -54,7 +54,7 @@ phenos_all_estNste.Rdata # figshare
 
 + VD of microbiome
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
   
@@ -78,7 +78,7 @@ collapsed_full_biomt_collapsed_clr_counts.RData # created by P50/16S/Preprocessi
 
 + Heritability data
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
@@ -106,7 +106,7 @@ Code: `3c.boxplots_different_VCs.R`
 
 + Heritability data
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
  
@@ -120,7 +120,7 @@ Code: `3d.herit_corrs.R`
 
 + Heritability data 
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
   
@@ -141,7 +141,7 @@ all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData # created by P50/16S/Preprocess
 Output: **comp\_gen\_corrs\_across\_cohorts.pdf**
 <br/><br/>
 
-## Figure 4. Microbiome-associated loci
+## Figure 4 (individual cohorts) and Supplementary Figure 6 (whole sample). Microbiome-associated loci
 
 #### Panel.
 Code: `4.dataPrep_porcupine_plot.R` + `4.porcupine_plot.R` <br/>
@@ -231,7 +231,7 @@ augmented_IGE_VC_allOnly.RData # created by P50/16S/Preprocessing/annotate_VCs_p
 
 + VD with DGE only (without IGE)
 ```
-augmented_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 </details>
 
