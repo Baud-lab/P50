@@ -70,7 +70,6 @@ overall_means = apply(means, MAR = 1, FUN = mean)
 means = means[order(overall_means),]
 means = rbind(means, sums)
 rownames(means)[dim(means)[1]] = 'Sum of lower abundance families'
-# - end Amelie comments -
 
 # Setting things up to plot
 # defining cohort names as in paper

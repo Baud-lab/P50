@@ -55,16 +55,21 @@ toplot = rbind("NY" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'NY',], br=
                "Physiology" = prepare_hist(all_VCs_phenos[ ! all_VCs_phenos$behavioural_pheno,], br=br))
 colnames(toplot) = br[-1]
 
-n = 4 # numbers of microbiome studies
-cols = c(colorRampPalette(c("#003A6B","#ACD0E6"))(n), "grey40", "grey75") 
-#cols = c("#003A6B", "#ACD0E6", "#925E9F","#D1C4E9", "grey40", "grey75")  # another option of colours
-#scales::show_col(cols) # to see colors
+# saving object to plot
+save(toplot, file = "source_files/fig3a.RData")
 
+# loading plotted object from source
+#load("source_files/fig3a.RData")
 
 # Starting with plot
 pdf("barplots_herits_studies_pheno.pdf", width = 8, h = 6)
 # Set plot margin
 par(mar = c(5.1, 5.1, 2.1, 2.1)) # default: c(5.1, 4.1, 4.1, 2.1)
+
+n = 4 # numbers of microbiome studies
+cols = c(colorRampPalette(c("#003A6B","#ACD0E6"))(n), "grey40", "grey75") 
+#cols = c("#003A6B", "#ACD0E6", "#925E9F","#D1C4E9", "grey40", "grey75")  # another option of colours
+#scales::show_col(cols) # to see colors
 
 # Set ylim 
 ylimi = c(0,1)

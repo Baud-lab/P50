@@ -1,4 +1,3 @@
-library(gap) # qqunif function - to plot
 # Loading VC data
 load('augmented_IGE_VC_allOnly.RData')
 
@@ -15,8 +14,9 @@ pchs = rep(1, dim(all_VCs_full)[1])
 pchs[all_VCs_full$cw_qvalue_DGE < 0.1] = 16 # FDR < 10%
 
 
+library(gap) # qqunif function - to plot
 # Open pdf to save plot
-pdf('QQplot_pvalues_IGE_Helenes.pdf', h=6, w=7)
+pdf('QQplot_pvalues_IGE.pdf', h=6, w=7)
 par(mar=c(5.1,5.1,2.1,2.1))
 
 # Define y limit max

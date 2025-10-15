@@ -5,14 +5,13 @@ rm(all_VCs_full)
 
 # Now loading VD data from model with DGE and IGE
 load('augmented_IGE_VC.RData')
-
-# Now loading VD data from scrambled 
-load("scrambled_VCs_full_model4Helene.Rdata")
-
 # one bar with three different colors for:
 ## 1. all_VCs_full$prop_Ad1 
 ## 2. 2*(2-1)*all_VCs_full$corr_Ad1s1*sqrt(all_VCs_full$prop_Ad1*all_VCs_full$prop_As1) 
 ## 3. (2-1)^2*all_VCs_full$prop_As1
+
+# Now loading VD data from scrambled 
+load("scrambled_VCs_full_model4Helene.Rdata") # loading scrambled_VCs_full_model
 
 # for the **three phenotypes most significantly affected by Mic-IGE** (as said in the text), so 6 bars total
 sel = all_VCs_full[order(all_VCs_full$pvalue_DGE, decreasing = F),][1:3,]
@@ -20,7 +19,7 @@ selDGE= DGEonly_VCs[DGEonly_VCs$trait1 %in% sel$trait1,]
 #selDGE= DGEonly_VCs[DGEonly_VCs$trait1 %in% c("ASV_13916_MI", "ASV_18948_MI", "ASV_17551_MI"),]
 
 # total herit is 4.4, 7.35, 5 times greater than classical heritability across these 3 phenotypes
-sel$total_heritability / selDGE$prop_Ad1 # 
+sel$total_heritability / selDGE$prop_Ad1 
 
 # Creating matrix to plot the 3 most significant 
 toplot = matrix(NA, ncol = 2*nrow(sel), nrow = 4)
@@ -40,9 +39,15 @@ toplot[c("Mic-DGE", "cov(Mic-DGE,Mic-IGE)", "Mic-IGE"),(nrow(sel)+1) : (2*nrow(s
 ord = c(sapply(sel$trait1, function(t) grep(t, colnames(toplot), value = T)))
 toplot = toplot[,ord]
 
+# Saving objects to plot - toplot (model wt IGE), sel (model with DGE), scrambled_VCs_full_model (permut)
+save(toplot, sel, scrambled_VCs_full_model, file = "source_files/fig6c.RData")
+
+# Loading objects to plot
+#load("source_files/fig6c.RData")
 coolors = c("#8491B4FF","#91D1C2FF","#F39B7FFF","#3C5488FF")
 
 # Function to plot bar plot at different point on x axis
+# need toplot and scrambled_VCs_full_model
 bars <- function(trait1, space=0, add=F, ...){
   traitplot = toplot[,grep(trait1, colnames(toplot))] 
   # add barplot
@@ -78,7 +83,7 @@ bars <- function(trait1, space=0, add=F, ...){
 
 
 # Open pdf to save plot
-pdf("tot_herit_barplot.pdf", h = 6, w = 7)
+pdf("tot_herit_barplot_perm.pdf", h = 6, w = 7)
 par(mar=c(5.1,5.1,2.5,3.5))
 
 # Bar plot: full model with IGE, model with DGE only and boxplot with tot heritability from permutations

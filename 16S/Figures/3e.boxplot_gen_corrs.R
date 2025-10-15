@@ -1,5 +1,3 @@
-library('beeswarm') # for dots
-
 # Load genetic correlations
 load('all_VCs_corr_Ad1d2_zero_P50_Rn7_pruned_DGE.RData')
 
@@ -19,6 +17,7 @@ all_VCs[,'study_pair'] = factor(all_VCs$study_pair,
                                 levels = c("MI\nNY", "NY\nTN1", "MI\nTN1", "NY\nTN2", "MI\nTN2","TN1\nTN2"))
 
 
+library('beeswarm') # for dots
 # Open pdf to save plot
 pdf("comp_gen_corrs_across_cohorts.pdf", h= 6, w = 10.5)
 par(mar=c(5.1,5.1,2.1,2.1))

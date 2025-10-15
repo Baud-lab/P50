@@ -1,29 +1,29 @@
 #!/usr/bin/env Rscript
-library(vioplot) # for violinplot
 
 # TODO: comment MI and uncomment NY
 ##### MI - different corr ######
-opt=list(pvar="cor(DGE,IGE)",
-         value="0.9,0.0",
-         pop = "MI",
-         seed= "21",
-         inputdir = "./MI/",
-         outpre = "./MI_DG1_IG1",
-         model = "uni")
+#opt=list(pvar="cor(DGE,IGE)",
+#         value="0.9,0.0",
+#         pop = "MI",
+#         seed= "21",
+#         inputdir = "./MI/",
+#         save = "suppFig14.RData", 
+#         outpre = "./MI_DG1_IG1",
+#         model = "uni")
 
 ##### NY - different corr ######
-#opt=list(pvar="cor(DGE,IGE)",
-#         value="0.9,0.0", 
-#         pop = "NY",
-#         seed= "22",
-#         inputdir = "./NY/",
-#         outpre = "./NY_DG1_IG1",
-#         model = "uni")#"uni")
+opt=list(pvar="cor(DGE,IGE)",
+         value="0.9,0.0", 
+         pop = "NY",
+         seed= "22",
+         inputdir = "./NY/",
+         save = "fig6d.RData", 
+         outpre = "./NY_DG1_IG1",
+         model = "uni")#"uni")
 
 # Get options
 val = unlist(strsplit(opt$value,","))
 pdfVCs = paste0(opt$outpre, "_VCs_from_sim_", paste(val,collapse="."),".pdf")
-
 pvar=opt$pvar
 pop=opt$pop
 sid = unlist(strsplit(opt$seed,"[.]"))   # Otherwise, keep as character
@@ -142,6 +142,43 @@ head(all_res) # check
 table(all_res[,c("analysis","simcor")]) # check
 nsim = unique(table(all_res[,c("analysis","simcor")]))
 
+# Saving objects for plotting
+save(all_res, sim_param, ylimi, nsim, file = file.path("source_files/", opt$save))
+
+# Loading objects for plotting 
+#   uncomment one opt for MI or NY and lines to get options 
+##### MI - different corr ######
+#opt=list(pvar="cor(DGE,IGE)",
+#         value="0.9,0.0",
+#         pop = "MI",
+#         seed= "21",
+#         inputdir = "./MI/",
+#         save = "suppFig14.RData", 
+#         outpre = "./MI_DG1_IG1",
+#         model = "uni")
+##### NY - different corr ######
+#opt=list(pvar="cor(DGE,IGE)",
+#         value="0.9,0.0", 
+#         pop = "NY",
+#         seed= "22",
+#         inputdir = "./NY/",
+#         save = "fig6d.RData", 
+#         outpre = "./NY_DG1_IG1",
+#         model = "uni")#"uni")
+#
+#### Get options
+#val = unlist(strsplit(opt$value,","))
+#pdfVCs = paste0(opt$outpre, "_VCs_from_sim_", paste(val,collapse="."),".pdf")
+#pvar=opt$pvar
+#pop=opt$pop
+#sid = unlist(strsplit(opt$seed,"[.]"))   # Otherwise, keep as character
+#inputdir = opt$inputdir
+#model = unlist(strsplit(opt$model, "_"))[1]
+
+# Loading objects to plot
+#load(file.path("source_files/", opt$save))
+
+### Done with loading
 
 # Set colours to plot
 boxcol = c("analysed with DGE only"="#3C5488FF", "analysed with DGE and IGE"="#00A087FF")
@@ -165,8 +202,11 @@ if(length(val) == 3){
   stop(paste0("Can't plot with the current number of value: ", length(val)))
 }
 
-# Function to plot when wtIGE and DGE only
-complot= function(p,psim,pvar, lg.pos=NULL){
+
+library(vioplot) # for violinplot
+# Function to plot when wtIGE and DGE only 
+# need "all_res", "boxcol", "ylimi", "ats", "sim_param"
+complot= function(p, psim, pvar, lg.pos=NULL){
   formula = formula(all_res[,p] ~ all_res[,"analysis"] + all_res[,"simcor"])
   ylim = ylimi[,p]
   # Build plot
@@ -246,6 +286,7 @@ complot= function(p,psim,pvar, lg.pos=NULL){
 }
 
 # Function to plot when parameter present only wtIGE
+# need "all_res", "boxcol", "ylimi", "ats", "sim_param"
 complot2 = function(p, psim, pvar, lg.pos=NULL){
   ylim = ylimi[,p]
   # Select plot positions/colours/res for IGE only
@@ -335,19 +376,19 @@ complot2 = function(p, psim, pvar, lg.pos=NULL){
 pdf(pdfVCs, h=6, w=7)
 
 par(mar=c(5.1,5.1,2.1,2.1))
-complot("DGE", "prop_Ad1",pvar, "bottomleft")
-complot("DEE", "prop_Ed1",pvar, "topright")
-complot("CE", "prop_C1",pvar, "topleft")
-
-# parmas present in wtIGE
-complot2("IGE", "prop_As1", pvar, "bottomleft") # "bottomleft" #with NY # "topleft" with MI
-complot2("IEE", "prop_Es1", pvar, "topleft")
-complot2("cor.DGE.IGE", "corr_Ad1s1", pvar, "topleft")
-complot2("cor.DEE.IEE", "corr_Ed1s1", pvar, "topleft")
-
-complot("tot.phenot.var","total_var1", pvar, "topright")
+complot("DGE", "prop_Ad1", pvar, "bottomleft")
 dev.off()
 
 #the legend is sometimes overlapping the dots (see tot var and cor.DEE.IEE in NY and cor.DEE.IEE in MY) 
-#- not the best -  do you think still acceptable?
 
+# Plotting other parameters
+#complot("DEE", "prop_Ed1", pvar, "topright")
+#complot("CE", "prop_C1", pvar, "topleft")
+#
+## parmas present in wtIGE
+#complot2("IGE", "prop_As1", pvar, "bottomleft") # "bottomleft" #with NY # "topleft" with MI
+#complot2("IEE", "prop_Es1", pvar, "topleft")
+#complot2("cor.DGE.IGE", "corr_Ad1s1", pvar, "topleft")
+#complot2("cor.DEE.IEE", "corr_Ed1s1", pvar, "topleft")
+#
+#complot("tot.phenot.var","total_var1", pvar, "topright")

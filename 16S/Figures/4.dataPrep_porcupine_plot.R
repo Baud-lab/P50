@@ -3,9 +3,9 @@ library(parallel) # required for mclapply
 
 # Loading 'unpruned_bug_QTLs'
 # for porcupine plot for individual cohorts (Fig 4):
-load('QTLs_alpha1e-04_unpruned.RData')
+load('microbiome_DGE_QTLs.RData')
 # for porcupine plot for whole sample (Suppl Fig 6):
-load('QTLs_alpha1e-04_unpruned_all.RData')
+load('microbiome_DGE_QTLs_all.RData')
 
 unpruned_bug_QTLs = unpruned_bug_QTLs[unpruned_bug_QTLs$tax_level != 'community_trait',]
 DGE_QTLs = unpruned_bug_QTLs

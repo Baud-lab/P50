@@ -15,7 +15,9 @@ library(vioplot) # for violin plot
 load('augmented_DGE_VC_wALL.RData')
 all_VCs = all_VCs_full
 #filtering out results for "all" - focus on different centers
-all_VCs_full = all_VCs_full[all_VCs_full$study1 != "all",]
+all_VCs = all_VCs[all_VCs$study1 != "all",]
+dict = c("NY" = "NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
+all_VCs[,"study1"] = dict[all_VCs[,"study1"]]
 
 options(warn = 2)
 
@@ -47,6 +49,11 @@ colnames(mods3) <- c("phenotype",'study', "component", "est")
 
 plotdat <- mods3
 
+# save data for plotting 
+save(plotdat, file="source_files/fig3c.RData")
+
+# loading data for plotting
+#load("source_files/fig3c.RData")
 
 # Reorder levels so they plot in the wanted order
 comp_order = c('Additive genetic','Maternal','Cage')
@@ -65,7 +72,7 @@ formula = as.formula(plotdat$est ~ plotdat$component + plotdat$study)
 
 ### Option violin plot + boxplot
 # Open pdf to save plot
-pdf('VCs_merged_viopl_col_test.pdf', width = 7, h=6)
+pdf('VCs_merged_viopl_col.pdf', width = 7, h=6)
 vio_col = rep(pal, length(study_order))
 box_col = "white"
 

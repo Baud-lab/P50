@@ -1,4 +1,3 @@
-suppressMessages(library("scales")) # needed for alpha() - box transparency
 
 # Loading counts - raw or clr - files saved from dataPrep script
 # TODO: change here depending if want to plot using raw counts or clr counts
@@ -119,7 +118,7 @@ plot_asv = function(asv){
     # Plot 
     # prepare base plot (no boxplot yet)
     bp = boxplot(formula, 
-                 col = alpha("white", 0), border=alpha("white", 0), outline=F, ylab = "",xlab = '', xaxt="n",
+                 col = adjustcolor("white", alpha.f = 0), border=adjustcolor("white", alpha.f= 0), outline=F, ylab = "",xlab = '', xaxt="n",
                   main = "St6galnac1", drawRect=F, varwidth = TRUE, las = 1, cex.axis = 1.2, cex.main = 1.5)
     # add ticks and ticks labels to x axis
     axis(1, at=1:length(xlabs), labels=xlabs, cex.axis=1.25)
@@ -138,7 +137,7 @@ plot_asv = function(asv){
            col = "#4DBBD5")
     # add boxes
     bp = boxplot(formula, 
-                 col = alpha("white", 0.5),
+                 col = adjustcolor("white", alpha.f = 0.5),
                  outline=F, 
                  ylab = "",
                  xlab = '', xaxt="n",

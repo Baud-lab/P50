@@ -180,7 +180,7 @@ Output: **porcupine\_uncollapsed\_genus2.pdf**
 ## Figure 5. Association between Paraprevotella and the *St6galnac1* locus on chromosome 10
 
 #### Panel D.
-Code: `5d.GWAS_boxplots.R`
+Code: `5d-f.GWAS_boxplots.R`
 <details>
 <summary>Input - plot:</summary>
 
@@ -191,7 +191,7 @@ full_biomt_clr_counts.RData # created by P50/16S/Preprocessing/3_clr_counts.R
 
 + Geno positions 
 ```
-/users/abaud/abaud/P50_HSrats/data/dosages/P50_Rn7_chr10qtl_allSNPS.raw # figshare
+P50_Rn7_chr10qtl_allSNPS.raw # figshare
 ```
 
 + Metadata 
@@ -216,7 +216,7 @@ augmented_IGE_VC_allOnly.RData # figshare
 ```
 </details>
 
-Output: **QQplot\_pvalues\_IGE\_Helenes.pdf**
+Output: **QQplot\_pvalues\_IGE.pdf**
 <br/><br/>
 
 #### Panel C. 
@@ -226,16 +226,21 @@ Code: `6c.total_genetic_variance_barplot.R`
 
 + VD with DGE and IGE
 ```
-augmented_IGE_VC_allOnly.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
+augmented_IGE_VC.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
 
 + VD with DGE only (without IGE)
 ```
 augmented_DGE_VC_wALL.RData # created by P50/16S/Preprocessing/annotate_VCs_pvalues.R from output of CoreQuantGen; also available from figshare
 ```
+
++ results from permutations
+```
+scrambled_VCs_full_model4Helene.Rdata
+```
 </details>
 
-Output: **tot\_herit\_barplot.pdf**
+Output: **tot\_herit\_barplot\_perm.pdf**
 <br/><br/>
 
 
@@ -260,6 +265,6 @@ NY/params_uni*.txt #(22 -NY)
 ```
 </details>
 
-Output: **{MI,NY}\_DG1\_IG1\_VCs\_from\_sim\_0.9.0.0.neg0.9.pdf** 
+Output: **{MI,NY}\_DG1\_IG1\_VCs\_from\_sim\_0.9.0.0.pdf** 
 <br/><br/>
 

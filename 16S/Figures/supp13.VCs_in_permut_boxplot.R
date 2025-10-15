@@ -1,17 +1,22 @@
 # Loaing VD data from model with DGE only
-load('augmented_DGE_VC_wALL.RData')
+load('augmented_DGE_VC_wALL.RData') # loading all_VCs_full - keeping as DGEonly_VCs
 DGEonly_VCs = all_VCs_full
 rm(all_VCs_full)
 
 # Now loading VD data from model with DGE and IGE
-load('augmented_IGE_VC.RData')
+load('augmented_IGE_VC.RData') # all_VCs_full 
 
 # Now loading VD data from scrambled 
-load("scrambled_VCs_full_model4Helene.Rdata")
+load("scrambled_VCs_full_model4Helene.Rdata") # scrambled_VCs_full_model
 
+# Save all objects to plot in a single file 
+save(DGEonly_VCs, all_VCs_full, scrambled_VCs_full_model, file="source_files/suppFig13.RData")
+
+# Loading objects to plot 
+#load("source_files/suppFig13.RData")
 
 ######## plots from here ########
-pdf("suppN.VCs_permut_boxplot.pdf", w = 8, h = 4)
+pdf("supp13.VCs_permut_boxplot.pdf", w = 8, h = 4)
 
 traitplot = c("ASV_13916", "ASV_18948", "ASV_17551")
 # outliers: 

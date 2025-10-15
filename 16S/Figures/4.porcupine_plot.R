@@ -1,10 +1,10 @@
 
 # Loading res to plot
 cat("loading data to plot\n")
-#to plot for the whole sample AFTER plotting for teh individual cohorts, comment out the following lines
+#to plot for the whole sample AFTER plotting for the individual cohorts, comment out the following lines
 load("QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData")
-#to plot for the whole sample AFTER plotting for teh individual cohorts,uncomment the following lines
-load("QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot_ALL.RData")
+#to plot for the whole sample AFTER plotting for the individual cohorts, uncomment the following lines
+#load("QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot_ALL.RData")
 
 # Add full taxon name and study name to results
 cat("annotating results\n")
@@ -35,7 +35,8 @@ res <- res[order(res$logP, decreasing = T),]
 
 # Annotating snps in ld
 pvalues_dir=''
-target_loci = c('1:196498032','4:70473002','10:101972884') #updated based on GWAS with whole sample
+target_loci = c('1:196217481','4:70834123','10:101974959') # GWAS per cohort
+#target_loci = c('1:196498032','4:70473002','10:101972884') # updated based on GWAS with whole sample
 all_ld = NULL
 for (target_locus in target_loci) {
   splot = strsplit(target_locus,':')[[1]]
@@ -47,7 +48,11 @@ for (target_locus in target_loci) {
 }
 all_ld = all_ld[all_ld$R2 >= 0.80,]
 
+# saving objects for plotting
+save(res, all_ld, file = "source_files/fig4.RData")
 
+# loading objects from source for plotting
+#load(file = "source_files/fig4.RData")
 
 # Function to plot manhattan
 draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=1.25, cex.lab=1.4) {
@@ -100,8 +105,8 @@ draw_manhattan_plot=function(dat, def.cex = 0.4, sig.cex = 2, cex.x=1.25, cex.y=
         xlab = "Chromosome")
 }
 
-# Function to plot legend 
-draw_legend = function(dat, x.space=25, y.space=23){
+# Function to plot legend # this function needs all_ld 
+draw_legend = function(dat, all_ld, x.space=25, y.space=23){
   # otherwise QTL point gets overpainted so is not visible
   dat = dat[dat$col != 'darkgrey',] # needed otherwise match below goes to first occurence, which is darkgrey
   w = which(dat$logP > 5.8 & paste(dat$chr, dat$pos, sep=':') %in% c(all_ld$SNP_A,all_ld$SNP_B))
@@ -201,8 +206,6 @@ draw_legend = function(dat, x.space=25, y.space=23){
     }
     ycord = (abs(ycord))-y.step
   }
-  
-  
 }
 
 ###### Setting colors
@@ -225,10 +228,10 @@ coolors = c(coolors, "darkgrey" = "darkgrey")
 #to plot for the whole sample AFTER plotting for teh individual cohorts, comment out the following lines
 res$col = unname(coolors[res$col])
 tosave = res[,c("trait1","full_taxon","col")]
-save(tosave, file = "porcupine_colors.RData")
+#save(tosave, file = "porcupine_colors.RData")
 
-#to plot for the whole sample AFTER plotting for teh individual cohorts, uncomment the following lines
-#porcupine_colors.RData")
+##to plot for the whole sample AFTER plotting for the individual cohorts, uncomment the following lines
+#load("porcupine_colors.RData")
 #w = which(res$col != 'darkgrey')
 #motch = match(res[w,'full_taxon'], tosave$full_taxon)
 #res[w,'col'] = tosave[motch,'col']
@@ -247,7 +250,7 @@ save(tosave, file = "porcupine_colors.RData")
 ##  }
 ##  ))
 ##  # Plotting porcupine
-##  pdf("/users/abaud/htonnele/PRJs/P50_HSrats/16S/plot/porcupine_uncollapsed_genus2_test.pdf", h=7, w=23.5)
+##  pdf("porcupine_uncollapsed_genus2_test.pdf", h=7, w=23.5)
 ##  par(mar=c(5.1,5.1,2.1,0.5))
 ##  draw_manhattan_plot(dot, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
 ##  draw_legend(dot, x.space = 70) 
@@ -261,7 +264,7 @@ par(mar=c(5.1,5.1,2.1,0.5))
 
 cat("Plotting\n")
 draw_manhattan_plot(res, def.cex=0.6, cex.lab=2, cex.x = 1.4, cex.y = 1.4)
-draw_legend(res, x.space = 75)
+draw_legend(res, all_ld, x.space = 75)
 dev.off()
 
 
