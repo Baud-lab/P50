@@ -1,6 +1,5 @@
 # Loading counts (not CLR transformed)
-load('deblur_rarefied_collapsed_full_biomt.RData')
-#same Fig. 2A obtained with load('collapsed_full_biomt_collapsed_clr_counts.RData')
+load('collapsed_full_biomt_collapsed_clr_counts.RData')
 # use collapsed_full_biomt; not CLR transformed; collapsed at taxonomic levels
 abundances = t(collapsed_full_biomt)
 # taxa in cols
