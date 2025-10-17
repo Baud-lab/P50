@@ -5,7 +5,7 @@ library(parallel) # required for mclapply
 # for porcupine plot for individual cohorts (Fig 4):
 load('microbiome_DGE_QTLs.RData')
 # for porcupine plot for whole sample (Suppl Fig 6):
-load('microbiome_DGE_QTLs_all.RData')
+#load('microbiome_DGE_QTLs_all.RData')
 
 unpruned_bug_QTLs = unpruned_bug_QTLs[unpruned_bug_QTLs$tax_level != 'community_trait',]
 DGE_QTLs = unpruned_bug_QTLs
@@ -102,5 +102,8 @@ res = do.call('rbind',res)
 #unique(res$col)
 
 outfile = "QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot.RData"
+# for porcupine plot for whole sample (Suppl Fig 6):
+#outfile = "QTLs_alpha1e-04_unpruned_DGE_CE_MaE_toPlot_ALL.RData"
+
 cat("saving file to", outfile, "\n")
 save(res, file = outfile)
