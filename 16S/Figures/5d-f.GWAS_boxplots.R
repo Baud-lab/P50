@@ -1,23 +1,7 @@
+load("full_biomt_clr_counts.RData") # loads "full_biomt" and "clr_counts"
 
-# Loading counts - raw or clr - files saved from dataPrep script
 # TODO: change here depending if want to plot using raw counts or clr counts
 data_type = "raw_counts"
-cat("Loading",data_type,"\n")
-
-if(data_type == "raw_counts"){
-  load("full_biomt.RData") # loading "full_biomt"
-  stopifnot("full_biomt" %in% ls())
-  stopifnot(!"clr_counts" %in% ls()) # to avoid any possible confusion
-  # will give error if loaded the wrong file
-}else if( data_type == "clr_counts" ){
-  load("clr_counts.RData") # loading "clr_counts"
-  stopifnot("clr_counts" %in% ls())
-  stopifnot(!"full_biomt" %in% ls()) # to avoid any possible confusion
-  # will give error if loaded the wrong file
-}else{
-  stop("data_type need to be 'raw_counts' or 'clr_counts'")
-}
-ls()
 
 # Reading and preparing genos 
 cat("working on genos\n")
