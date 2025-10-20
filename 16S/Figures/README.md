@@ -37,7 +37,7 @@ metadata_16Spaper.RData # figshare
 ```
 </details>
  
-Output: **PCA_paper.pdf**
+Output: **PCA__f_paper.pdf**
 <br/><br/>
 
 ## Figure 3. Characteristics of polygenic host genetic effects
@@ -179,7 +179,7 @@ Output: **porcupine\_uncollapsed\_genus2.pdf**
 
 ## Figure 5. Association between Paraprevotella and the *St6galnac1* locus on chromosome 10
 
-#### Panel D.
+#### Panel D-F.
 Code: `5d-f.GWAS_boxplots.R`
 <details>
 <summary>Input - plot:</summary>
