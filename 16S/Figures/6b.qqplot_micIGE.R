@@ -1,5 +1,5 @@
 # Loading VC data
-load('augmented_IGE_VC_allOnly.RData')
+load('augmented_IGE_VC.RData')
 
 # Selecting only the ones corresponding to all cohorts together
 all_VCs_full = all_VCs_full[all_VCs_full$study1 == 'all',]
