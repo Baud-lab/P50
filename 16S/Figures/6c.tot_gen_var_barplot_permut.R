@@ -44,7 +44,7 @@ toplot = toplot[,ord]
 #sum(toplot[,"ASV_17551_all"]) == sel[sel$trait1 == "ASV_17551_all", "total_heritability"] # TRUE
 
 # Saving objects to plot - toplot (model wt IGE), sel (model with DGE), scrambled_VCs_full_model (permut)
-save(toplot, sel, scrambled_VCs_full_model, file = "source_files/fig6c.RData")
+#save(toplot, sel, scrambled_VCs_full_model, file = "source_files/fig6c.RData")
 
 # Loading objects to plot
 #load("source_files/fig6c.RData")
@@ -61,11 +61,7 @@ bars <- function(trait1, space=0, add=F, ...){
                xaxt="n",
                border = NA, cex.axis = 1.25,
                las=1, add=add, ...)
-  # add segment of significance on top
-  segments(bp[1], max(apply(traitplot, 2,sum))+0.01 , bp[2], max(apply(traitplot, 2,sum))+0.01)
-  # add stars of significance on top
-  text(mean(c(bp[1], bp[2])), max(apply(traitplot, 2,sum)) + 0.015, "**", cex=1.25, font=2)
-  
+
   # add points with results from permutations
   scram_herit = scrambled_VCs_full_model[grep(trait1, scrambled_VCs_full_model$trait1), "total_heritability"]
   factor = (50*0.24/(space+3))

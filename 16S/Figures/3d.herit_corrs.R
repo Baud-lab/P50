@@ -52,7 +52,7 @@ motch = match(row_sig, sign$slim_trait1)
 dotcol[row_sig] = sign[motch, "col"] 
 
 # saving objects for plotting - data and colours - for insignificant and for coloured
-save(center_spe_herits, dotcol, inscol, file = "source_files/fig3d.RData")
+#save(center_spe_herits, dotcol, inscol, file = "source_files/fig3d.RData")
 
 # loading objects for plotting - data and colours
 #load("source_files/fig3d.RData")

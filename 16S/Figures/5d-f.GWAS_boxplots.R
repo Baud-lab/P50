@@ -1,3 +1,5 @@
+## WARNING: This script requires at least ~12 GB to execute
+## Jump to the plot part - still takes ~7 GB
 load("full_biomt_clr_counts.RData") # loads "full_biomt" and "clr_counts"
 
 # TODO: change here depending if want to plot using raw counts or clr counts
@@ -37,7 +39,6 @@ chr_genos = factor(chr_genos, levels = c('Single copy','Het','Triplicated'))
 names(chr_genos) = names(genos)
 
 save_genos = chr_genos
-# - end Amelie comments -
 
 
 # Loading metadata
@@ -46,6 +47,12 @@ load('metadata_16Spaper.RData') # loads 'metadata'
 # DEfine cohorts names as in paper
 dict = c("NY"="NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
 metadata$study = unname(dict[metadata[,"study"]])
+
+# Saving objects to plot
+#save(data_type, full_biomt, metadata, save_genos, file=paste0("source_files/fig5d-f_",data_type,".RData"))
+
+# Loading objects to plot
+#load("source_files/fig5d-f_raw_counts.RData")
 
 # Function to plot boxplot per each asv
 plot_asv = function(asv){

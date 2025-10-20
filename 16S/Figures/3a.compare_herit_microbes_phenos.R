@@ -56,7 +56,7 @@ toplot = rbind("NY" = prepare_hist(all_VCs_16S[all_VCs_16S$study1 == 'NY',], br=
 colnames(toplot) = br[-1]
 
 # saving object to plot
-save(toplot, file = "source_files/fig3a.RData")
+#save(toplot, file = "source_files/fig3a.RData")
 
 # loading plotted object from source
 #load("source_files/fig3a.RData")

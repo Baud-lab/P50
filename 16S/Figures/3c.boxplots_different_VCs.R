@@ -50,7 +50,7 @@ colnames(mods3) <- c("phenotype",'study', "component", "est")
 plotdat <- mods3
 
 # save data for plotting 
-save(plotdat, file="source_files/fig3c.RData")
+#save(plotdat, file="source_files/fig3c.RData")
 
 # loading data for plotting
 #load("source_files/fig3c.RData")

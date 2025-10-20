@@ -20,9 +20,9 @@ for (study in c('MI','NY','TN_behavior','TN_breeder')) {
 }
 
 # saving objects to plot
-save(list= c(paste("prevs", c('MI','NY','TN_behavior','TN_breeder'), sep='_'), 
-     paste("meds", c('MI','NY','TN_behavior','TN_breeder'), sep='_'), 
-     "all_VCs_full"), file = "source_files/fig3b_suppFig5.RData")
+#save(list= c(paste("prevs", c('MI','NY','TN_behavior','TN_breeder'), sep='_'), 
+#     paste("meds", c('MI','NY','TN_behavior','TN_breeder'), sep='_'), 
+#     "all_VCs_full"), file = "source_files/fig3b_suppFig5.RData")
 
 # loading objects to plot from source
 #load("source_files/fig3b_suppFig5.RData")

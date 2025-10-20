@@ -14,6 +14,12 @@ pchs = rep(1, dim(all_VCs_full)[1])
 pchs[all_VCs_full$cw_qvalue_DGE < 0.1] = 16 # FDR < 10%
 
 
+# Saving objects for plotting
+#save(all_VCs_full, cols, pchs, file="source_files/fig6b.RData")
+
+# Loading objects for plotting
+#load("source_files/fig6b.RData")
+
 library(gap) # qqunif function - to plot
 # Open pdf to save plot
 pdf('QQplot_pvalues_IGE.pdf', h=6, w=7)

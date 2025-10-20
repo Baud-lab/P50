@@ -11,7 +11,6 @@ load('metadata_16Spaper.RData')
 tax_level = 'f__'
 abundances = abundances[,grep(tax_level, colnames(abundances))]
 
-# - Amelie comments - 
 my_strsplit = function(mot, code) {
     splot = strsplit(mot, '.', fixed = T)[[1]]
     if (length(splot) == 3) return(splot[code])
@@ -79,25 +78,6 @@ colord = c("NY", "MI", "TN1", "TN2")
 means = means[,colord]
 n <- dim(means)[1]
 
-# One way to get colors - using RColorBrewer
-#library(RColorBrewer)
-#qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-#coolors = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-
-# Another way to get colors
-#coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#FABFD2FF",
-#            "#8CD17DFF", "#A0CBE8FF", "#51A3CCFF", "#FFAA0EFF", "#835B82FF", "#DF65B0FF",
-#            "#B07AA1FF", "#B26F2CFF", "#CC5500FF", "#FFD200FF", "#85B22CFF", "#F28E2BFF", 
-#            "#D7B5A6FF", "#FFD8B2FF", "#993D00FF", "#FFBE7DFF", "#FFE474FF", "#B6992DFF",
-#            "#E5FFB2FF", "#9D7660FF", "#BFB2FFFF", "#B2E5FFFF", "#8491B4FF", "#B2AD8FFF",
-#            "#6E8E84FF", "#91D1C2FF", "#DC0000FF", "#0F6B99FF", "#CE1256FF", "#260F99FF", 
-#            "#D4A6C8FF", "#8A60B0FF", "#C994C7FF", "#499894FF", "#6551CCFF", "#E5B17EFF",
-#            "#800080FF", "#C3E57EFF", "#E7298AFF", "#D37295FF", "#7E6148FF", "#E57E7EFF",   
-#            "#662700FF", "#FFB2B2FF", "#CC5151FF")  #"#67001FFF") "#B22C2CFF",
-
-#if (n > length(coolors)) rep = TRUE else rep = FALSE
-#set.seed(1); cols = sample(coolors, n, replace = rep)
-
 # Setting colors specifically 
 coolors = c("#4A6990FF", "#7AA6DCFF", "#00A087FF", "#91D1C2FF", "#EFC000FF") # colors in paper, exact number of colours as in `means` 
 cols = coolors[1:n]
@@ -105,6 +85,11 @@ cols = coolors[1:n]
 ## if want to have a look at colors
 #scales::show_col(cols)
 
+# Saving objects to plot
+#save(means, cols, tax_level, file=paste0("source_files/fig2a__",gsub("__","",tax_level),".RData"))
+
+# Loading objects to plot
+#load("source_files/fig2a__f.RData")
 
 # Open pdf to save plot
 pdf(paste0("average_genera_barplots__",gsub("__","",tax_level),".pdf"), h= 7, w = 10)

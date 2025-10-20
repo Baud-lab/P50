@@ -10,7 +10,7 @@ load('augmented_IGE_VC.RData') # all_VCs_full
 load("scrambled_VCs_full_model4Helene.Rdata") # scrambled_VCs_full_model
 
 # Save all objects to plot in a single file 
-save(DGEonly_VCs, all_VCs_full, scrambled_VCs_full_model, file="source_files/suppFig13.RData")
+#save(DGEonly_VCs, all_VCs_full, scrambled_VCs_full_model, file="source_files/suppFig13.RData")
 
 # Loading objects to plot 
 #load("source_files/suppFig13.RData")

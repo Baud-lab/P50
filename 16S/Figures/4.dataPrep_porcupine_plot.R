@@ -11,7 +11,6 @@ unpruned_bug_QTLs = unpruned_bug_QTLs[unpruned_bug_QTLs$tax_level != 'community_
 DGE_QTLs = unpruned_bug_QTLs
 DGE_QTLs = DGE_QTLs[DGE_QTLs$logP > 5.8,]
 
-# - Amelie comments -
 #leave in as there are still some _all
 #       VCs$taxon1 = sub('_all','',VCs$taxon1)
 
@@ -32,7 +31,6 @@ my_extract_genus = function(full_taxon) {
 }
 DGE_QTLs$genus = sapply(DGE_QTLs$full_taxon, my_extract_genus) #no NA due to prior exclusion of phenotypes without genus taxonomy
 taxa = DGE_QTLs[match(pheno_names, DGE_QTLs$measure),'genus'] #genera corresponding to unique measures (after excluding those mapping to higher level than taxon)
-# - end Amelie comments -
 
 # Setting mock colours to set them later - col1:coln
 n <- length(unique(taxa))
@@ -91,8 +89,7 @@ my_f = function(k) {
   
   #	if (any(DGE_h5[,'logP']> 7 & DGE_h5[,'chr'] == 1) ) print(k)
   ret = DGE_h5[DGE_h5[,'logP']>=3,]
-  # - end Amelie comments -
-  
+
   cat("done with measure ", measure, "\n")
   return(ret)
 }

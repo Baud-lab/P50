@@ -35,8 +35,8 @@ res <- res[order(res$logP, decreasing = T),]
 
 # Annotating snps in ld
 pvalues_dir=''
-target_loci = c('1:196217481','4:70834123','10:101974959') # GWAS per cohort
-#target_loci = c('1:196498032','4:70473002','10:101972884') # updated based on GWAS with whole sample
+target_loci = c('1:196217481','4:70834123','10:101974959') # GWAS per cohort # comment to plot _ALL
+#target_loci = c('1:196498032','4:70473002','10:101972884') # updated based on GWAS with whole sample # uncomment to plot _ALL
 all_ld = NULL
 for (target_locus in target_loci) {
   splot = strsplit(target_locus,':')[[1]]
@@ -49,7 +49,7 @@ for (target_locus in target_loci) {
 all_ld = all_ld[all_ld$R2 >= 0.80,]
 
 # saving objects for plotting
-save(res, all_ld, file = "source_files/fig4.RData")
+#save(res, all_ld, file = "source_files/fig4.RData")
 
 # loading objects from source for plotting
 #load(file = "source_files/fig4.RData")
@@ -225,10 +225,10 @@ coolors = c("#FF6E00FF", "#1A476FFF", "#8F7EE5FF", "#980043FF", "#59A14FFF", "#F
 names(coolors) = colres[-which(colres == "darkgrey")]
 coolors = c(coolors, "darkgrey" = "darkgrey")
 
-#to plot for the whole sample AFTER plotting for teh individual cohorts, comment out the following lines
+#to plot for the whole sample AFTER plotting for the individual cohorts, comment out the following lines
 res$col = unname(coolors[res$col])
 tosave = res[,c("trait1","full_taxon","col")]
-#save(tosave, file = "porcupine_colors.RData")
+save(tosave, file = "porcupine_colors.RData")
 
 ##to plot for the whole sample AFTER plotting for the individual cohorts, uncomment the following lines
 #load("porcupine_colors.RData")

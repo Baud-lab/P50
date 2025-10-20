@@ -16,15 +16,20 @@ all_VCs[,'study_pair'] = apply(all_VCs, 1, function(x) paste(sort(x[c("study1","
 all_VCs[,'study_pair'] = factor(all_VCs$study_pair, 
                                 levels = c("MI\nNY", "NY\nTN1", "MI\nTN1", "NY\nTN2", "MI\nTN2","TN1\nTN2"))
 
+# Set colours depending on p-value
+cols = rep("#396C93", dim(all_VCs)[1])
+cols[all_VCs$pv_chi2dof2 < 0.05] = "#E64B35FF"
+
+# Save objects to plot
+#save(all_VCs, cols, file = "source_files/fig3e.RData")
+
+# Load objects to plot
+#load("source_files/fig3e.RData")
 
 library('beeswarm') # for dots
 # Open pdf to save plot
 pdf("comp_gen_corrs_across_cohorts.pdf", h= 6, w = 10.5)
 par(mar=c(5.1,5.1,2.1,2.1))
-
-# Set colours depending on p-value
-cols = rep("#396C93", dim(all_VCs)[1])
-cols[all_VCs$pv_chi2dof2 < 0.05] = "#E64B35FF"
 
 # Plot boxplot
 boxplot(all_VCs$corr_Ad1d2 ~ all_VCs$study_pair, 

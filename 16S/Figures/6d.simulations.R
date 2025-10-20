@@ -143,7 +143,7 @@ table(all_res[,c("analysis","simcor")]) # check
 nsim = unique(table(all_res[,c("analysis","simcor")]))
 
 # Saving objects for plotting
-save(all_res, sim_param, ylimi, nsim, file = file.path("source_files/", opt$save))
+#save(all_res, sim_param, ylimi, nsim, file = file.path("source_files/", opt$save))
 
 # Loading objects for plotting 
 #   uncomment one opt for MI or NY and lines to get options 
