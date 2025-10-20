@@ -49,10 +49,10 @@ dict = c("NY"="NY", "MI"="MI", "TN_behavior"="TN1", "TN_breeder"="TN2")
 metadata$study = unname(dict[metadata[,"study"]])
 
 # Saving objects to plot
-#save(data_type, full_biomt, metadata, save_genos, file=paste0("source_files/fig5d-f_",data_type,".RData"))
+#save(data_type, full_biomt, metadata, save_genos, file=paste0("source_files/fig5d-f_",data_type,".RData.gzip"), compress = "gzip")
 
 # Loading objects to plot
-#load("source_files/fig5d-f_raw_counts.RData")
+#load("source_files/fig5d-f_raw_counts.RData.gzip")
 
 # Function to plot boxplot per each asv
 plot_asv = function(asv){
