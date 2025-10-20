@@ -38,6 +38,10 @@ toplot[c("Mic-DGE", "cov(Mic-DGE,Mic-IGE)", "Mic-IGE"),(nrow(sel)+1) : (2*nrow(s
 # Order as trait1, trait1DGE-alone; trait2, trait2DGE-alone  ...
 ord = c(sapply(sel$trait1, function(t) grep(t, colnames(toplot), value = T)))
 toplot = toplot[,ord]
+# Checking tot_heritability corresponds to sum of single variance components
+#sum(toplot[,"ASV_13916_all"]) == sel[sel$trait1 == "ASV_13916_all", "total_heritability"] # TRUE
+#sum(toplot[,"ASV_18948_all"]) == sel[sel$trait1 == "ASV_18948_all", "total_heritability"] # TRUE
+#sum(toplot[,"ASV_17551_all"]) == sel[sel$trait1 == "ASV_17551_all", "total_heritability"] # TRUE
 
 # Saving objects to plot - toplot (model wt IGE), sel (model with DGE), scrambled_VCs_full_model (permut)
 save(toplot, sel, scrambled_VCs_full_model, file = "source_files/fig6c.RData")
