@@ -212,7 +212,7 @@ Code: `6b.qqplot_micIGE.R`
 
 + VC data 
 ```
-augmented_IGE_VC_allOnly.RData # figshare
+augmented_IGE_VC.RData # figshare
 ```
 </details>
 
